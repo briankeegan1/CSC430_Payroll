@@ -21,5 +21,10 @@ namespace CSC430_Payroll
         {
             
         }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
