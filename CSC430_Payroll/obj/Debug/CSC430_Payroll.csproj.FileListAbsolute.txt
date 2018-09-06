@@ -9,3 +9,14 @@ C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payro
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.pdb
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormMain.resources
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormLogin.resources
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.exe.config
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.exe
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.pdb
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csprojAssemblyReference.cache
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormMain.resources
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormLogin.resources
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.Properties.Resources.resources
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.GenerateResource.cache
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.CoreCompileInputs.cache
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.exe
+C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.pdb
