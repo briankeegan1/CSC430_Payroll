@@ -43,7 +43,7 @@
             this.txtUsername.Size = new System.Drawing.Size(146, 20);
             this.txtUsername.TabIndex = 0;
             this.txtUsername.Tag = "txtUsername";
-            this.txtUsername.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtUsername.TextChanged += new System.EventHandler(this.txtUsername_TextChanged);
             // 
             // txtPassword
             // 
@@ -53,6 +53,7 @@
             this.txtPassword.Size = new System.Drawing.Size(146, 20);
             this.txtPassword.TabIndex = 1;
             this.txtPassword.Tag = "txtPassword";
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // label1
             // 

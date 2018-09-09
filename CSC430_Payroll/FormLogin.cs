@@ -16,6 +16,7 @@ namespace CSC430_Payroll
         public FormLogin()
         {
             InitializeComponent();
+            txtPassword.UseSystemPasswordChar = true;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -23,7 +24,7 @@ namespace CSC430_Payroll
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void txtUsername_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -54,6 +55,11 @@ namespace CSC430_Payroll
             {
                 MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
