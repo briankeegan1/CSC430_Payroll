@@ -1,7 +1,6 @@
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.exe.config
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.exe
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\bin\Debug\CSC430_Payroll.pdb
-C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csprojResolveAssemblyReference.cache
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.Properties.Resources.resources
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.GenerateResource.Cache
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.CoreCompileInputs.cache
@@ -20,3 +19,4 @@ C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC43
 C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.CoreCompileInputs.cache
 C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.exe
 C:\Users\brian.keegan\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.pdb
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csprojAssemblyReference.cache

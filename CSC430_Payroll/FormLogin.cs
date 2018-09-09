@@ -17,6 +17,7 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
             txtPassword.UseSystemPasswordChar = true;
+            this.AcceptButton = btnLogin;
         }
 
         private void label1_Click(object sender, EventArgs e)
