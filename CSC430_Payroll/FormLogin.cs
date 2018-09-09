@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace CSC430_Payroll
 {
@@ -27,12 +28,32 @@ namespace CSC430_Payroll
 
         }
 
-        private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+       /* private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
             this.Hide();                                //hides the login screen
             FormMain formMain = new FormMain();         //variable for the FormMain to be opened after login
             formMain.Closed += (s, args) => this.Close(); //closes FormLogin
             formMain.Show();                            //displays FormMain
+        }*/ //code without login
+
+        private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+        {
+            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=Payroll;Integrated Security=True"); // making connection   
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT COUNT(*) FROM [User] WHERE username='" + txtUsername.Text + "' AND password='" + txtPassword.Text + "'", con);
+            con.Open();
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            if(dt.Rows[0][0].ToString() == "1")
+            {
+                this.Hide();                                //hides the login screen
+                FormMain formMain = new FormMain();         //variable for the FormMain to be opened after login
+                formMain.Closed += (s, args) => this.Close(); //closes FormLogin
+                formMain.Show();                            //displays FormMain
+            }
+            else
+            {
+                MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
