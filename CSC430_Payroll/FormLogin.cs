@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace CSC430_Payroll
 {
@@ -40,7 +41,8 @@ namespace CSC430_Payroll
 
         private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
-            SqlConnection con = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=Payroll;Integrated Security=True"); // making connection   
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection   
             SqlDataAdapter sda = new SqlDataAdapter("SELECT COUNT(*) FROM [User] WHERE username='" + txtUsername.Text + "' AND password='" + txtPassword.Text + "'", con);
             con.Open();
             DataTable dt = new DataTable();
