@@ -17,8 +17,6 @@ namespace CSC430_Payroll
         public FormMain()
         {
             InitializeComponent();
-           //dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            //dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         }
 
@@ -53,8 +51,8 @@ namespace CSC430_Payroll
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Are you sure to delete this Employee's records?",
-                "Confirm Deletetion", MessageBoxButtons.YesNo);
+            var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's records?",
+                "Confirm Deletion", MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
                 if (dataGridView1.SelectedRows.Count > 0)
@@ -86,6 +84,12 @@ namespace CSC430_Payroll
             {
                 //do nothing
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormAddEmployee popUpForm = new FormAddEmployee();
+            popUpForm.ShowDialog();
         }
     }
 }
