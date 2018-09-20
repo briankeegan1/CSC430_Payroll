@@ -31,15 +31,15 @@ namespace CSC430_Payroll
 
         }
 
-       /* private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+       private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
             this.Hide();                                //hides the login screen
             FormMain formMain = new FormMain();         //variable for the FormMain to be opened after login
             formMain.Closed += (s, args) => this.Close(); //closes FormLogin
             formMain.Show();                            //displays FormMain
-        }*/ //code without login
+        } //code without SQL login
 
-        private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+        /*private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
@@ -58,7 +58,7 @@ namespace CSC430_Payroll
             {
                 MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }*/
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
