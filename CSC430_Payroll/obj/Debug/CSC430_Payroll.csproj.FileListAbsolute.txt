@@ -33,3 +33,4 @@ C:\Users\brand\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payro
 C:\Users\brand\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.csproj.CoreCompileInputs.cache
 C:\Users\brand\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.exe
 C:\Users\brand\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.pdb
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormEditEmployee.resources

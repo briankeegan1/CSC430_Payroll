@@ -33,21 +33,18 @@ namespace CSC430_Payroll
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+        
 
         private void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             
         }
+        
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -90,6 +87,91 @@ namespace CSC430_Payroll
         {
             FormAddEmployee popUpForm = new FormAddEmployee();
             popUpForm.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormEditEmployee popUpForm = new FormEditEmployee();
+            popUpForm.ShowDialog();
+        }
+
+        private void txtLastName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtFirstName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtDateOfBirth_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtAddress_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtZipcode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEmployeeID_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection
+
+            DataGridView dgv = sender as DataGridView;
+            con.Open();
+            if (dgv.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    DataGridViewRow row = dgv.SelectedRows[0];
+                    var numID = row.Cells["ID"].Value;
+                    var lastName = row.Cells["Last Name"].Value;
+                    var firstName = row.Cells["First Name"].Value;
+                    string sqlquery = "SELECT DOB, Address, ZIP FROM Employee WHERE ID = " + numID;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    SqlDataReader reader = command.ExecuteReader();
+
+
+                    while (reader.Read())
+                    {
+
+                        this.txtLastName.Text = lastName.ToString();
+                        this.txtFirstName.Text = firstName.ToString();
+                        this.txtEmployeeID.Text = numID.ToString();
+
+                        var dob = reader["DOB"].ToString();
+                        dob = dob.Split()[0];
+                        this.txtDateOfBirth.Text = dob;
+
+                        this.txtAddress.Text = reader["Address"].ToString();
+                        this.txtZipcode.Text = reader["ZIP"].ToString();
+                    }
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
         }
     }
 }
