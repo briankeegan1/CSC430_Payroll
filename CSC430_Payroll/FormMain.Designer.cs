@@ -48,6 +48,7 @@ namespace CSC430_Payroll
             this.label7 = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
             this.txtLastName = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -241,11 +242,21 @@ namespace CSC430_Payroll
             this.txtLastName.TabIndex = 12;
             this.txtLastName.TextChanged += new System.EventHandler(this.txtLastName_TextChanged);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(754, 7);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 9;
+            this.button4.Text = "Edit Benefits";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(847, 479);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label1);
@@ -282,5 +293,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtAddress;
         private System.Windows.Forms.TextBox txtZipcode;
         private System.Windows.Forms.TextBox txtEmployeeID;
+        private System.Windows.Forms.Button button4;
     }
 }
