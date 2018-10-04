@@ -45,10 +45,10 @@ namespace CSC430_Payroll
             
         }
         
-
+        
         private void button3_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's records?",
+            var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's record?",
                 "Confirm Deletion", MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
@@ -145,10 +145,10 @@ namespace CSC430_Payroll
                     var numID = row.Cells["ID"].Value;
                     var lastName = row.Cells["Last Name"].Value;
                     var firstName = row.Cells["First Name"].Value;
-                    string sqlquery = "SELECT DOB, Address, ZIP FROM Employee WHERE ID = " + numID;
+                    string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
                     SqlCommand command = new SqlCommand(sqlquery, con);
                     SqlDataReader reader = command.ExecuteReader();
-
+                    
 
                     while (reader.Read())
                     {
@@ -160,9 +160,15 @@ namespace CSC430_Payroll
                         var dob = reader["DOB"].ToString();
                         dob = dob.Split()[0];
                         this.txtDateOfBirth.Text = dob;
-
+              
                         this.txtAddress.Text = reader["Address"].ToString();
                         this.txtZipcode.Text = reader["ZIP"].ToString();
+                        this.txtSalary.Text = reader["Salary"].ToString();
+                        this.txtTax.Text = reader["Tax"].ToString();
+                        this.txtOvertime.Text = reader["Overtime"].ToString();
+                        this.txtDeduction.Text = reader["Deductions"].ToString();
+                        this.txtGrossPay.Text = reader["GrossPay"].ToString();
+                        this.txtNetPay.Text = reader["NetPay"].ToString();
                     }
                     con.Close();
                 }
@@ -172,6 +178,81 @@ namespace CSC430_Payroll
                 }
 
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtOvertime_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
