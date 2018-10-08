@@ -10,10 +10,13 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 
+
 namespace CSC430_Payroll
 {
+  
     public partial class FormMain : Form
     {
+        
         public FormMain()
         {
             InitializeComponent();
@@ -22,9 +25,26 @@ namespace CSC430_Payroll
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            gridRefresh();
+            /*string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection   
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC", con);
+            con.Open();
+
+            var commandBuilder = new SqlCommandBuilder(sda);
+            var ds = new DataSet();
+            sda.Fill(ds);
+            dataGridView1.ReadOnly = true;
+            dataGridView1.DataSource = ds.Tables[0];*/
+        }
+        
+        //refresh grid function can be used across other forms
+        public void gridRefresh()
+        {
+            
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC", con);
             con.Open();
 
             var commandBuilder = new SqlCommandBuilder(sda);
@@ -32,8 +52,8 @@ namespace CSC430_Payroll
             sda.Fill(ds);
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
+           
         }
-        
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -85,7 +105,8 @@ namespace CSC430_Payroll
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormAddEmployee popUpForm = new FormAddEmployee();
+            //use for refresh grid
+            FormAddEmployee popUpForm = new FormAddEmployee(this);
             popUpForm.ShowDialog();
         }
 
