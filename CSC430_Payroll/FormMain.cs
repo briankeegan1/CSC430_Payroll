@@ -18,6 +18,7 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.AcceptButton = btnSearch;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -32,6 +33,7 @@ namespace CSC430_Payroll
             sda.Fill(ds);
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
+            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
         }
         
 
@@ -70,6 +72,7 @@ namespace CSC430_Payroll
                         DataSet ds = new DataSet();
                         sda.Fill(ds);
                         dataGridView1.DataSource = ds.Tables[0].DefaultView;
+                        dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
                     }
                     catch (Exception ex)
                     {
@@ -190,7 +193,7 @@ namespace CSC430_Payroll
 
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void txtGrossPay_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -235,12 +238,12 @@ namespace CSC430_Payroll
 
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
+        private void txtNetPay_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        private void txtSalary_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -253,6 +256,112 @@ namespace CSC430_Payroll
         private void label13_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_2(object sender, EventArgs e)
+        {
+
+        }
+
+        public void searchData(string searchValue, string caseValue, int columnValue)
+        {
+            string sqlquery = ""; 
+            try
+            {
+                switch (caseValue)
+                {
+                    case "ID":
+                        columnValue = 0;
+                        int numID = Convert.ToInt32(searchValue);
+                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID;
+                        break;
+                    case "Last Name":
+                        columnValue = 1;
+                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [Last Name] ='"+searchValue+"'";
+                        break;
+                    case "First Name":
+                        columnValue = 2;
+                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [First Name] ='"+searchValue+"'";
+                        break;
+                    case "":
+                        columnValue = -1;
+                        break;
+                }
+                if (columnValue == -1)
+                {
+                    MessageBox.Show("Please select what value you want to search by in the dropdown box.");
+                }
+                if (searchValue == "")
+                {
+                    MessageBox.Show("Please enter the value you want to search.");
+                }
+                else
+                {
+                    string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+                    SqlConnection con = new SqlConnection(connectionString); // making connection   
+                    SqlDataAdapter sda = new SqlDataAdapter(sqlquery, con);
+                    con.Open();
+
+                    var commandBuilder = new SqlCommandBuilder(sda);
+                    var ds = new DataSet();
+                    sda.Fill(ds);
+                    dataGridView1.ReadOnly = true;
+                    dataGridView1.DataSource = ds.Tables[0];
+                    if (dataGridView1.SelectedRows.Count == 0)
+                    {
+                        MessageBox.Show("No results found.");
+                        con.Close();
+                    }
+                    con.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string searchValue = txtSearch.Text;
+            string caseValue = comboBox1.Text;
+            int columnValue = 0;
+            searchData(searchValue, caseValue, columnValue);
+        }
+
+        private void txtTax_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtDeduction_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void showAllEmployees()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection   
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
+            con.Open();
+
+            var commandBuilder = new SqlCommandBuilder(sda);
+            var ds = new DataSet();
+            sda.Fill(ds);
+            dataGridView1.ReadOnly = true;
+            dataGridView1.DataSource = ds.Tables[0];
+            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
+        }
+
+        private void btnShowAllEmployees_Click(object sender, EventArgs e)
+        {
+            showAllEmployees();
         }
     }
 }
