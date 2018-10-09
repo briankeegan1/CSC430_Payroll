@@ -39,7 +39,6 @@ namespace CSC430_Payroll
 
         public void gridRefresh()
         {
-
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
             SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC", con);
@@ -50,7 +49,6 @@ namespace CSC430_Payroll
             sda.Fill(ds);
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
-
         }
 
 
@@ -361,24 +359,9 @@ namespace CSC430_Payroll
 
         }
 
-        public void showAllEmployees()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-            SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
-            con.Open();
-
-            var commandBuilder = new SqlCommandBuilder(sda);
-            var ds = new DataSet();
-            sda.Fill(ds);
-            dataGridView1.ReadOnly = true;
-            dataGridView1.DataSource = ds.Tables[0];
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
-        }
-
         private void btnShowAllEmployees_Click(object sender, EventArgs e)
         {
-            showAllEmployees();
+            gridRefresh();
         }
     }
 }

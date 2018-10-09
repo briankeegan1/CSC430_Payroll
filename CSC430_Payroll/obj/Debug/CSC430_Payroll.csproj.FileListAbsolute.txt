@@ -48,3 +48,4 @@ C:\Users\Tonyyy\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payr
 C:\Users\Tonyyy\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.exe
 C:\Users\Tonyyy\Source\Repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.pdb
 C:\Users\Tonyyy\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormRegister.resources
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormRegister.resources
