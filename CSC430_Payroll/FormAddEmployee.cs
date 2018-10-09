@@ -17,6 +17,7 @@ namespace CSC430_Payroll
     {
         //use for refresh grid
         private readonly FormMain form1;
+
         public FormAddEmployee()
         {
             InitializeComponent();
