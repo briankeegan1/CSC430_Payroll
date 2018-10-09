@@ -180,7 +180,7 @@ namespace CSC430_Payroll
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnBenefits_Click(object sender, EventArgs e)
         {
 
         }
