@@ -23,7 +23,8 @@ namespace CSC430_Payroll
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            gridRefresh();
+            /*string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
             SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
             con.Open();
@@ -33,9 +34,25 @@ namespace CSC430_Payroll
             sda.Fill(ds);
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
+            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);*/
         }
-        
+
+        public void gridRefresh()
+        {
+
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection   
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC", con);
+            con.Open();
+
+            var commandBuilder = new SqlCommandBuilder(sda);
+            var ds = new DataSet();
+            sda.Fill(ds);
+            dataGridView1.ReadOnly = true;
+            dataGridView1.DataSource = ds.Tables[0];
+
+        }
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -88,7 +105,7 @@ namespace CSC430_Payroll
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormAddEmployee popUpForm = new FormAddEmployee();
+            FormAddEmployee popUpForm = new FormAddEmployee(this);
             popUpForm.ShowDialog();
         }
 
