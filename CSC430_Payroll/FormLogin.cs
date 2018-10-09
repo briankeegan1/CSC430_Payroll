@@ -31,19 +31,22 @@ namespace CSC430_Payroll
 
         }
 
-       private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+       /*private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
             this.Hide();                                //hides the login screen
             FormMain formMain = new FormMain();         //variable for the FormMain to be opened after login
             formMain.Closed += (s, args) => this.Close(); //closes FormLogin
             formMain.Show();                            //displays FormMain
         } //code without SQL login
+        */
 
-        /*private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
+        private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
+            
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT COUNT(*) FROM [User] WHERE username='" + txtUsername.Text + "' AND password='" + txtPassword.Text + "'", con);
+  
+            SqlDataAdapter sda = new SqlDataAdapter("SELECT COUNT(*) FROM [User] WHERE Username='" + txtUsername.Text + "' AND Password='" + txtPassword.Text + "'", con);
             con.Open();
             DataTable dt = new DataTable();
             sda.Fill(dt);
@@ -58,11 +61,19 @@ namespace CSC430_Payroll
             {
                 MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }*/
+        }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnReg_Click(object sender, EventArgs e)
+        {
+            this.Hide();                                //hides the login screen
+            FormRegister formRegister = new FormRegister();         //variable for the FormRegister to be opened after register
+            formRegister.Closed += (s, args) => this.Close(); //closes FormRegister
+            formRegister.Show();
         }
     }
 }
