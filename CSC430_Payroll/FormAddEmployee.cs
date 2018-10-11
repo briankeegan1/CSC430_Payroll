@@ -111,5 +111,10 @@ namespace CSC430_Payroll
                 MessageBox.Show(ex.Message);
             }*/
         }
+
+        private void FormAddEmployee_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

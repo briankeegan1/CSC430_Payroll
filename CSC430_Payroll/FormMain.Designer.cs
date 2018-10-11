@@ -64,8 +64,8 @@ namespace CSC430_Payroll
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -398,7 +398,7 @@ namespace CSC430_Payroll
             this.button4.TabIndex = 9;
             this.button4.Text = "Edit Benefits";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.btnBenefits_Click);
             // 
             // txtSearch
             // 
@@ -449,15 +449,6 @@ namespace CSC430_Payroll
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 43;
-            this.label1.Text = "Search by";
-            // 
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(205, 64);
@@ -467,6 +458,15 @@ namespace CSC430_Payroll
             this.button5.Text = "Show All Employees";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.btnShowAllEmployees_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(20, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 43;
+            this.label1.Text = "Search by";
             // 
             // FormMain
             // 

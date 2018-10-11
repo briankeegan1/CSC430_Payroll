@@ -200,7 +200,8 @@ namespace CSC430_Payroll
 
         private void btnBenefits_Click(object sender, EventArgs e)
         {
-
+            FormBenefits popUpForm = new FormBenefits();
+            popUpForm.ShowDialog();
         }
 
         private void label6_Click(object sender, EventArgs e)

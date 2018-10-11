@@ -177,6 +177,7 @@
             this.Controls.Add(this.txtLastName);
             this.Name = "FormAddEmployee";
             this.Text = "Create New Employee";
+            this.Load += new System.EventHandler(this.FormAddEmployee_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
