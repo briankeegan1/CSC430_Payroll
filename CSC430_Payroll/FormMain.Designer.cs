@@ -66,6 +66,7 @@ namespace CSC430_Payroll
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -468,11 +469,22 @@ namespace CSC430_Payroll
             this.label1.TabIndex = 43;
             this.label1.Text = "Search by";
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(780, 21);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 43;
+            this.button6.Text = "Edit Taxes";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 525);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
@@ -525,5 +537,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtDeduction;
         private System.Windows.Forms.TextBox txtGrossPay;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
     }
 }

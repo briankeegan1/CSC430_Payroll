@@ -364,5 +364,11 @@ namespace CSC430_Payroll
         {
             gridRefresh();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            FormTaxes popUpForm = new FormTaxes();
+            popUpForm.ShowDialog();
+        }
     }
 }

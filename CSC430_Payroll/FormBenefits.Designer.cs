@@ -30,10 +30,16 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.Delete = new System.Windows.Forms.Button();
+            this.Remove = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.Add = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Create = new System.Windows.Forms.Button();
+            this.Delete = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -44,26 +50,24 @@
             this.label1.Size = new System.Drawing.Size(82, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Current Benefits";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 27);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(121, 225);
+            this.listBox1.Size = new System.Drawing.Size(121, 199);
             this.listBox1.TabIndex = 2;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // Delete
+            // Remove
             // 
-            this.Delete.Location = new System.Drawing.Point(12, 256);
-            this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(121, 23);
-            this.Delete.TabIndex = 3;
-            this.Delete.Text = "Delete";
-            this.Delete.UseVisualStyleBackColor = true;
-            this.Delete.Click += new System.EventHandler(this.Delete_Click);
+            this.Remove.Location = new System.Drawing.Point(12, 232);
+            this.Remove.Name = "Remove";
+            this.Remove.Size = new System.Drawing.Size(121, 23);
+            this.Remove.TabIndex = 3;
+            this.Remove.Text = "Remove";
+            this.Remove.UseVisualStyleBackColor = true;
+            this.Remove.Click += new System.EventHandler(this.Remove_Click);
             // 
             // comboBox1
             // 
@@ -72,20 +76,19 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 4;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(176, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 13);
+            this.label2.Size = new System.Drawing.Size(106, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Unused Benefits";
+            this.label2.Text = "Add Existing Benefits";
             // 
             // Add
             // 
-            this.Add.Location = new System.Drawing.Point(179, 54);
+            this.Add.Location = new System.Drawing.Point(176, 54);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(75, 23);
             this.Add.TabIndex = 6;
@@ -93,15 +96,74 @@
             this.Add.UseVisualStyleBackColor = true;
             this.Add.Click += new System.EventHandler(this.Add_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(175, 112);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(121, 20);
+            this.textBox1.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(173, 96);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Create Benefit";
+            // 
+            // Create
+            // 
+            this.Create.Location = new System.Drawing.Point(175, 138);
+            this.Create.Name = "Create";
+            this.Create.Size = new System.Drawing.Size(75, 23);
+            this.Create.TabIndex = 9;
+            this.Create.Text = "Create";
+            this.Create.UseVisualStyleBackColor = true;
+            this.Create.Click += new System.EventHandler(this.Create_Click);
+            // 
+            // Delete
+            // 
+            this.Delete.Location = new System.Drawing.Point(175, 225);
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(75, 23);
+            this.Delete.TabIndex = 10;
+            this.Delete.Text = "Delete";
+            this.Delete.UseVisualStyleBackColor = true;
+            this.Delete.Click += new System.EventHandler(this.Delete_Click);
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(175, 198);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(175, 182);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Delete Benefit";
+            // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 291);
+            this.ClientSize = new System.Drawing.Size(323, 263);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.Delete);
+            this.Controls.Add(this.Create);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.Add);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.Delete);
+            this.Controls.Add(this.Remove);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
             this.Name = "FormBenefits";
@@ -115,9 +177,15 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button Delete;
+        private System.Windows.Forms.Button Remove;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Add;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button Create;
+        private System.Windows.Forms.Button Delete;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label4;
     }
 }
