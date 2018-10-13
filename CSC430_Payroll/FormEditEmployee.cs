@@ -16,19 +16,13 @@ namespace CSC430_Payroll
     {
         //use for refresh grid
         formMain form1 = Application.OpenForms.OfType<formMain>().Single();
-        private string numID = "1";
+        public string numID = "";
 
         public FormEditEmployee(string employeeID)
         {
             numID = employeeID;
             InitializeComponent();
         }
-
-        public FormEditEmployee()
-        {
-            InitializeComponent();
-        }
-
 
         private void txtLastName_TextChanged(object sender, EventArgs e)
         {
