@@ -16,14 +16,14 @@ namespace CSC430_Payroll
     public partial class FormAddEmployee : Form
     {
         //use for refresh grid
-        private readonly FormMain form1;
+        private readonly formMain form1;
 
         public FormAddEmployee()
         {
             InitializeComponent();
         }
         //use for refresh grid
-        public FormAddEmployee(FormMain form)
+        public FormAddEmployee(formMain form)
         {
             InitializeComponent();
             form1 = form;

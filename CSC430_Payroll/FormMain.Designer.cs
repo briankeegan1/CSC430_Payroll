@@ -2,7 +2,7 @@
 
 namespace CSC430_Payroll
 {
-    partial class FormMain
+    partial class formMain
     {
         /// <summary>
         /// Required designer variable.
