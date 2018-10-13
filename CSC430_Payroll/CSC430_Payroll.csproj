@@ -83,6 +83,12 @@
     <Compile Include="FormRegister.Designer.cs">
       <DependentUpon>FormRegister.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormTaxes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTaxes.Designer.cs">
+      <DependentUpon>FormTaxes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormAddEmployee.resx">
