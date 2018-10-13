@@ -109,7 +109,8 @@ namespace CSC430_Payroll
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormEditEmployee popUpForm = new FormEditEmployee(this.txtEmployeeID.Text);
+            //FormEditEmployee popUpForm = new FormEditEmployee(this.txtEmployeeID.Text);
+            FormEditEmployee popUpForm = new FormEditEmployee();
             popUpForm.ShowDialog();
         }
 

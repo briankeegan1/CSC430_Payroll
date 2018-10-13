@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace CSC430_Payroll
 {
-    
+
     public partial class FormAddEmployee : Form
     {
         //use for refresh grid
@@ -66,7 +66,7 @@ namespace CSC430_Payroll
 
         private void txtEmployeeID_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -76,15 +76,15 @@ namespace CSC430_Payroll
             con.Open();
             string sqlquery = "INSERT INTO Employee(ID, [Last Name], [First Name], DOB, Address, ZIP) VALUES(@ID, @LastName,@FirstName,@DOB,@Address,@ZIP)";
             string sqlquery1 = "SELECT COUNT(*) FROM [Employee] WHERE ([ID] = @ID)";
-            
+
 
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlCommand command1 = new SqlCommand(sqlquery1, con);
-            
+
 
             int numID = Int32.Parse(this.txtEmployeeID.Text);
             command1.Parameters.AddWithValue("@ID", txtEmployeeID.Text);
-            int checkID= (int)command1.ExecuteScalar();
+            int checkID = (int)command1.ExecuteScalar();
 
 
             if (checkID > 0)
@@ -105,7 +105,7 @@ namespace CSC430_Payroll
                 form1.gridRefresh();
                 this.Close();
             }
-            
+
             /*catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
