@@ -53,7 +53,7 @@ namespace CSC430_Payroll
             if(dt.Rows[0][0].ToString() == "1")
             {
                 this.Hide();                                //hides the login screen
-                FormMain formMain = new FormMain();         //variable for the FormMain to be opened after login
+                formMain formMain = new formMain();         //variable for the FormMain to be opened after login
                 formMain.Closed += (s, args) => this.Close(); //closes FormLogin
                 formMain.Show();                            //displays FormMain
             }

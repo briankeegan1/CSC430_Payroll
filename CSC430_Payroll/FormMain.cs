@@ -12,9 +12,9 @@ using System.Configuration;
 
 namespace CSC430_Payroll
 {
-    public partial class FormMain : Form
+    public partial class formMain : Form
     {
-        public FormMain()
+        public formMain()
         {
             InitializeComponent();
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
@@ -109,7 +109,7 @@ namespace CSC430_Payroll
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormEditEmployee popUpForm = new FormEditEmployee();
+            FormEditEmployee popUpForm = new FormEditEmployee(this.txtEmployeeID.Text);
             popUpForm.ShowDialog();
         }
 
@@ -198,9 +198,15 @@ namespace CSC430_Payroll
             }
         }
 
+        public string getSelectionID()
+        {
+            return this.txtEmployeeID.Text;
+        }
+
         private void btnBenefits_Click(object sender, EventArgs e)
         {
-
+            FormBenefits popUpForm = new FormBenefits();
+            popUpForm.ShowDialog();
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -362,6 +368,12 @@ namespace CSC430_Payroll
         private void btnShowAllEmployees_Click(object sender, EventArgs e)
         {
             gridRefresh();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            FormTaxes popUpForm = new FormTaxes();
+            popUpForm.ShowDialog();
         }
     }
 }
