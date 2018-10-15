@@ -19,6 +19,9 @@ namespace CSC430_Payroll
             InitializeComponent();
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.AcceptButton = btnSearch;
+            this.comboBox1.SelectedIndex = 3;
+            this.txtSearch.Enabled = false;
+            this.btnSearch.Enabled = false;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -281,7 +284,28 @@ namespace CSC430_Payroll
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            string caseValue = comboBox1.Text;
+            switch (caseValue)
+            {
+                case "ID":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "Last Name":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "First Name":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "Show All":
+                    txtSearch.Enabled = false;
+                    btnSearch.Enabled = false;
+                    txtSearch.Text = "";
+                    gridRefresh();
+                    break;
+            }
         }
 
         private void textBox1_TextChanged_2(object sender, EventArgs e)
@@ -309,6 +333,9 @@ namespace CSC430_Payroll
                         columnValue = 2;
                         sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [First Name] ='"+searchValue+"'";
                         break;
+                    case "Show All":
+                        gridRefresh();
+                        break;
                     case "":
                         columnValue = -1;
                         break;
@@ -320,6 +347,10 @@ namespace CSC430_Payroll
                 if (searchValue == "")
                 {
                     MessageBox.Show("Please enter the value you want to search.");
+                }
+                else if (searchValue == "Show All")
+                {
+                    //do nothing
                 }
                 else
                 {
@@ -363,11 +394,6 @@ namespace CSC430_Payroll
         private void txtDeduction_TextChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void btnShowAllEmployees_Click(object sender, EventArgs e)
-        {
-            gridRefresh();
         }
 
         private void button6_Click(object sender, EventArgs e)

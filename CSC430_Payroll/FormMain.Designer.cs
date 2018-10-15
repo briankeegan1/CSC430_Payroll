@@ -64,7 +64,6 @@ namespace CSC430_Payroll
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -160,13 +159,13 @@ namespace CSC430_Payroll
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(23, 90);
+            this.dataGridView1.Location = new System.Drawing.Point(23, 64);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(294, 339);
+            this.dataGridView1.Size = new System.Drawing.Size(294, 365);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -425,7 +424,8 @@ namespace CSC430_Payroll
             this.comboBox1.Items.AddRange(new object[] {
             "ID",
             "First Name",
-            "Last Name"});
+            "Last Name",
+            "Show All"});
             this.comboBox1.Location = new System.Drawing.Point(23, 37);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(89, 21);
@@ -434,7 +434,6 @@ namespace CSC430_Payroll
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button5);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox2.Controls.Add(this.dataGridView1);
@@ -449,16 +448,6 @@ namespace CSC430_Payroll
             this.groupBox2.TabIndex = 42;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(205, 64);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 20);
-            this.button5.TabIndex = 44;
-            this.button5.Text = "Show All Employees";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.btnShowAllEmployees_Click);
             // 
             // label1
             // 
@@ -479,7 +468,7 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // FormMain
+            // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -488,7 +477,7 @@ namespace CSC430_Payroll
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
-            this.Name = "FormMain";
+            this.Name = "formMain";
             this.Text = "Payroll Management";
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -536,7 +525,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtOvertime;
         private System.Windows.Forms.TextBox txtDeduction;
         private System.Windows.Forms.TextBox txtGrossPay;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
     }
 }
