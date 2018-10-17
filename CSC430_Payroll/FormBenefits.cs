@@ -24,8 +24,6 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateBenefits();
         }
 
@@ -319,10 +317,6 @@ namespace CSC430_Payroll
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
         }
     }
 }

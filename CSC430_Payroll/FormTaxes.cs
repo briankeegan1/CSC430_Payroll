@@ -24,8 +24,6 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateTaxes();
         }
 
