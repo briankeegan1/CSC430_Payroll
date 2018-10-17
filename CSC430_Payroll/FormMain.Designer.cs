@@ -64,11 +64,11 @@ namespace CSC430_Payroll
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelPageNumber = new System.Windows.Forms.Label();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
-            this.labelPageNumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -455,6 +455,15 @@ namespace CSC430_Payroll
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
             // 
+            // labelPageNumber
+            // 
+            this.labelPageNumber.AutoSize = true;
+            this.labelPageNumber.Location = new System.Drawing.Point(181, 428);
+            this.labelPageNumber.Name = "labelPageNumber";
+            this.labelPageNumber.Size = new System.Drawing.Size(62, 13);
+            this.labelPageNumber.TabIndex = 46;
+            this.labelPageNumber.Text = "Page 1 of 1";
+            // 
             // btnPreviousPage
             // 
             this.btnPreviousPage.Location = new System.Drawing.Point(273, 423);
@@ -494,15 +503,6 @@ namespace CSC430_Payroll
             this.button6.Text = "Edit Taxes";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // labelPageNumber
-            // 
-            this.labelPageNumber.AutoSize = true;
-            this.labelPageNumber.Location = new System.Drawing.Point(226, 428);
-            this.labelPageNumber.Name = "labelPageNumber";
-            this.labelPageNumber.Size = new System.Drawing.Size(41, 13);
-            this.labelPageNumber.TabIndex = 46;
-            this.labelPageNumber.Text = "Page 1";
             // 
             // formMain
             // 

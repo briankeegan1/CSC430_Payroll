@@ -26,6 +26,7 @@ namespace CSC430_Payroll
         //this is essential to controlling the page system.
         private int currentPage = 1;
         private int pageX = 0;
+        private decimal totalPages = 1;
         private int displayCount = 0;
         private Int32 queryCount = 0;
         private Stack<int> previousDisplayCounts = new Stack<int>();
@@ -39,6 +40,11 @@ namespace CSC430_Payroll
         public formMain()
         {
             InitializeComponent();
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            this.gridRefresh();
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.AcceptButton = btnSearch;
             this.comboBox1.SelectedIndex = 3;
@@ -46,11 +52,6 @@ namespace CSC430_Payroll
             this.btnSearch.Enabled = false;
             this.btnPreviousPage.Enabled = false;
             this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-        }
-
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-            gridRefresh();
         }
 
         public void gridRefresh()
@@ -66,6 +67,9 @@ namespace CSC430_Payroll
                 adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
             }
             else if (searchingForID == true)
             {
@@ -74,6 +78,9 @@ namespace CSC430_Payroll
                 adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID + " ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
             }
             else if (searchingForLastName == true)
             {
@@ -81,6 +88,9 @@ namespace CSC430_Payroll
                 adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '" + searchValue + "' ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
             }
             else if (searchingForFirstName == true)
             {
@@ -88,6 +98,9 @@ namespace CSC430_Payroll
                 adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '" + searchValue + "' ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
             }
 
             SqlDataAdapter sda = new SqlDataAdapter(adapterString, con);
@@ -129,9 +142,15 @@ namespace CSC430_Payroll
                 btnNextPage.Enabled = false;
 
             }
+
+            if(totalPages < 1)
+            {
+                totalPages = 1;
+            }
+
+            labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
             nextButtonClicked = false;
             previousButtonClicked = false;
-
 
             con.Close();
         }
@@ -384,7 +403,6 @@ namespace CSC430_Payroll
                     searchingForID = false;
                     pageX = 0;
                     currentPage = 1;
-                    labelPageNumber.Text = "Page " + currentPage.ToString();
                     txtSearch.Enabled = false;
                     btnSearch.Enabled = false;
                     checkPreviousPage();
@@ -479,12 +497,12 @@ namespace CSC430_Payroll
             pageX = 0;
             currentPage = 1;
             initialRun = true;
-            labelPageNumber.Text = "Page " + currentPage.ToString();
             searchValue = txtSearch.Text;
             string caseValue = comboBox1.Text;
             checkPreviousPage();
             int columnValue = 0;
             searchData(caseValue, columnValue);
+            //labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
         }
 
         private void txtTax_TextChanged(object sender, EventArgs e)
@@ -526,7 +544,6 @@ namespace CSC430_Payroll
             pageX += 50;
             currentPage++;
             checkPreviousPage();
-            labelPageNumber.Text = "Page " + currentPage;
             gridRefresh();
         }
 
@@ -536,7 +553,6 @@ namespace CSC430_Payroll
             pageX -= 50;
             currentPage--;
             checkPreviousPage();
-            labelPageNumber.Text = "Page " + currentPage;
             gridRefresh();
         }
     }

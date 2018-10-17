@@ -66,39 +66,46 @@ namespace CSC430_Payroll
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlCommand command1 = new SqlCommand(sqlquery1, con);
 
+            int numID1 = 0;
+            int checkID = 0;
 
-            int numID1 = Int32.Parse(this.txtEmployeeID.Text);
-            command1.Parameters.AddWithValue("@ID", txtEmployeeID.Text);
-            int checkID = (int)command1.ExecuteScalar();
-
-
-            if (checkID > 0 && numID1 != Int32.Parse(numID))
+            try
             {
-                MessageBox.Show("ID is already taken.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                numID1 = Int32.Parse(this.txtEmployeeID.Text);
+                command1.Parameters.AddWithValue("@ID", txtEmployeeID.Text);
+                checkID = (int)command1.ExecuteScalar();
+                if (checkID > 0 && numID1 != Int32.Parse(numID))
+                {
+                    MessageBox.Show("ID is already taken.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (numID1 < 0)
+                {
+                    MessageBox.Show("ID cannot be an integer less than 0. (ex: 0, 1, 2, 3)");
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@ID", numID1);
+                    command.Parameters.AddWithValue("@LastName", this.txtLastName.Text);
+                    command.Parameters.AddWithValue("@FirstName", this.txtFirstName.Text);
+                    command.Parameters.AddWithValue("@DOB", this.dateTimePicker1.Value);
+                    command.Parameters.AddWithValue("@Address", this.txtAddress.Text);
+                    command.Parameters.AddWithValue("@ZIP", this.txtZipcode.Text);
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Employee information updated.");
+                    //calling grid refresh function from FormMain
+                    form1.gridRefresh();
+                    this.Close();
+                }
             }
-            else if (numID1 < 0)
+            catch(Exception ex)
             {
-                MessageBox.Show("ID cannot be an integer less than 0. (ex: 0, 1, 2, 3)");
+                MessageBox.Show(ex.Message);
             }
-            else
-            {
-                command.Parameters.AddWithValue("@ID", numID1);
-                command.Parameters.AddWithValue("@LastName", this.txtLastName.Text);
-                command.Parameters.AddWithValue("@FirstName", this.txtFirstName.Text);
-                command.Parameters.AddWithValue("@DOB", this.dateTimePicker1.Value);
-                command.Parameters.AddWithValue("@Address", this.txtAddress.Text);
-                command.Parameters.AddWithValue("@ZIP", this.txtZipcode.Text);
-                command.ExecuteNonQuery();
-                MessageBox.Show("Employee information updated.");
-                //calling grid refresh function from FormMain
-                form1.gridRefresh();
-                this.Close();
-            }
-
         }
 
         private void FormEditEmployee_Load(object sender, EventArgs e)
         {
+            txtZipcode.MaxLength = 10;
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
             con.Open();
