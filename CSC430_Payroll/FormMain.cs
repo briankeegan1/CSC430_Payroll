@@ -30,6 +30,7 @@ namespace CSC430_Payroll
             this.txtSearch.Enabled = false;
             this.btnSearch.Enabled = false;
             this.btnPreviousPage.Enabled = false;
+            this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
