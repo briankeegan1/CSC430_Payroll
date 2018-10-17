@@ -12,43 +12,148 @@ using System.Configuration;
 
 namespace CSC430_Payroll
 {
-    public partial class FormMain : Form
+    public partial class formMain : Form
     {
-        public FormMain()
+        //the program always knows what it is searching for. these conditions are important
+        //in order to access the right SQL commands.
+        private bool searching = false;
+        private bool searchingForID = false;
+        private bool searchingForLastName = false;
+        private bool searchingForFirstName = false;
+        private string searchValue = null;
+
+        //needed to help us keep track of what's being displayed on the datagrid.
+        //this is essential to controlling the page system.
+        private int currentPage = 1;
+        private int pageX = 0;
+        private decimal totalPages = 1;
+        private int displayCount = 0;
+        private Int32 queryCount = 0;
+        private Stack<int> previousDisplayCounts = new Stack<int>();
+        private bool nextButtonClicked = false;
+        private bool previousButtonClicked = false;
+
+        //checks whether it's the first time running the program or clicking the search button
+        //used often in gridRefresh()
+        private bool initialRun = true;
+
+        public formMain()
         {
             InitializeComponent();
-            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.AcceptButton = btnSearch;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            gridRefresh();
-            /*string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-            SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
-            con.Open();
-
-            var commandBuilder = new SqlCommandBuilder(sda);
-            var ds = new DataSet();
-            sda.Fill(ds);
-            dataGridView1.ReadOnly = true;
-            dataGridView1.DataSource = ds.Tables[0];
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);*/
+            this.gridRefresh();
+            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.AcceptButton = btnSearch;
+            this.comboBox1.SelectedIndex = 3;
+            this.txtSearch.Enabled = false;
+            this.btnSearch.Enabled = false;
+            this.btnPreviousPage.Enabled = false;
+            this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         public void gridRefresh()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-            SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC", con);
-            con.Open();
+            SqlConnection con = new SqlConnection(connectionString); // making connection  
+            string adapterString = "";
+
+
+            if (searching == false)
+            {
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
+            }
+            else if (searchingForID == true)
+            {
+                int numID = Int32.Parse(searchValue);
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE ID = " + numID, con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID + " ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
+            }
+            else if (searchingForLastName == true)
+            {
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [Last Name] ='" + searchValue + "'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '" + searchValue + "' ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
+            }
+            else if (searchingForFirstName == true)
+            {
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [First Name] ='" + searchValue + "'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '" + searchValue + "' ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
+                decimal temp = queryCount;
+                totalPages = (temp / 50);
+                totalPages = (int)Math.Ceiling((decimal)totalPages);
+            }
+
+            SqlDataAdapter sda = new SqlDataAdapter(adapterString, con);
 
             var commandBuilder = new SqlCommandBuilder(sda);
             var ds = new DataSet();
-            sda.Fill(ds);
+
+            ds.Tables.Add("Employee");
+            sda.Fill(ds, pageX, 50, "Employee");
+
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
+
+            if (nextButtonClicked == true)
+            {
+                displayCount += ds.Tables["Employee"].Rows.Count;
+                previousDisplayCounts.Push(displayCount);
+            }
+            else if (previousButtonClicked == true)
+            {
+                previousDisplayCounts.Pop();
+                displayCount = previousDisplayCounts.Pop();
+                previousDisplayCounts.Push(displayCount);
+            }
+
+            if (initialRun == true)
+            {
+                displayCount = ds.Tables["Employee"].Rows.Count;
+                previousDisplayCounts.Push(displayCount);
+                initialRun = false;
+            }
+
+            if (displayCount < queryCount)
+            {
+                btnNextPage.Enabled = true;
+            }
+            else if (displayCount >= queryCount)
+            {
+                btnNextPage.Enabled = false;
+
+            }
+
+            if(totalPages < 1)
+            {
+                totalPages = 1;
+            }
+
+            labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
+            labelResults.Text = "Results: " + queryCount;
+            nextButtonClicked = false;
+            previousButtonClicked = false;
+
+            con.Close();
         }
 
 
@@ -59,10 +164,10 @@ namespace CSC430_Payroll
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
         }
-        
-        
+
+
         private void button3_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's record?",
@@ -82,12 +187,7 @@ namespace CSC430_Payroll
                     {
                         SqlCommand command = new SqlCommand(sqlquery, con);
                         command.ExecuteNonQuery();
-                        string cmdString = "SELECT ID, [Last Name], [First Name] FROM Employee";
-                        SqlDataAdapter sda = new SqlDataAdapter(cmdString, con);
-                        DataSet ds = new DataSet();
-                        sda.Fill(ds);
-                        dataGridView1.DataSource = ds.Tables[0].DefaultView;
-                        dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
+                        gridRefresh();
                     }
                     catch (Exception ex)
                     {
@@ -109,7 +209,7 @@ namespace CSC430_Payroll
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormEditEmployee popUpForm = new FormEditEmployee();
+            FormEditEmployee popUpForm = new FormEditEmployee(this.txtEmployeeID.Text);
             popUpForm.ShowDialog();
         }
 
@@ -145,7 +245,10 @@ namespace CSC430_Payroll
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Right && btnNextPage.Enabled == true)
+            { btnNextPage.PerformClick(); }
+            else if (e.KeyCode == Keys.Left && btnPreviousPage.Enabled == true)
+            { btnPreviousPage.PerformClick(); }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -166,7 +269,7 @@ namespace CSC430_Payroll
                     string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
                     SqlCommand command = new SqlCommand(sqlquery, con);
                     SqlDataReader reader = command.ExecuteReader();
-                    
+
 
                     while (reader.Read())
                     {
@@ -178,7 +281,7 @@ namespace CSC430_Payroll
                         var dob = reader["DOB"].ToString();
                         dob = dob.Split()[0];
                         this.txtDateOfBirth.Text = dob;
-              
+
                         this.txtAddress.Text = reader["Address"].ToString();
                         this.txtZipcode.Text = reader["ZIP"].ToString();
                         this.txtSalary.Text = reader["Salary"].ToString();
@@ -198,7 +301,12 @@ namespace CSC430_Payroll
             }
         }
 
-        private void btnEditBenefits_Click(object sender, EventArgs e)
+        public string getSelectionID()
+        {
+            return this.txtEmployeeID.Text;
+        }
+
+        private void btnBenefits_Click(object sender, EventArgs e)
         {
             FormBenefits popUpForm = new FormBenefits();
             popUpForm.ShowDialog();
@@ -276,7 +384,34 @@ namespace CSC430_Payroll
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            string caseValue = comboBox1.Text;
+            switch (caseValue)
+            {
+                case "ID":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "Last Name":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "First Name":
+                    txtSearch.Enabled = true;
+                    btnSearch.Enabled = true;
+                    break;
+                case "Show All":
+                    searching = false;
+                    searchingForID = false;
+                    pageX = 0;
+                    currentPage = 1;
+                    txtSearch.Enabled = false;
+                    btnSearch.Enabled = false;
+                    checkPreviousPage();
+                    txtSearch.Text = "";
+                    initialRun = true;
+                    gridRefresh();
+                    break;
+            }
         }
 
         private void textBox1_TextChanged_2(object sender, EventArgs e)
@@ -284,25 +419,44 @@ namespace CSC430_Payroll
 
         }
 
-        public void searchData(string searchValue, string caseValue, int columnValue)
+        public void searchData(string caseValue, int columnValue)
         {
-            string sqlquery = ""; 
             try
             {
                 switch (caseValue)
                 {
                     case "ID":
                         columnValue = 0;
-                        int numID = Convert.ToInt32(searchValue);
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID;
+                        searching = true;
+                        searchingForID = true;
+                        searchingForLastName = false;
+                        searchingForFirstName = false;
                         break;
+
                     case "Last Name":
                         columnValue = 1;
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [Last Name] ='"+searchValue+"'";
+                        searching = true;
+                        searchingForID = false;
+                        searchingForLastName = true;
+                        searchingForFirstName = false;
                         break;
+
                     case "First Name":
                         columnValue = 2;
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [First Name] ='"+searchValue+"'";
+                        searching = true;
+                        searchingForID = false;
+                        searchingForLastName = false;
+                        searchingForFirstName = true;
+                        break;
+
+                    case "Show All":
+                        searching = false;
+                        searchingForID = false;
+                        searchingForLastName = false;
+                        searchingForFirstName = false;
+                        pageX = 0;
+                        currentPage = 1;
+                        gridRefresh();
                         break;
                     case "":
                         columnValue = -1;
@@ -316,24 +470,21 @@ namespace CSC430_Payroll
                 {
                     MessageBox.Show("Please enter the value you want to search.");
                 }
+                else if (searchValue == "Show All")
+                {
+                    //do nothing
+                }
                 else
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-                    SqlConnection con = new SqlConnection(connectionString); // making connection   
-                    SqlDataAdapter sda = new SqlDataAdapter(sqlquery, con);
-                    con.Open();
-
-                    var commandBuilder = new SqlCommandBuilder(sda);
-                    var ds = new DataSet();
-                    sda.Fill(ds);
-                    dataGridView1.ReadOnly = true;
-                    dataGridView1.DataSource = ds.Tables[0];
+                    gridRefresh();
                     if (dataGridView1.SelectedRows.Count == 0)
                     {
-                        MessageBox.Show("No results found.");
-                        con.Close();
+                        MessageBox.Show("No Results.");
                     }
-                    con.Close();
+                    else
+                    {
+                        //do nothing
+                    }
                 }
             }
             catch (Exception exc)
@@ -344,10 +495,14 @@ namespace CSC430_Payroll
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string searchValue = txtSearch.Text;
+            pageX = 0;
+            currentPage = 1;
+            initialRun = true;
+            searchValue = txtSearch.Text;
             string caseValue = comboBox1.Text;
+            checkPreviousPage();
             int columnValue = 0;
-            searchData(searchValue, caseValue, columnValue);
+            searchData(caseValue, columnValue);
         }
 
         private void txtTax_TextChanged(object sender, EventArgs e)
@@ -360,15 +515,50 @@ namespace CSC430_Payroll
 
         }
 
-        private void btnShowAllEmployees_Click(object sender, EventArgs e)
-        {
-            gridRefresh();
-        }
-
-        private void btnEditTaxes_Click(object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e)
         {
             FormTaxes popUpForm = new FormTaxes();
             popUpForm.ShowDialog();
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkPreviousPage()
+        {
+            if (currentPage == 1)
+            {
+                btnPreviousPage.Enabled = false;
+            }
+            else
+            {
+                btnPreviousPage.Enabled = true;
+            }
+        }
+
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            nextButtonClicked = true;
+            pageX += 50;
+            currentPage++;
+            checkPreviousPage();
+            gridRefresh();
+        }
+
+        private void btnPreviousPage_Click(object sender, EventArgs e)
+        {
+            previousButtonClicked = true;
+            pageX -= 50;
+            currentPage--;
+            checkPreviousPage();
+            gridRefresh();
+        }
+
+        private void labelResults_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
