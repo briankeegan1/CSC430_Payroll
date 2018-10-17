@@ -64,8 +64,11 @@ namespace CSC430_Payroll
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnPreviousPage = new System.Windows.Forms.Button();
+            this.btnNextPage = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
+            this.labelPageNumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -133,7 +136,7 @@ namespace CSC430_Payroll
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(26, 435);
+            this.button1.Location = new System.Drawing.Point(23, 452);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 23);
             this.button1.TabIndex = 1;
@@ -143,7 +146,7 @@ namespace CSC430_Payroll
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(168, 435);
+            this.button2.Location = new System.Drawing.Point(175, 452);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(142, 23);
             this.button2.TabIndex = 2;
@@ -159,13 +162,13 @@ namespace CSC430_Payroll
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(23, 64);
+            this.dataGridView1.Location = new System.Drawing.Point(23, 62);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(294, 365);
+            this.dataGridView1.Size = new System.Drawing.Size(294, 358);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -174,7 +177,7 @@ namespace CSC430_Payroll
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(168, 465);
+            this.button3.Location = new System.Drawing.Point(175, 481);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(142, 23);
             this.button3.TabIndex = 7;
@@ -208,9 +211,9 @@ namespace CSC430_Payroll
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.txtFirstName);
             this.groupBox1.Controls.Add(this.txtLastName);
-            this.groupBox1.Location = new System.Drawing.Point(352, 50);
+            this.groupBox1.Location = new System.Drawing.Point(352, 42);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(584, 464);
+            this.groupBox1.Size = new System.Drawing.Size(584, 472);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Employee Info";
@@ -392,7 +395,7 @@ namespace CSC430_Payroll
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(861, 21);
+            this.button4.Location = new System.Drawing.Point(861, 16);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 9;
@@ -402,7 +405,7 @@ namespace CSC430_Payroll
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(118, 38);
+            this.txtSearch.Location = new System.Drawing.Point(118, 35);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(125, 20);
             this.txtSearch.TabIndex = 10;
@@ -410,9 +413,9 @@ namespace CSC430_Payroll
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(249, 38);
+            this.btnSearch.Location = new System.Drawing.Point(249, 35);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(68, 20);
+            this.btnSearch.Size = new System.Drawing.Size(68, 21);
             this.btnSearch.TabIndex = 11;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -426,7 +429,7 @@ namespace CSC430_Payroll
             "First Name",
             "Last Name",
             "Show All"});
-            this.comboBox1.Location = new System.Drawing.Point(23, 37);
+            this.comboBox1.Location = new System.Drawing.Point(23, 35);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(89, 21);
             this.comboBox1.TabIndex = 42;
@@ -434,6 +437,9 @@ namespace CSC430_Payroll
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.labelPageNumber);
+            this.groupBox2.Controls.Add(this.btnPreviousPage);
+            this.groupBox2.Controls.Add(this.btnNextPage);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.comboBox1);
             this.groupBox2.Controls.Add(this.dataGridView1);
@@ -442,31 +448,61 @@ namespace CSC430_Payroll
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Location = new System.Drawing.Point(12, 21);
+            this.groupBox2.Location = new System.Drawing.Point(12, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(334, 493);
+            this.groupBox2.Size = new System.Drawing.Size(334, 510);
             this.groupBox2.TabIndex = 42;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
             // 
+            // btnPreviousPage
+            // 
+            this.btnPreviousPage.Location = new System.Drawing.Point(273, 423);
+            this.btnPreviousPage.Name = "btnPreviousPage";
+            this.btnPreviousPage.Size = new System.Drawing.Size(19, 23);
+            this.btnPreviousPage.TabIndex = 45;
+            this.btnPreviousPage.Text = "<";
+            this.btnPreviousPage.UseVisualStyleBackColor = true;
+            this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
+            // 
+            // btnNextPage
+            // 
+            this.btnNextPage.Location = new System.Drawing.Point(298, 423);
+            this.btnNextPage.Name = "btnNextPage";
+            this.btnNextPage.Size = new System.Drawing.Size(19, 23);
+            this.btnNextPage.TabIndex = 44;
+            this.btnNextPage.Text = ">";
+            this.btnNextPage.UseVisualStyleBackColor = true;
+            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 21);
+            this.label1.Location = new System.Drawing.Point(20, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 43;
             this.label1.Text = "Search by";
+            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(780, 21);
+            this.button6.Location = new System.Drawing.Point(780, 16);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 43;
             this.button6.Text = "Edit Taxes";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // labelPageNumber
+            // 
+            this.labelPageNumber.AutoSize = true;
+            this.labelPageNumber.Location = new System.Drawing.Point(226, 428);
+            this.labelPageNumber.Name = "labelPageNumber";
+            this.labelPageNumber.Size = new System.Drawing.Size(41, 13);
+            this.labelPageNumber.TabIndex = 46;
+            this.labelPageNumber.Text = "Page 1";
             // 
             // formMain
             // 
@@ -526,5 +562,8 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtDeduction;
         private System.Windows.Forms.TextBox txtGrossPay;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnNextPage;
+        private System.Windows.Forms.Button btnPreviousPage;
+        private System.Windows.Forms.Label labelPageNumber;
     }
 }
