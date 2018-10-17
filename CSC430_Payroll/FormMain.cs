@@ -513,6 +513,7 @@ namespace CSC430_Payroll
             if (currentPage == 1)
             {
                 btnPreviousPage.Enabled = false;
+                initialRun = true;
             }
             else
             {
