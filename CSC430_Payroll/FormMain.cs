@@ -14,20 +14,16 @@ namespace CSC430_Payroll
 {
     public partial class formMain : Form
     {
-        private int currentPage = 0;
+        private int currentPage = 1;
         public int pageX = 0;
-        public int pageY = 0;
         private bool searching = false;
         private bool searchingForID = false;
         private bool searchingForLastName = false;
         private bool searchingForFirstName = false;
-        private string searchQuery = null;
+        private string searchValue = null;
         public formMain()
         {
             InitializeComponent();
-            currentPage = 1;
-            pageX = 1;
-            pageY = 50;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.AcceptButton = btnSearch;
             this.comboBox1.SelectedIndex = 3;
@@ -39,17 +35,6 @@ namespace CSC430_Payroll
         private void FormMain_Load(object sender, EventArgs e)
         {
             gridRefresh();
-            /*string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-            SqlConnection con = new SqlConnection(connectionString); // making connection   
-            SqlDataAdapter sda = new SqlDataAdapter("SELECT ID, [Last Name], [First Name] FROM Employee", con);
-            con.Open();
-
-            var commandBuilder = new SqlCommandBuilder(sda);
-            var ds = new DataSet();
-            sda.Fill(ds);
-            dataGridView1.ReadOnly = true;
-            dataGridView1.DataSource = ds.Tables[0];
-            dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);*/
         }
 
         public void gridRefresh()
@@ -60,33 +45,39 @@ namespace CSC430_Payroll
 
             if(searching == false)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID BETWEEN " + pageX + " AND " + pageY + " ORDER BY ID ASC";
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC";
             }
             else if (searchingForID == true)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID BETWEEN " + pageX + " AND " + pageY + " ORDER BY ID ASC";
+                int numID = Int32.Parse(searchValue);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " +numID+ " ORDER BY ID ASC";
             }
             else if (searchingForLastName == true)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID BETWEEN " + pageX + " AND " + pageY + "AND [Last Name] ='"+this.txtLastName.Text+"'ORDER BY ID ASC";
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '" +searchValue+"' ORDER BY ID ASC";
             }
             else if (searchingForFirstName == true)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID BETWEEN " + pageX + " AND " + pageY + "AND [First Name] ='"+this.txtFirstName.Text+"'ORDER BY ID ASC";
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '"+searchValue+ "' ORDER BY ID ASC";
             }
 
             SqlDataAdapter sda = new SqlDataAdapter(adapterString, con);
-
             con.Open();
-            
             var commandBuilder = new SqlCommandBuilder(sda);
             var ds = new DataSet();
-            sda.Fill(ds);
+            ds.Tables.Add("Employee");
+            sda.Fill(ds,pageX, 50, "Employee");
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
 
-            checkNextPage(con);
-
+            if (ds.Tables["Employee"].Rows.Count > 49)
+            {
+                btnNextPage.Enabled = true;
+            }
+            else if (ds.Tables["Employee"].Rows.Count < 50)
+            {
+                btnNextPage.Enabled = false;
+            }
             con.Close();
         }
 
@@ -333,12 +324,12 @@ namespace CSC430_Payroll
                 case "Show All":
                     searching = false;
                     searchingForID = false;
-                    pageX = 1;
-                    pageY = 50;
+                    pageX = 0;
                     currentPage = 1;
-                    searchQuery = null;
+                    labelPageNumber.Text = "Page " + currentPage.ToString();
                     txtSearch.Enabled = false;
                     btnSearch.Enabled = false;
+                    checkPreviousPage();
                     txtSearch.Text = "";
                     gridRefresh();
                     break;
@@ -350,9 +341,8 @@ namespace CSC430_Payroll
 
         }
 
-        public void searchData(string searchValue, string caseValue, int columnValue)
+        public void searchData(string caseValue, int columnValue)
         {
-            string sqlquery = ""; 
             try
             {
                 switch (caseValue)
@@ -363,37 +353,31 @@ namespace CSC430_Payroll
                         searchingForID = true;
                         searchingForLastName = false;
                         searchingForFirstName = false;
-                        int numID = Convert.ToInt32(searchValue);
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID;
-                        searchQuery = sqlquery;
                         break;
+
                     case "Last Name":
                         columnValue = 1;
                         searching = true;
                         searchingForID = false;
                         searchingForLastName = true;
                         searchingForFirstName = false;
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [Last Name] ='"+searchValue+"' AND ID BETWEEN " + pageX + " AND " + pageY;
-                        searchQuery = sqlquery;
                         break;
+
                     case "First Name":
                         columnValue = 2;
                         searching = true;
                         searchingForID = false;
                         searchingForLastName = false;
                         searchingForFirstName = true;
-                        sqlquery = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE [First Name] ='"+searchValue+"' AND ID BETWEEN " + pageX + " AND " + pageY;
-                        searchQuery = sqlquery;
                         break;
+
                     case "Show All":
                         searching = false;
                         searchingForID = false;
                         searchingForLastName = false;
                         searchingForFirstName = false;
-                        pageX = 1;
-                        pageY = 50;
+                        pageX = 0;
                         currentPage = 1;
-                        searchQuery = null;
                         gridRefresh();
                         break;
                     case "":
@@ -414,25 +398,14 @@ namespace CSC430_Payroll
                 }
                 else
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
-                    SqlConnection con = new SqlConnection(connectionString); // making connection   
-                    SqlDataAdapter sda = new SqlDataAdapter(sqlquery, con);
-                    con.Open();
-
-                    var commandBuilder = new SqlCommandBuilder(sda);
-                    var ds = new DataSet();
-                    sda.Fill(ds);
-                    dataGridView1.ReadOnly = true;
-                    dataGridView1.DataSource = ds.Tables[0];
+                    gridRefresh();
                     if (dataGridView1.SelectedRows.Count == 0)
                     {
-                        MessageBox.Show("No results found.");
-                        con.Close();
+                        MessageBox.Show("No Results.");
                     }
                     else
                     {
-                        checkNextPage(con);
-                        con.Close();
+                        //do nothing
                     }
                 }
             }
@@ -444,13 +417,14 @@ namespace CSC430_Payroll
         
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            pageX = 1;
-            pageY = 50;
+            pageX = 0;
             currentPage = 1;
-            string searchValue = txtSearch.Text;
+            labelPageNumber.Text = "Page " + currentPage.ToString();
+            searchValue = txtSearch.Text;
             string caseValue = comboBox1.Text;
+            checkPreviousPage();
             int columnValue = 0;
-            searchData(searchValue, caseValue, columnValue);
+            searchData(caseValue, columnValue);
         }
 
         private void txtTax_TextChanged(object sender, EventArgs e)
@@ -485,96 +459,22 @@ namespace CSC430_Payroll
                 btnPreviousPage.Enabled = true;
             }
         }
-
-        private void checkNextPage(SqlConnection con)
-        {
-            if (searching == false)
-            {
-                int temp = pageY;
-                string sqlquery = "SELECT ID FROM Employee WHERE ID > " + temp;
-                SqlCommand command = new SqlCommand(sqlquery, con);
-                SqlDataReader reader = command.ExecuteReader();
-                string checkID = null;
-
-                while (reader.Read())
-                {
-                    checkID = reader["ID"].ToString();
-                }
-                if (checkID == null)
-                {
-                    this.btnNextPage.Enabled = false;
-                }
-                else
-                {
-                    this.btnNextPage.Enabled = true;
-                }
-            }
-            else if(searchingForID == true)
-            {
-                this.btnNextPage.Enabled = false;
-                this.btnPreviousPage.Enabled = false;
-            }
-            else if(searchingForLastName == true)
-            {
-                int temp = pageY;
-                string sqlquery = "SELECT ID FROM Employee WHERE ID > '" + temp + "' AND [Last Name] = '" +this.txtSearch.Text+ "'";
-                SqlCommand command = new SqlCommand(sqlquery, con);
-                SqlDataReader reader = command.ExecuteReader();
-                string checkID = null;
-
-                while (reader.Read())
-                {
-                    checkID = reader["ID"].ToString();
-                }
-                if (checkID == null)
-                {
-                    this.btnNextPage.Enabled = false;
-                }
-                else
-                {
-                    this.btnNextPage.Enabled = true;
-                }
-            }
-            else if (searchingForFirstName == true)
-            {
-                int temp = pageY;
-                string sqlquery = "SELECT ID FROM Employee WHERE ID > '" + temp + "' AND [First Name] = '" + this.txtSearch.Text + "'";
-                SqlCommand command = new SqlCommand(sqlquery, con);
-                SqlDataReader reader = command.ExecuteReader();
-                string checkID = null;
-
-                while (reader.Read())
-                {
-                    checkID = reader["ID"].ToString();
-                }
-                if (checkID == null)
-                {
-                    this.btnNextPage.Enabled = false;
-                }
-                else
-                {
-                    this.btnNextPage.Enabled = true;
-                }
-            }
-        }
         
         private void btnNextPage_Click(object sender, EventArgs e)
         {
                 pageX += 50;
-                pageY += 50;
                 currentPage++;
                 checkPreviousPage();
-                this.labelPageNumber.Text = "Page " + currentPage;
+                labelPageNumber.Text = "Page " + currentPage;
                 gridRefresh();
         }
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
                 pageX -= 50;
-                pageY -= 50;
                 currentPage--;
                 checkPreviousPage();
-                this.labelPageNumber.Text = "Page " + currentPage;
+                labelPageNumber.Text = "Page " + currentPage;
                 gridRefresh();
         }
     }
