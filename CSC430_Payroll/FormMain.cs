@@ -64,21 +64,26 @@ namespace CSC430_Payroll
 
             SqlDataAdapter sda = new SqlDataAdapter(adapterString, con);
             con.Open();
+
             var commandBuilder = new SqlCommandBuilder(sda);
             var ds = new DataSet();
+
             ds.Tables.Add("Employee");
-            sda.Fill(ds,pageX, 50, "Employee");
+            sda.Fill(ds, pageX, 50, "Employee");
+          
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
 
-            if (ds.Tables["Employee"].Rows.Count > 49)
+            if (ds.Tables["Employee"].Rows.Count > 1)
             {
                 btnNextPage.Enabled = true;
             }
-            else if (ds.Tables["Employee"].Rows.Count < 50)
+            else if (ds.Tables["Employee"].Rows.Count < 1)
             {
+                btnPreviousPage.PerformClick();
                 btnNextPage.Enabled = false;
             }
+
             con.Close();
         }
 

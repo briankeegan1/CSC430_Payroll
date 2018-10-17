@@ -76,6 +76,10 @@ namespace CSC430_Payroll
             {
                 MessageBox.Show("ID is already taken.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            else if (numID1 < 0)
+            {
+                MessageBox.Show("ID cannot be an integer less than 0. (ex: 0, 1, 2, 3)");
+            }
             else
             {
                 command.Parameters.AddWithValue("@ID", numID1);

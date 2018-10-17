@@ -42,24 +42,31 @@ namespace CSC430_Payroll
 
         private void btnLogin_Click(object sender, EventArgs e) //when Login button is clicked
         {
-            
+            try
+            {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection   
   
             SqlDataAdapter sda = new SqlDataAdapter("SELECT COUNT(*) FROM [User] WHERE Username='" + txtUsername.Text + "' AND Password='" + txtPassword.Text + "'", con);
-            con.Open();
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            if(dt.Rows[0][0].ToString() == "1")
-            {
-                this.Hide();                                //hides the login screen
-                formMain formMain = new formMain();         //variable for the FormMain to be opened after login
-                formMain.Closed += (s, args) => this.Close(); //closes FormLogin
-                formMain.Show();                            //displays FormMain
+            
+                con.Open();
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                if (dt.Rows[0][0].ToString() == "1")
+                {
+                    this.Hide();                                //hides the login screen
+                    formMain formMain = new formMain();         //variable for the FormMain to be opened after login
+                    formMain.Closed += (s, args) => this.Close(); //closes FormLogin
+                    formMain.Show();                            //displays FormMain
+                }
+                else
+                {
+                    MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message);
             }
         }
 
