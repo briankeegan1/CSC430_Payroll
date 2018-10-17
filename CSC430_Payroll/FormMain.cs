@@ -14,8 +14,6 @@ namespace CSC430_Payroll
 {
     public partial class formMain : Form
     {
-        
-
         //the program always knows what it is searching for. these conditions are important
         //in order to access the right SQL commands.
         private bool searching = false;
@@ -112,7 +110,8 @@ namespace CSC430_Payroll
             {
                 displayCount = previousDisplayCounts.Pop();
             }
-            else if (initialRun == true)
+
+            if (initialRun == true)
             {
                 displayCount = ds.Tables["Employee"].Rows.Count;
                 previousDisplayCounts.Push(displayCount);
@@ -508,6 +507,7 @@ namespace CSC430_Payroll
             if (currentPage == 1)
             {
                 btnPreviousPage.Enabled = false;
+                initialRun = true;
             }
             else
             {
