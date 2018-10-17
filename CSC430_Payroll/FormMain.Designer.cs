@@ -67,6 +67,7 @@ namespace CSC430_Payroll
             this.button5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -399,7 +400,7 @@ namespace CSC430_Payroll
             this.button4.TabIndex = 9;
             this.button4.Text = "Edit Benefits";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.btnBenefits_Click);
+            this.button4.Click += new System.EventHandler(this.btnEditBenefits_Click);
             // 
             // txtSearch
             // 
@@ -471,23 +472,33 @@ namespace CSC430_Payroll
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(780, 21);
+            this.button6.Location = new System.Drawing.Point(0, 0);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 43;
-            this.button6.Text = "Edit Taxes";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.TabIndex = 0;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(780, 21);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 43;
+            this.button7.Text = "Edit Taxes";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.btnEditTaxes_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 525);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
+            this.MaximumSize = new System.Drawing.Size(964, 564);
+            this.MinimumSize = new System.Drawing.Size(964, 564);
             this.Name = "FormMain";
             this.Text = "Payroll Management";
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -538,5 +549,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtGrossPay;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }

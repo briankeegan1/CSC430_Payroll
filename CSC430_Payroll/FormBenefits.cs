@@ -261,6 +261,7 @@ namespace CSC430_Payroll
                 Console.WriteLine(reader.GetValue(0));
             }
 
+            comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
             comboBox2.SelectedItem = null;
             con.Close();
             ResortTable();

@@ -198,7 +198,7 @@ namespace CSC430_Payroll
             }
         }
 
-        private void btnBenefits_Click(object sender, EventArgs e)
+        private void btnEditBenefits_Click(object sender, EventArgs e)
         {
             FormBenefits popUpForm = new FormBenefits();
             popUpForm.ShowDialog();
@@ -365,7 +365,7 @@ namespace CSC430_Payroll
             gridRefresh();
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnEditTaxes_Click(object sender, EventArgs e)
         {
             FormTaxes popUpForm = new FormTaxes();
             popUpForm.ShowDialog();

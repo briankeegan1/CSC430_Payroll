@@ -166,6 +166,8 @@
             this.Controls.Add(this.Remove);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
+            this.MaximumSize = new System.Drawing.Size(339, 302);
+            this.MinimumSize = new System.Drawing.Size(339, 302);
             this.Name = "FormBenefits";
             this.Text = "Edit Benefits";
             this.Load += new System.EventHandler(this.FormBenefits_Load);
