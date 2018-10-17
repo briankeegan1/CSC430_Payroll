@@ -58,7 +58,7 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection  
             string adapterString = "";
-            
+
 
             if (searching == false)
             {
@@ -70,22 +70,22 @@ namespace CSC430_Payroll
             else if (searchingForID == true)
             {
                 int numID = Int32.Parse(searchValue);
-                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE ID = "+numID, con);
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = "+numID+" ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE ID = " + numID, con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " + numID + " ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
             }
             else if (searchingForLastName == true)
             {
-                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [Last Name] ='"+searchValue+"'", con);
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '"+searchValue+"' ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [Last Name] ='" + searchValue + "'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '" + searchValue + "' ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
             }
             else if (searchingForFirstName == true)
             {
-                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [First Name] ='"+searchValue+"'", con);
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '"+searchValue+"' ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [First Name] ='" + searchValue + "'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '" + searchValue + "' ORDER BY ID ASC";
                 con.Open();
                 queryCount = (Int32)countCommand.ExecuteScalar();
             }
@@ -97,7 +97,7 @@ namespace CSC430_Payroll
 
             ds.Tables.Add("Employee");
             sda.Fill(ds, pageX, 50, "Employee");
-          
+
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
 
@@ -127,7 +127,7 @@ namespace CSC430_Payroll
             else if (displayCount >= queryCount)
             {
                 btnNextPage.Enabled = false;
-                
+
             }
             nextButtonClicked = false;
             previousButtonClicked = false;
@@ -144,10 +144,10 @@ namespace CSC430_Payroll
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
         }
-        
-        
+
+
         private void button3_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's record?",
@@ -249,7 +249,7 @@ namespace CSC430_Payroll
                     string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
                     SqlCommand command = new SqlCommand(sqlquery, con);
                     SqlDataReader reader = command.ExecuteReader();
-                    
+
 
                     while (reader.Read())
                     {
@@ -261,7 +261,7 @@ namespace CSC430_Payroll
                         var dob = reader["DOB"].ToString();
                         dob = dob.Split()[0];
                         this.txtDateOfBirth.Text = dob;
-              
+
                         this.txtAddress.Text = reader["Address"].ToString();
                         this.txtZipcode.Text = reader["ZIP"].ToString();
                         this.txtSalary.Text = reader["Salary"].ToString();
@@ -473,7 +473,7 @@ namespace CSC430_Payroll
                 MessageBox.Show(exc.Message);
             }
         }
-        
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             pageX = 0;
@@ -513,32 +513,31 @@ namespace CSC430_Payroll
             if (currentPage == 1)
             {
                 btnPreviousPage.Enabled = false;
-                initialRun = true;
             }
             else
             {
                 btnPreviousPage.Enabled = true;
             }
         }
-        
+
         private void btnNextPage_Click(object sender, EventArgs e)
         {
-                nextButtonClicked = true;
-                pageX += 50;
-                currentPage++;
-                checkPreviousPage();
-                labelPageNumber.Text = "Page " + currentPage;
-                gridRefresh();
+            nextButtonClicked = true;
+            pageX += 50;
+            currentPage++;
+            checkPreviousPage();
+            labelPageNumber.Text = "Page " + currentPage;
+            gridRefresh();
         }
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
-                previousButtonClicked = true;
-                pageX -= 50;
-                currentPage--;
-                checkPreviousPage();
-                labelPageNumber.Text = "Page " + currentPage;
-                gridRefresh();
+            previousButtonClicked = true;
+            pageX -= 50;
+            currentPage--;
+            checkPreviousPage();
+            labelPageNumber.Text = "Page " + currentPage;
+            gridRefresh();
         }
     }
 }
