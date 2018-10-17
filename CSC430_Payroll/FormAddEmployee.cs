@@ -105,6 +105,7 @@ namespace CSC430_Payroll
                     command.Parameters.AddWithValue("@ZIP", this.txtZipcode.Text);
                     command.ExecuteNonQuery();
                     MessageBox.Show("Employee Created.");
+                    form1.resetPlacementValues();
                     //calling grid refresh function from FormMain
                     form1.gridRefresh();
                     this.Close();

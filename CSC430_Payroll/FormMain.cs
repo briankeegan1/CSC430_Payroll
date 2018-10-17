@@ -35,7 +35,7 @@ namespace CSC430_Payroll
 
         //checks whether it's the first time running the program or clicking the search button
         //used often in gridRefresh()
-        private bool initialRun = true;
+        public bool initialRun = true;
 
         public formMain()
         {
@@ -44,7 +44,6 @@ namespace CSC430_Payroll
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            this.gridRefresh();
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.AcceptButton = btnSearch;
             this.comboBox1.SelectedIndex = 3;
@@ -52,6 +51,20 @@ namespace CSC430_Payroll
             this.btnSearch.Enabled = false;
             this.btnPreviousPage.Enabled = false;
             this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        public void resetPlacementValues()
+        {
+            currentPage = 1;
+            pageX = 0;
+            totalPages = 1;
+            displayCount = 0;
+            queryCount = 0;
+            previousDisplayCounts.Clear();
+            nextButtonClicked = false;
+            previousButtonClicked = false;
+            checkPreviousPage();
+            initialRun = true;
         }
 
         public void gridRefresh()
@@ -143,11 +156,28 @@ namespace CSC430_Payroll
 
             }
 
-            if(totalPages < 1)
+            if (totalPages < 1)
             {
                 totalPages = 1;
             }
 
+            if (queryCount < 1)
+            {
+                btnEditEmployee.Enabled = false;
+                btnDeleteEmployee.Enabled = false;
+            }
+            else
+            {
+                btnEditEmployee.Enabled = true;
+                btnDeleteEmployee.Enabled = true;
+            }
+
+            if (ds.Tables["Employee"].Rows.Count < 1)
+            {
+                btnPreviousPage.PerformClick();
+                btnNextPage.Enabled = false;
+            }
+            
             labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
             labelResults.Text = "Results: " + queryCount;
             nextButtonClicked = false;
@@ -155,7 +185,6 @@ namespace CSC430_Payroll
 
             con.Close();
         }
-
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -167,8 +196,7 @@ namespace CSC430_Payroll
 
         }
 
-
-        private void button3_Click(object sender, EventArgs e)
+        private void btnDeleteEmployee_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Are you sure you want to delete this Employee's record?",
                 "Confirm Deletion", MessageBoxButtons.YesNo);
@@ -207,7 +235,7 @@ namespace CSC430_Payroll
             popUpForm.ShowDialog();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnEditEmployee_Click(object sender, EventArgs e)
         {
             FormEditEmployee popUpForm = new FormEditEmployee(this.txtEmployeeID.Text);
             popUpForm.ShowDialog();
@@ -500,6 +528,7 @@ namespace CSC430_Payroll
             initialRun = true;
             searchValue = txtSearch.Text;
             string caseValue = comboBox1.Text;
+            previousDisplayCounts.Clear();
             checkPreviousPage();
             int columnValue = 0;
             searchData(caseValue, columnValue);
