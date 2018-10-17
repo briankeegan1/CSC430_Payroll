@@ -14,13 +14,30 @@ namespace CSC430_Payroll
 {
     public partial class formMain : Form
     {
-        private int currentPage = 1;
-        public int pageX = 0;
+        
+
+        //the program always knows what it is searching for. these conditions are important
+        //in order to access the right SQL commands.
         private bool searching = false;
         private bool searchingForID = false;
         private bool searchingForLastName = false;
         private bool searchingForFirstName = false;
         private string searchValue = null;
+
+        //needed to help us keep track of what's being displayed on the datagrid.
+        //this is essential to controlling the page system.
+        private int currentPage = 1;
+        private int pageX = 0;
+        private int displayCount = 0;
+        private Int32 queryCount = 0;
+        private Stack<int> previousDisplayCounts = new Stack<int>();
+        private bool nextButtonClicked = false;
+        private bool previousButtonClicked = false;
+
+        //checks whether it's the first time running the program or clicking the search button
+        //used often in gridRefresh()
+        private bool initialRun = true;
+
         public formMain()
         {
             InitializeComponent();
@@ -43,27 +60,39 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection  
             string adapterString = "";
+            
 
-            if(searching == false)
+            if (searching == false)
             {
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee", con);
                 adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
             }
             else if (searchingForID == true)
             {
                 int numID = Int32.Parse(searchValue);
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = " +numID+ " ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE ID = "+numID, con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE ID = "+numID+" ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
             }
             else if (searchingForLastName == true)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '" +searchValue+"' ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [Last Name] ='"+searchValue+"'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[Last Name] = '"+searchValue+"' ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
             }
             else if (searchingForFirstName == true)
             {
-                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '"+searchValue+ "' ORDER BY ID ASC";
+                SqlCommand countCommand = new SqlCommand("SELECT COUNT(*) FROM Employee WHERE [First Name] ='"+searchValue+"'", con);
+                adapterString = "SELECT ID, [Last Name], [First Name] FROM Employee WHERE[First Name] = '"+searchValue+"' ORDER BY ID ASC";
+                con.Open();
+                queryCount = (Int32)countCommand.ExecuteScalar();
             }
 
             SqlDataAdapter sda = new SqlDataAdapter(adapterString, con);
-            con.Open();
 
             var commandBuilder = new SqlCommandBuilder(sda);
             var ds = new DataSet();
@@ -74,15 +103,34 @@ namespace CSC430_Payroll
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = ds.Tables[0];
 
-            if (ds.Tables["Employee"].Rows.Count > 1)
+            if (nextButtonClicked == true)
+            {
+                displayCount += ds.Tables["Employee"].Rows.Count;
+                previousDisplayCounts.Push(displayCount);
+            }
+            else if (previousButtonClicked == true)
+            {
+                displayCount = previousDisplayCounts.Pop();
+            }
+            else if (initialRun == true)
+            {
+                displayCount = ds.Tables["Employee"].Rows.Count;
+                previousDisplayCounts.Push(displayCount);
+                initialRun = false;
+            }
+
+            if (displayCount < queryCount)
             {
                 btnNextPage.Enabled = true;
             }
-            else if (ds.Tables["Employee"].Rows.Count < 1)
+            else if (displayCount >= queryCount)
             {
-                btnPreviousPage.PerformClick();
                 btnNextPage.Enabled = false;
+                previousDisplayCounts.Pop();
             }
+            nextButtonClicked = false;
+            previousButtonClicked = false;
+
 
             con.Close();
         }
@@ -425,6 +473,7 @@ namespace CSC430_Payroll
         {
             pageX = 0;
             currentPage = 1;
+            initialRun = true;
             labelPageNumber.Text = "Page " + currentPage.ToString();
             searchValue = txtSearch.Text;
             string caseValue = comboBox1.Text;
@@ -468,6 +517,7 @@ namespace CSC430_Payroll
         
         private void btnNextPage_Click(object sender, EventArgs e)
         {
+                nextButtonClicked = true;
                 pageX += 50;
                 currentPage++;
                 checkPreviousPage();
@@ -477,6 +527,7 @@ namespace CSC430_Payroll
 
         private void btnPreviousPage_Click(object sender, EventArgs e)
         {
+                previousButtonClicked = true;
                 pageX -= 50;
                 currentPage--;
                 checkPreviousPage();
