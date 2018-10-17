@@ -69,6 +69,7 @@ namespace CSC430_Payroll
             this.btnNextPage = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
+            this.labelResults = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -437,6 +438,7 @@ namespace CSC430_Payroll
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.labelResults);
             this.groupBox2.Controls.Add(this.labelPageNumber);
             this.groupBox2.Controls.Add(this.btnPreviousPage);
             this.groupBox2.Controls.Add(this.btnNextPage);
@@ -504,6 +506,16 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // labelResults
+            // 
+            this.labelResults.AutoSize = true;
+            this.labelResults.Location = new System.Drawing.Point(23, 428);
+            this.labelResults.Name = "labelResults";
+            this.labelResults.Size = new System.Drawing.Size(48, 13);
+            this.labelResults.TabIndex = 47;
+            this.labelResults.Text = "Results: ";
+            this.labelResults.Click += new System.EventHandler(this.labelResults_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -565,5 +577,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.Button btnNextPage;
         private System.Windows.Forms.Button btnPreviousPage;
         private System.Windows.Forms.Label labelPageNumber;
+        private System.Windows.Forms.Label labelResults;
     }
 }

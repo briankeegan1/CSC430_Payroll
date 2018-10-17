@@ -149,6 +149,7 @@ namespace CSC430_Payroll
             }
 
             labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
+            labelResults.Text = "Results: " + queryCount;
             nextButtonClicked = false;
             previousButtonClicked = false;
 
@@ -502,7 +503,6 @@ namespace CSC430_Payroll
             checkPreviousPage();
             int columnValue = 0;
             searchData(caseValue, columnValue);
-            //labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
         }
 
         private void txtTax_TextChanged(object sender, EventArgs e)
@@ -554,6 +554,11 @@ namespace CSC430_Payroll
             currentPage--;
             checkPreviousPage();
             gridRefresh();
+        }
+
+        private void labelResults_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
