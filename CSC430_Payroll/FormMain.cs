@@ -14,8 +14,6 @@ namespace CSC430_Payroll
 {
     public partial class formMain : Form
     {
-        
-
         //the program always knows what it is searching for. these conditions are important
         //in order to access the right SQL commands.
         private bool searching = false;
@@ -110,9 +108,12 @@ namespace CSC430_Payroll
             }
             else if (previousButtonClicked == true)
             {
+                previousDisplayCounts.Pop();
                 displayCount = previousDisplayCounts.Pop();
+                previousDisplayCounts.Push(displayCount);
             }
-            else if (initialRun == true)
+
+            if (initialRun == true)
             {
                 displayCount = ds.Tables["Employee"].Rows.Count;
                 previousDisplayCounts.Push(displayCount);
@@ -126,7 +127,7 @@ namespace CSC430_Payroll
             else if (displayCount >= queryCount)
             {
                 btnNextPage.Enabled = false;
-                previousDisplayCounts.Pop();
+                
             }
             nextButtonClicked = false;
             previousButtonClicked = false;
@@ -224,7 +225,10 @@ namespace CSC430_Payroll
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Right && btnNextPage.Enabled == true)
+            { btnNextPage.PerformClick(); }
+            else if (e.KeyCode == Keys.Left && btnPreviousPage.Enabled == true)
+            { btnPreviousPage.PerformClick(); }
         }
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
@@ -385,6 +389,7 @@ namespace CSC430_Payroll
                     btnSearch.Enabled = false;
                     checkPreviousPage();
                     txtSearch.Text = "";
+                    initialRun = true;
                     gridRefresh();
                     break;
             }
