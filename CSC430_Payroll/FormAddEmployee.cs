@@ -28,6 +28,7 @@ namespace CSC430_Payroll
             InitializeComponent();
             form1 = form;
             txtZipcode.MaxLength = 10;
+            this.AcceptButton = btnCreateEmployee;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -70,7 +71,7 @@ namespace CSC430_Payroll
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCreateEmployee_Click(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection 

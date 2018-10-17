@@ -22,6 +22,7 @@ namespace CSC430_Payroll
         {
             numID = employeeID;
             InitializeComponent();
+            this.AcceptButton = btnOK;
         }
 
         private void txtLastName_TextChanged(object sender, EventArgs e)
@@ -54,7 +55,7 @@ namespace CSC430_Payroll
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
