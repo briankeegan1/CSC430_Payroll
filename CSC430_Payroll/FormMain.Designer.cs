@@ -82,7 +82,7 @@ namespace CSC430_Payroll
             this.txtNetPay.Name = "txtNetPay";
             this.txtNetPay.ReadOnly = true;
             this.txtNetPay.Size = new System.Drawing.Size(68, 20);
-            this.txtNetPay.TabIndex = 41;
+            this.txtNetPay.TabIndex = 20;
             this.txtNetPay.TextChanged += new System.EventHandler(this.txtNetPay_TextChanged);
             // 
             // txtTax
@@ -92,7 +92,7 @@ namespace CSC430_Payroll
             this.txtTax.Name = "txtTax";
             this.txtTax.ReadOnly = true;
             this.txtTax.Size = new System.Drawing.Size(68, 20);
-            this.txtTax.TabIndex = 37;
+            this.txtTax.TabIndex = 16;
             this.txtTax.TextChanged += new System.EventHandler(this.txtTax_TextChanged);
             // 
             // txtSalary
@@ -102,7 +102,7 @@ namespace CSC430_Payroll
             this.txtSalary.Name = "txtSalary";
             this.txtSalary.ReadOnly = true;
             this.txtSalary.Size = new System.Drawing.Size(68, 20);
-            this.txtSalary.TabIndex = 35;
+            this.txtSalary.TabIndex = 15;
             this.txtSalary.TextChanged += new System.EventHandler(this.txtSalary_TextChanged);
             // 
             // txtOvertime
@@ -112,7 +112,7 @@ namespace CSC430_Payroll
             this.txtOvertime.Name = "txtOvertime";
             this.txtOvertime.ReadOnly = true;
             this.txtOvertime.Size = new System.Drawing.Size(68, 20);
-            this.txtOvertime.TabIndex = 32;
+            this.txtOvertime.TabIndex = 17;
             this.txtOvertime.TextChanged += new System.EventHandler(this.txtOvertime_TextChanged);
             // 
             // txtDeduction
@@ -122,7 +122,7 @@ namespace CSC430_Payroll
             this.txtDeduction.Name = "txtDeduction";
             this.txtDeduction.ReadOnly = true;
             this.txtDeduction.Size = new System.Drawing.Size(68, 20);
-            this.txtDeduction.TabIndex = 31;
+            this.txtDeduction.TabIndex = 18;
             this.txtDeduction.TextChanged += new System.EventHandler(this.txtDeduction_TextChanged);
             // 
             // txtGrossPay
@@ -132,7 +132,7 @@ namespace CSC430_Payroll
             this.txtGrossPay.Name = "txtGrossPay";
             this.txtGrossPay.ReadOnly = true;
             this.txtGrossPay.Size = new System.Drawing.Size(68, 20);
-            this.txtGrossPay.TabIndex = 28;
+            this.txtGrossPay.TabIndex = 19;
             this.txtGrossPay.TextChanged += new System.EventHandler(this.txtGrossPay_TextChanged);
             // 
             // button1
@@ -140,7 +140,7 @@ namespace CSC430_Payroll
             this.button1.Location = new System.Drawing.Point(23, 452);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 23);
-            this.button1.TabIndex = 1;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Add Employee";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -150,7 +150,7 @@ namespace CSC430_Payroll
             this.btnEditEmployee.Location = new System.Drawing.Point(175, 452);
             this.btnEditEmployee.Name = "btnEditEmployee";
             this.btnEditEmployee.Size = new System.Drawing.Size(142, 23);
-            this.btnEditEmployee.TabIndex = 2;
+            this.btnEditEmployee.TabIndex = 7;
             this.btnEditEmployee.Text = "Edit Employee";
             this.btnEditEmployee.UseVisualStyleBackColor = true;
             this.btnEditEmployee.Click += new System.EventHandler(this.btnEditEmployee_Click);
@@ -170,7 +170,7 @@ namespace CSC430_Payroll
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(294, 358);
-            this.dataGridView1.TabIndex = 5;
+            this.dataGridView1.TabIndex = 3;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
@@ -181,7 +181,7 @@ namespace CSC430_Payroll
             this.btnDeleteEmployee.Location = new System.Drawing.Point(175, 481);
             this.btnDeleteEmployee.Name = "btnDeleteEmployee";
             this.btnDeleteEmployee.Size = new System.Drawing.Size(142, 23);
-            this.btnDeleteEmployee.TabIndex = 7;
+            this.btnDeleteEmployee.TabIndex = 8;
             this.btnDeleteEmployee.Text = "Delete Employee";
             this.btnDeleteEmployee.UseVisualStyleBackColor = true;
             this.btnDeleteEmployee.Click += new System.EventHandler(this.btnDeleteEmployee_Click);
@@ -291,7 +291,7 @@ namespace CSC430_Payroll
             this.txtEmployeeID.Name = "txtEmployeeID";
             this.txtEmployeeID.ReadOnly = true;
             this.txtEmployeeID.Size = new System.Drawing.Size(100, 20);
-            this.txtEmployeeID.TabIndex = 27;
+            this.txtEmployeeID.TabIndex = 14;
             this.txtEmployeeID.TextChanged += new System.EventHandler(this.txtEmployeeID_TextChanged);
             // 
             // txtZipcode
@@ -300,7 +300,7 @@ namespace CSC430_Payroll
             this.txtZipcode.Name = "txtZipcode";
             this.txtZipcode.ReadOnly = true;
             this.txtZipcode.Size = new System.Drawing.Size(100, 20);
-            this.txtZipcode.TabIndex = 26;
+            this.txtZipcode.TabIndex = 13;
             this.txtZipcode.TextChanged += new System.EventHandler(this.txtZipcode_TextChanged);
             // 
             // txtAddress
@@ -309,7 +309,7 @@ namespace CSC430_Payroll
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.ReadOnly = true;
             this.txtAddress.Size = new System.Drawing.Size(175, 20);
-            this.txtAddress.TabIndex = 25;
+            this.txtAddress.TabIndex = 12;
             this.txtAddress.TextChanged += new System.EventHandler(this.txtAddress_TextChanged);
             // 
             // txtDateOfBirth
@@ -318,7 +318,7 @@ namespace CSC430_Payroll
             this.txtDateOfBirth.Name = "txtDateOfBirth";
             this.txtDateOfBirth.ReadOnly = true;
             this.txtDateOfBirth.Size = new System.Drawing.Size(100, 20);
-            this.txtDateOfBirth.TabIndex = 24;
+            this.txtDateOfBirth.TabIndex = 11;
             this.txtDateOfBirth.TextChanged += new System.EventHandler(this.txtDateOfBirth_TextChanged);
             // 
             // label6
@@ -382,7 +382,7 @@ namespace CSC430_Payroll
             this.txtFirstName.Name = "txtFirstName";
             this.txtFirstName.ReadOnly = true;
             this.txtFirstName.Size = new System.Drawing.Size(176, 20);
-            this.txtFirstName.TabIndex = 13;
+            this.txtFirstName.TabIndex = 10;
             this.txtFirstName.TextChanged += new System.EventHandler(this.txtFirstName_TextChanged);
             // 
             // txtLastName
@@ -391,7 +391,7 @@ namespace CSC430_Payroll
             this.txtLastName.Name = "txtLastName";
             this.txtLastName.ReadOnly = true;
             this.txtLastName.Size = new System.Drawing.Size(176, 20);
-            this.txtLastName.TabIndex = 12;
+            this.txtLastName.TabIndex = 9;
             this.txtLastName.TextChanged += new System.EventHandler(this.txtLastName_TextChanged);
             // 
             // button4
@@ -409,7 +409,7 @@ namespace CSC430_Payroll
             this.txtSearch.Location = new System.Drawing.Point(118, 35);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(125, 20);
-            this.txtSearch.TabIndex = 10;
+            this.txtSearch.TabIndex = 1;
             this.txtSearch.TextChanged += new System.EventHandler(this.textBox1_TextChanged_2);
             // 
             // btnSearch
@@ -417,7 +417,7 @@ namespace CSC430_Payroll
             this.btnSearch.Location = new System.Drawing.Point(249, 35);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(68, 21);
-            this.btnSearch.TabIndex = 11;
+            this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -433,7 +433,7 @@ namespace CSC430_Payroll
             this.comboBox1.Location = new System.Drawing.Point(23, 35);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(89, 21);
-            this.comboBox1.TabIndex = 42;
+            this.comboBox1.TabIndex = 0;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // groupBox2
@@ -481,7 +481,7 @@ namespace CSC430_Payroll
             this.btnPreviousPage.Location = new System.Drawing.Point(273, 423);
             this.btnPreviousPage.Name = "btnPreviousPage";
             this.btnPreviousPage.Size = new System.Drawing.Size(19, 23);
-            this.btnPreviousPage.TabIndex = 45;
+            this.btnPreviousPage.TabIndex = 4;
             this.btnPreviousPage.Text = "<";
             this.btnPreviousPage.UseVisualStyleBackColor = true;
             this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
@@ -491,7 +491,7 @@ namespace CSC430_Payroll
             this.btnNextPage.Location = new System.Drawing.Point(298, 423);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(19, 23);
-            this.btnNextPage.TabIndex = 44;
+            this.btnNextPage.TabIndex = 5;
             this.btnNextPage.Text = ">";
             this.btnNextPage.UseVisualStyleBackColor = true;
             this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);

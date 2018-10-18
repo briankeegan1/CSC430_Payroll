@@ -35,7 +35,7 @@ namespace CSC430_Payroll
 
         //checks whether it's the first time running the program or clicking the search button
         //used often in gridRefresh()
-        public bool initialRun = true;
+        private bool initialRun = true;
 
         public formMain()
         {
@@ -72,7 +72,6 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection  
             string adapterString = "";
-
 
             if (searching == false)
             {
