@@ -23,7 +23,6 @@ namespace CSC430_Payroll
         public FormTaxes()
         {
             InitializeComponent();
-
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateTaxes();
@@ -41,7 +40,10 @@ namespace CSC430_Payroll
             command = new SqlCommand(sql, con);
 
             con.Open();
-            size = (int)command.ExecuteScalar();
+            if (command.ExecuteScalar() != null)        //Error Handling for empty table
+                size = (int)command.ExecuteScalar();
+            else
+                size = 0;
 
             con.Close();
 
@@ -199,6 +201,7 @@ namespace CSC430_Payroll
             else
             {
                 String sql = "DECLARE @size INT;" +
+                              "SET @size = 0;" +
                              "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
                              "INSERT INTO Taxes (Number, [Tax Name], Included) VALUES (@size + 1, @input, 1);";
 
