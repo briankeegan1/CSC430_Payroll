@@ -64,12 +64,12 @@ namespace CSC430_Payroll
             this.btnSearch = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelResults = new System.Windows.Forms.Label();
             this.labelPageNumber = new System.Windows.Forms.Label();
             this.btnPreviousPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
-            this.labelResults = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -457,6 +457,16 @@ namespace CSC430_Payroll
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Employees";
             // 
+            // labelResults
+            // 
+            this.labelResults.AutoSize = true;
+            this.labelResults.Location = new System.Drawing.Point(23, 428);
+            this.labelResults.Name = "labelResults";
+            this.labelResults.Size = new System.Drawing.Size(48, 13);
+            this.labelResults.TabIndex = 47;
+            this.labelResults.Text = "Results: ";
+            this.labelResults.Click += new System.EventHandler(this.labelResults_Click);
+            // 
             // labelPageNumber
             // 
             this.labelPageNumber.AutoSize = true;
@@ -506,16 +516,6 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // labelResults
-            // 
-            this.labelResults.AutoSize = true;
-            this.labelResults.Location = new System.Drawing.Point(23, 428);
-            this.labelResults.Name = "labelResults";
-            this.labelResults.Size = new System.Drawing.Size(48, 13);
-            this.labelResults.TabIndex = 47;
-            this.labelResults.Text = "Results: ";
-            this.labelResults.Click += new System.EventHandler(this.labelResults_Click);
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -525,6 +525,8 @@ namespace CSC430_Payroll
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
+            this.MaximumSize = new System.Drawing.Size(964, 564);
+            this.MinimumSize = new System.Drawing.Size(964, 564);
             this.Name = "formMain";
             this.Text = "Payroll Management";
             this.Load += new System.EventHandler(this.FormMain_Load);
