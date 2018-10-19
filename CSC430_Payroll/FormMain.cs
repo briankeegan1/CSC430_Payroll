@@ -337,6 +337,9 @@ namespace CSC430_Payroll
         {
             FormBenefits popUpForm = new FormBenefits();
             popUpForm.ShowDialog();
+            this.resetPlacementValues();
+            this.gridRefresh();
+            
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -547,6 +550,8 @@ namespace CSC430_Payroll
         {
             FormTaxes popUpForm = new FormTaxes();
             popUpForm.ShowDialog();
+            this.resetPlacementValues();
+            this.gridRefresh();
         }
 
         private void label1_Click_1(object sender, EventArgs e)

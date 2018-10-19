@@ -187,40 +187,57 @@ namespace CSC430_Payroll
 
         private void Create_Click(object sender, EventArgs e)   //Creates NEW Tax
         {
-            SqlParameter param1 = new SqlParameter();
-            SqlParameter param2 = new SqlParameter();
-            param1.ParameterName = "@input";
-            param2.ParameterName = "@count";
-            string input = textBox1.Text;
-            param1.Value = input;
+            int rateSize = textBox2.Text.Length;
 
-            if (CheckDuplicate() == true)
-            {
-                MessageBox.Show("Tax already exists.", "Error Message");
+            if (rateSize == 1 && !char.IsDigit(textBox2.Text[0]) || 
+                rateSize == 2 && !char.IsDigit(textBox2.Text[1]))
+            {   
+                MessageBox.Show("Please enter numbers only for the Rate.");
+                textBox2.Text = null;
             }
             else
             {
-                String sql = "DECLARE @size INT;" +
-                              "SET @size = 0;" +
-                             "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
-                             "INSERT INTO Taxes (Number, [Tax Name], Included) VALUES (@size + 1, @input, 1);";
+                SqlParameter param1 = new SqlParameter();
+                SqlParameter param2 = new SqlParameter();
+                param1.ParameterName = "@taxName";
+                param2.ParameterName = "@rate";
+                param1.Value = textBox1.Text;
 
-                command = new SqlCommand(sql, con);
-                command.Parameters.Add(param1);
+                if (rateSize == 1)
+                    param2.Value = ".0" + textBox2.Text;
+                else
+                    param2.Value = "." + textBox2.Text;
 
-                con.Open();
-                reader = command.ExecuteReader();
-
-                while (reader.Read())
+                if (CheckDuplicate() == true)
                 {
-                    Console.WriteLine(reader.GetValue(0));
+                    MessageBox.Show("Tax already exists.", "Error Message");
+                }
+                else
+                {
+                    String sql = "DECLARE @size INT;" +
+                                  "SET @size = 0;" +
+                                 "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
+                                 "INSERT INTO Taxes (Number, [Tax Name], Included, Rate) VALUES (@size + 1, @taxName, 1, @rate);";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param1);
+                    command.Parameters.Add(param2);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    con.Close();
+                    UpdateTaxes();
                 }
 
-                con.Close();
-                UpdateTaxes();
+                textBox1.Text = null;
+                textBox2.Text = null;
             }
-
-            textBox1.Text = null;
         }
 
         private bool CheckDuplicate()
