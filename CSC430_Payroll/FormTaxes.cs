@@ -17,7 +17,7 @@ namespace CSC430_Payroll
     public partial class FormTaxes : Form
     {
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["db"].ConnectionString); // making connection
-        private SqlCommand command;
+        private SqlCommand command, command2;
         private SqlDataReader reader;
 
         public FormTaxes()
@@ -53,8 +53,6 @@ namespace CSC430_Payroll
                 DropDownBox_Add(i);
                 DropDownBox_Delete(i);
             }
-
-
         }
 
         private void DropDownBox_Add(int count)
@@ -157,6 +155,7 @@ namespace CSC430_Payroll
             }
 
             con.Close();
+            RemoveEmployeeCol(input);
             UpdateTaxes();
         }
 
@@ -182,6 +181,7 @@ namespace CSC430_Payroll
 
             comboBox1.SelectedItem = null;
             con.Close();
+            AddEmployeeCol(input);
             UpdateTaxes();
         }
 
@@ -197,23 +197,23 @@ namespace CSC430_Payroll
             }
             else
             {
-                SqlParameter param1 = new SqlParameter();
-                SqlParameter param2 = new SqlParameter();
-                param1.ParameterName = "@taxName";
-                param2.ParameterName = "@rate";
-                param1.Value = textBox1.Text;
-
-                if (rateSize == 1)
-                    param2.Value = ".0" + textBox2.Text;
-                else
-                    param2.Value = "." + textBox2.Text;
-
                 if (CheckDuplicate() == true)
                 {
                     MessageBox.Show("Tax already exists.", "Error Message");
                 }
                 else
                 {
+                    SqlParameter param1 = new SqlParameter();
+                    SqlParameter param2 = new SqlParameter();
+                    param1.ParameterName = "@taxName";
+                    param2.ParameterName = "@rate";
+                    param1.Value = textBox1.Text;
+
+                    if (rateSize == 1)
+                        param2.Value = ".0" + textBox2.Text;
+                    else
+                        param2.Value = "." + textBox2.Text;
+
                     String sql = "DECLARE @size INT;" +
                                   "SET @size = 0;" +
                                  "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
@@ -232,6 +232,7 @@ namespace CSC430_Payroll
                     }
 
                     con.Close();
+                    AddEmployeeCol(textBox1.Text);
                     UpdateTaxes();
                 }
 
@@ -287,6 +288,7 @@ namespace CSC430_Payroll
             comboBox2.SelectedItem = null;
             con.Close();
             ResortTable();
+            RemoveEmployeeCol(input);
             UpdateTaxes();
         }
 
@@ -331,5 +333,78 @@ namespace CSC430_Payroll
             con.Close();
         }
 
+        private void AddEmployeeCol(string taxName) 
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@taxName";
+            param.Value = taxName;
+
+            String sql = "DECLARE @SQL NVARCHAR(1000); " +
+                         "SET @SQL = '" +
+                         "ALTER TABLE Employee " +
+                         "ADD [' + @taxName + '] bit; " +
+                         "'; " +
+                         "EXEC (@SQL);";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+            con.Close();
+
+            command.Parameters.Remove(param);
+
+            sql = "DECLARE @SQL VARCHAR(1000);" +
+                  "SET @SQL = '" +
+                  "UPDATE Employee " +
+                  "SET [' + @taxName + '] = 0 " +
+                  "';" +
+                  "EXEC (@SQL);";
+
+            command2 = new SqlCommand(sql, con);
+            command2.Parameters.Add(param);
+
+            con.Open();
+            reader = command2.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
+
+        private void RemoveEmployeeCol(string taxName)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@taxName";
+            param.Value = taxName;
+
+            String sql = "IF COL_LENGTH('Employee', '" + taxName + "') IS NOT NULL " +
+                         "BEGIN " + 
+                         "ALTER TABLE Employee " +
+                         "DROP COLUMN [" + taxName + "]; " + 
+                         "END";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
     }
 }

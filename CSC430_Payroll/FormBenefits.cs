@@ -17,7 +17,7 @@ namespace CSC430_Payroll
     public partial class FormBenefits : Form
     {
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["db"].ConnectionString); // making connection
-        private SqlCommand command;
+        private SqlCommand command, command2;
         private SqlDataReader reader;
 
         public FormBenefits()
@@ -137,7 +137,7 @@ namespace CSC430_Payroll
             
         }
 
-        private void Remove_Click(object sender, EventArgs e)   //Removes Benefit from listBox
+        private void Remove_Click(object sender, EventArgs e)   //Removes Benefit from listBox and places it in dropdown box
         {
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@input";
@@ -158,10 +158,11 @@ namespace CSC430_Payroll
             }
 
             con.Close();
+            RemoveEmployeeCol(input);
             UpdateBenefits();
         }
 
-        private void Add_Click(object sender, EventArgs e)  //Adds Benefit to listBox
+        private void Add_Click(object sender, EventArgs e)  //Adds Benefit from dropdown box to listBox
         {
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@input";
@@ -183,6 +184,7 @@ namespace CSC430_Payroll
 
             comboBox1.SelectedItem = null;
             con.Close();
+            AddEmployeeCol(input);
             UpdateBenefits();
         }
 
@@ -198,23 +200,23 @@ namespace CSC430_Payroll
             }
             else
             {
-                SqlParameter param1 = new SqlParameter();
-                SqlParameter param2 = new SqlParameter();
-                param1.ParameterName = "@benefitName";
-                param2.ParameterName = "@rate";
-                param1.Value = textBox1.Text;
-
-                if (rateSize == 1)
-                    param2.Value = ".0" + textBox2.Text;
-                else
-                    param2.Value = "." + textBox2.Text;
-
                 if (CheckDuplicate() == true)
                 {
                     MessageBox.Show("Benefit already exists.", "Error Message");
                 }
                 else
                 {
+                    SqlParameter param1 = new SqlParameter();
+                    SqlParameter param2 = new SqlParameter();
+                    param1.ParameterName = "@benefitName";
+                    param2.ParameterName = "@rate";
+                    param1.Value = textBox1.Text;
+
+                    if (rateSize == 1)
+                        param2.Value = ".0" + textBox2.Text;
+                    else
+                        param2.Value = "." + textBox2.Text;
+
                     String sql = "DECLARE @size INT;" +
                                  "SET @size = 0;" +
                                  "SELECT TOP 1 @size = Number FROM Benefits ORDER BY Number DESC;" +
@@ -233,6 +235,7 @@ namespace CSC430_Payroll
                     }
 
                     con.Close();
+                    AddEmployeeCol(textBox1.Text);
                     UpdateBenefits();
                 }
 
@@ -241,7 +244,7 @@ namespace CSC430_Payroll
             }
         }
 
-        private bool CheckDuplicate()
+        private bool CheckDuplicate()       //returns true if there is a duplicate
         {
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@input";
@@ -258,7 +261,7 @@ namespace CSC430_Payroll
             name = (string)command.ExecuteScalar();
             con.Close();
 
-            if (name == input)  //return true if there is a duplicate
+            if (name == input)
                 return true;
             else
                 return false;
@@ -267,11 +270,11 @@ namespace CSC430_Payroll
         private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
         {
             SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
+            param.ParameterName = "@benefitName";
             string input = comboBox2.GetItemText(comboBox2.SelectedItem);
             param.Value = input;
 
-            String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @input;";
+            String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param);
@@ -288,6 +291,7 @@ namespace CSC430_Payroll
             comboBox2.SelectedItem = null;
             con.Close();
             ResortTable();
+            RemoveEmployeeCol(input);
             UpdateBenefits();
         }
 
@@ -332,5 +336,78 @@ namespace CSC430_Payroll
             con.Close();
         }
 
+        private void AddEmployeeCol(string benefitName)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@benefitName";
+            param.Value = benefitName;
+
+            String sql = "DECLARE @SQL NVARCHAR(1000); " +
+                         "SET @SQL = '" +
+                         "ALTER TABLE Employee " +
+                         "ADD [' + @benefitName + '] bit; " +
+                         "'; " +
+                         "EXEC (@SQL);";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+            con.Close();
+
+            command.Parameters.Remove(param);
+
+            sql = "DECLARE @SQL VARCHAR(1000);" +
+                  "SET @SQL = '" +
+                  "UPDATE Employee " +
+                  "SET [' + @benefitName + '] = 0 " +
+                  "';" +
+                  "EXEC (@SQL);";
+
+            command2 = new SqlCommand(sql, con);
+            command2.Parameters.Add(param);
+
+            con.Open();
+            reader = command2.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
+
+        private void RemoveEmployeeCol(string benefitName)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@benefitName";
+            param.Value = benefitName;
+
+            String sql = "IF COL_LENGTH('Employee', '" + benefitName + "') IS NOT NULL " +
+                         "BEGIN " + 
+                         "ALTER TABLE Employee " +
+                         "DROP COLUMN [" + benefitName + "];" + 
+                         "END";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
     }
 }
