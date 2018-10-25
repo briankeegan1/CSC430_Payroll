@@ -335,6 +335,7 @@ namespace CSC430_Payroll
 
         private void AddEmployeeCol(string taxName) 
         {
+            taxName = "Tax: " + taxName;
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@taxName";
             param.Value = taxName;
@@ -383,6 +384,7 @@ namespace CSC430_Payroll
 
         private void RemoveEmployeeCol(string taxName)
         {
+            taxName = "Tax: " + taxName;
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@taxName";
             param.Value = taxName;
