@@ -338,10 +338,12 @@ namespace CSC430_Payroll
 
         private void AddEmployeeCol(string benefitName)
         {
+            benefitName = "BFT: " + benefitName;
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@benefitName";
             param.Value = benefitName;
 
+            //Adds new column to Employee table
             String sql = "DECLARE @SQL NVARCHAR(1000); " +
                          "SET @SQL = '" +
                          "ALTER TABLE Employee " +
@@ -363,6 +365,7 @@ namespace CSC430_Payroll
 
             command.Parameters.Remove(param);
 
+            //Sets entire column in Employee to 0
             sql = "DECLARE @SQL VARCHAR(1000);" +
                   "SET @SQL = '" +
                   "UPDATE Employee " +
@@ -386,10 +389,11 @@ namespace CSC430_Payroll
 
         private void RemoveEmployeeCol(string benefitName)
         {
+            benefitName = "BFT: " + benefitName;
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@benefitName";
             param.Value = benefitName;
-
+            
             String sql = "IF COL_LENGTH('Employee', '" + benefitName + "') IS NOT NULL " +
                          "BEGIN " + 
                          "ALTER TABLE Employee " +
