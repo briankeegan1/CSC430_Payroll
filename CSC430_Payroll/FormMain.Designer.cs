@@ -41,6 +41,8 @@ namespace CSC430_Payroll
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnDeleteEmployee = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
@@ -73,8 +75,6 @@ namespace CSC430_Payroll
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -228,6 +228,22 @@ namespace CSC430_Payroll
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Employee Info";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(407, 244);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(163, 186);
+            this.listBox2.TabIndex = 47;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(206, 244);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(163, 186);
+            this.listBox1.TabIndex = 46;
             // 
             // label15
             // 
@@ -541,22 +557,6 @@ namespace CSC430_Payroll
             this.button6.Text = "Edit Taxes";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(206, 244);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(163, 186);
-            this.listBox1.TabIndex = 46;
-            // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(407, 244);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(163, 186);
-            this.listBox2.TabIndex = 47;
             // 
             // formMain
             // 

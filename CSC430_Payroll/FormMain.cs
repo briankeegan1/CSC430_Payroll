@@ -14,6 +14,9 @@ namespace CSC430_Payroll
 {
     public partial class formMain : Form
     {
+        private List<string> Taxes = new List<string>();
+        private List<string> Benefits = new List<string>();
+
         //the program always knows what it is searching for. these conditions are important
         //in order to access the right SQL commands.
         private bool searching = false;
@@ -40,6 +43,8 @@ namespace CSC430_Payroll
         public formMain()
         {
             InitializeComponent();
+            updateTaxes();
+            updateBenefits();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -176,7 +181,7 @@ namespace CSC430_Payroll
                 btnPreviousPage.PerformClick();
                 btnNextPage.Enabled = false;
             }
-            
+
             labelPageNumber.Text = "Page " + currentPage.ToString() + " of " + totalPages.ToString();
             labelResults.Text = "Results: " + queryCount;
             nextButtonClicked = false;
@@ -277,38 +282,39 @@ namespace CSC430_Payroll
             else if (e.KeyCode == Keys.Left && btnPreviousPage.Enabled == true)
             { btnPreviousPage.PerformClick(); }
         }
-        
+
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
-
             DataGridView dgv = sender as DataGridView;
+            employeeInfoRefresh(con, dgv);
+            taxesListBoxRefresh(con, dgv);
+            benefitsListBoxRefresh(con, dgv);
+        }
+
+        private void employeeInfoRefresh(SqlConnection con, DataGridView dgv)
+        {
             con.Open();
             if (dgv.SelectedRows.Count > 0)
             {
                 try
                 {
                     DataGridViewRow row = dgv.SelectedRows[0];
-                    var numID = row.Cells["ID"].Value;
+                    var id = row.Cells["ID"].Value;
                     var lastName = row.Cells["Last Name"].Value;
                     var firstName = row.Cells["First Name"].Value;
-                    string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
+                    string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + id;
                     SqlCommand command = new SqlCommand(sqlquery, con);
-                    
-
                     SqlDataReader reader = command.ExecuteReader();
-
                     while (reader.Read())
                     {
                         this.txtLastName.Text = lastName.ToString();
                         this.txtFirstName.Text = firstName.ToString();
-                        this.txtEmployeeID.Text = numID.ToString();
-
+                        this.txtEmployeeID.Text = id.ToString();
                         var dob = reader["DOB"].ToString();
                         dob = dob.Split()[0];
                         this.txtDateOfBirth.Text = dob;
-
                         this.txtAddress.Text = reader["Address"].ToString();
                         this.txtZipcode.Text = reader["ZIP"].ToString();
                         this.txtSalary.Text = reader["Salary"].ToString();
@@ -317,18 +323,116 @@ namespace CSC430_Payroll
                         this.txtDeduction.Text = reader["Deductions"].ToString();
                         this.txtGrossPay.Text = reader["GrossPay"].ToString();
                         this.txtNetPay.Text = reader["NetPay"].ToString();
-                        
                     }
-
-
                     con.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
+        }
+
+        private void taxesListBoxRefresh(SqlConnection con, DataGridView dgv)
+        {
+            listBox1.Items.Clear();
+            if (Taxes.Count != 0)
+            {
+                if (dgv.SelectedRows.Count > 0)
+                {
+                    con.Open();
+                    for (int i = 0; i < Taxes.Count(); i++)
+                    {
+                        DataGridViewRow row = dgv.SelectedRows[0];
+                        var id = row.Cells["ID"].Value;
+                        String sqlquery = "SELECT [" + Taxes[i] + "] FROM Employee WHERE ID = " + id;
+                        SqlCommand command = new SqlCommand(sqlquery, con);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            if (reader[Taxes[i]].ToString() == "True")
+                            {
+                                string temp = Taxes[i];
+                                temp = temp.Remove(0, 5);
+                                listBox1.Items.Add(temp);
+                            }
+                        }
+                    }
+                    con.Close();
+                }
+            }
+        }
+        private void benefitsListBoxRefresh(SqlConnection con, DataGridView dgv)
+        {
+            listBox2.Items.Clear();
+            if (Benefits.Count != 0)
+            {
+                if (dgv.SelectedRows.Count > 0)
+                {
+                    con.Open();
+                    for (int i = 0; i < Taxes.Count(); i++)
+                    {
+                        DataGridViewRow row = dgv.SelectedRows[0];
+                        var id = row.Cells["ID"].Value;
+                        String sqlquery = "SELECT [" + Benefits[i] + "] FROM Employee WHERE ID = " + id;
+                        SqlCommand command = new SqlCommand(sqlquery, con);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            if (reader[Benefits[i]].ToString() == "True")
+                            {
+                                string temp = Benefits[i];
+                                temp = temp.Remove(0, 5);
+                                listBox2.Items.Add(temp);
+                            }
+                        }
+                    }
+                    con.Close();
+                }
+            }
+        }
+        private void updateTaxes()
+        {
+            Taxes.Clear();
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection
+            con.Open();
+            String sqlquery = "SELECT column_name " +
+                "FROM information_schema.columns " +
+                "WHERE table_name = 'Employee' " +
+                "AND column_name " +
+                "LIKE 'Tax: %'";
+            SqlCommand command = new SqlCommand(sqlquery, con);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Taxes.Add(reader["column_name"].ToString());
+            }
+            reader.Close();
+            con.Close();
+        }
+
+        private void updateBenefits()
+        {
+            Benefits.Clear();
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection
+            con.Open();
+            String sqlquery = "SELECT column_name " +
+                "FROM information_schema.columns " +
+                "WHERE table_name = 'Employee' " +
+                "AND column_name " +
+                "LIKE 'BFT: %'";
+            SqlCommand command = new SqlCommand(sqlquery, con);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Benefits.Add(reader["column_name"].ToString());
+            }
+            reader.Close();
+            con.Close();
         }
 
         public string getSelectionID()
@@ -341,8 +445,8 @@ namespace CSC430_Payroll
             FormBenefits popUpForm = new FormBenefits();
             popUpForm.ShowDialog();
             this.resetPlacementValues();
+            this.updateBenefits();
             this.gridRefresh();
-            
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -554,6 +658,7 @@ namespace CSC430_Payroll
             FormTaxes popUpForm = new FormTaxes();
             popUpForm.ShowDialog();
             this.resetPlacementValues();
+            this.updateTaxes();
             this.gridRefresh();
         }
 
@@ -591,5 +696,6 @@ namespace CSC430_Payroll
             checkPreviousPage();
             gridRefresh();
         }
+
     }
 }
