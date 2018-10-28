@@ -17,6 +17,8 @@ namespace CSC430_Payroll
     {
         //use for refresh grid
         private readonly formMain form1;
+        private List<string> Benefits = new List<string>();
+        private List<string> Taxes = new List<string>();
 
         public FormAddEmployee()
         {
@@ -28,8 +30,11 @@ namespace CSC430_Payroll
             InitializeComponent();
             form1 = form;
             txtZipcode.MaxLength = 10;
+            refreshTaxesListBox();
+            refreshBenefitsListBox();
             this.AcceptButton = btnCreateEmployee;
         }
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -78,7 +83,7 @@ namespace CSC430_Payroll
             con.Open();
             string sqlquery = "INSERT INTO Employee(ID, [Last Name], [First Name], DOB, Address, ZIP) VALUES(@ID, @LastName,@FirstName,@DOB,@Address,@ZIP)";
             string sqlquery1 = "SELECT COUNT(*) FROM [Employee] WHERE ([ID] = @ID)";
-            
+
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlCommand command1 = new SqlCommand(sqlquery1, con);
 
@@ -105,10 +110,13 @@ namespace CSC430_Payroll
                     command.Parameters.AddWithValue("@Address", this.txtAddress.Text);
                     command.Parameters.AddWithValue("@ZIP", this.txtZipcode.Text);
                     command.ExecuteNonQuery();
+                    addTaxes(con, numID);
+                    addBenefits(con, numID);
                     MessageBox.Show("Employee Created.");
                     form1.resetPlacementValues();
                     //calling grid refresh function from FormMain
                     form1.gridRefresh();
+                    con.Close();
                     this.Close();
                 }
             }
@@ -119,7 +127,57 @@ namespace CSC430_Payroll
             }
         }
 
+        private void addTaxes(SqlConnection con, int id)
+        {
+            string sqlquery = "";
+            for (int i = 0; i < Taxes.Count(); i++)
+            {
+                if(checkedListBox1.GetItemChecked(i) == true)
+                {
+                    sqlquery = "UPDATE Employee SET [" + Taxes[i] + "] = " + 1 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        private void addBenefits(SqlConnection con, int id)
+        {
+            string sqlquery = "";
+            for (int i = 0; i < Benefits.Count(); i++)
+            {
+                if (checkedListBox2.GetItemChecked(i) == true)
+                {
+                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 1 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void refreshTaxesListBox()
+        {
+            Taxes = form1.getTaxes();
+            for (int i = 0; i < Taxes.Count(); i++)
+            {
+                checkedListBox1.Items.Add(Taxes[i]);
+            }
+        }
+
+        private void refreshBenefitsListBox()
+        {
+            Benefits = form1.getBenefits();
+            for (int i = 0; i < Benefits.Count(); i++)
+            {
+                checkedListBox2.Items.Add(Benefits[i]);
+            }
+        }
+
         private void FormAddEmployee_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

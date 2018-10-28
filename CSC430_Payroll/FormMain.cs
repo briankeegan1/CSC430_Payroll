@@ -233,6 +233,16 @@ namespace CSC430_Payroll
             }
         }
 
+        public List<string> getTaxes()
+        {
+            return Taxes;
+        }
+
+        public List<string> getBenefits()
+        {
+            return Benefits;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             FormAddEmployee popUpForm = new FormAddEmployee(this);
@@ -358,6 +368,7 @@ namespace CSC430_Payroll
                                 listBox1.Items.Add(temp);
                             }
                         }
+                        reader.Close();
                     }
                     con.Close();
                 }
@@ -371,7 +382,7 @@ namespace CSC430_Payroll
                 if (dgv.SelectedRows.Count > 0)
                 {
                     con.Open();
-                    for (int i = 0; i < Taxes.Count(); i++)
+                    for (int i = 0; i < Benefits.Count(); i++)
                     {
                         DataGridViewRow row = dgv.SelectedRows[0];
                         var id = row.Cells["ID"].Value;
@@ -388,6 +399,7 @@ namespace CSC430_Payroll
                                 listBox2.Items.Add(temp);
                             }
                         }
+                        reader.Close();
                     }
                     con.Close();
                 }
