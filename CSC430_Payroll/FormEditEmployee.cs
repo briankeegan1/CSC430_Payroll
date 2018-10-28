@@ -18,11 +18,16 @@ namespace CSC430_Payroll
         formMain form1 = Application.OpenForms.OfType<formMain>().Single();
         public string numID = "";
 
+        private List<string> Benefits = new List<string>();
+        private List<string> Taxes = new List<string>();
+
         public FormEditEmployee(string employeeID)
         {
             numID = employeeID;
             InitializeComponent();
             this.AcceptButton = btnOK;
+            refreshTaxesListBox();
+            refreshBenefitsListBox();
         }
 
         private void txtLastName_TextChanged(object sender, EventArgs e)
@@ -91,6 +96,8 @@ namespace CSC430_Payroll
                     command.Parameters.AddWithValue("@DOB", this.dateTimePicker1.Value);
                     command.Parameters.AddWithValue("@Address", this.txtAddress.Text);
                     command.Parameters.AddWithValue("@ZIP", this.txtZipcode.Text);
+                    editTaxes(con, numID1);
+                    editBenefits(con, numID1);
                     command.ExecuteNonQuery();
                     MessageBox.Show("Employee information updated.");
                     form1.resetPlacementValues();
@@ -129,12 +136,92 @@ namespace CSC430_Payroll
 
                 this.txtAddress.Text = reader["Address"].ToString();
                 this.txtZipcode.Text = reader["ZIP"].ToString();
+                
                 //this.txtSalary.Text = reader["Salary"].ToString();
                 //this.txtTax.Text = reader["Tax"].ToString();
                 //this.txtOvertime.Text = reader["Overtime"].ToString();
                 //this.txtDeduction.Text = reader["Deductions"].ToString();
                 //this.txtGrossPay.Text = reader["GrossPay"].ToString();
                 //this.txtNetPay.Text = reader["NetPay"].ToString();
+            }
+            con.Close();
+        }
+
+        private void editTaxes(SqlConnection con, int id)
+        {
+            string sqlquery = "";
+            for (int i = 0; i < Taxes.Count(); i++)
+            {
+                if (checkedListBox1.GetItemChecked(i) == true)
+                {
+                    sqlquery = "UPDATE Employee SET [" + Taxes[i] + "] = " + 1 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    sqlquery = "UPDATE Employee SET [" + Taxes[i] + "] = " + 0 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        private void editBenefits(SqlConnection con, int id)
+        {
+            string sqlquery = "";
+            for (int i = 0; i < Benefits.Count(); i++)
+            {
+                if (checkedListBox2.GetItemChecked(i) == true)
+                {
+                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 1 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 0 + "WHERE ID = " + id;
+                    SqlCommand command = new SqlCommand(sqlquery, con);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void refreshTaxesListBox()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection
+            Taxes = form1.getTaxes();
+            con.Open();
+            for (int i = 0; i < Taxes.Count(); i++)
+            {
+                checkedListBox1.Items.Add(Taxes[i]);
+                String sqlquery = "SELECT [" + Taxes[i] + "] FROM Employee WHERE ID = " + numID;
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                bool temp = (bool)command.ExecuteScalar();
+                if(temp == true)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+            }
+            con.Close();
+        }
+
+        private void refreshBenefitsListBox()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+            SqlConnection con = new SqlConnection(connectionString); // making connection
+            Benefits = form1.getBenefits();
+            con.Open();
+            for (int i = 0; i < Benefits.Count(); i++)
+            {
+                checkedListBox2.Items.Add(Benefits[i]);
+                String sqlquery = "SELECT [" + Benefits[i] + "] FROM Employee WHERE ID = " + numID;
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                bool temp = (bool)command.ExecuteScalar();
+                if (temp == true)
+                {
+                    checkedListBox2.SetItemChecked(i, true);
+                }
             }
             con.Close();
         }
