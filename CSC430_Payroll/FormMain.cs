@@ -277,7 +277,7 @@ namespace CSC430_Payroll
             else if (e.KeyCode == Keys.Left && btnPreviousPage.Enabled == true)
             { btnPreviousPage.PerformClick(); }
         }
-
+        
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
@@ -295,12 +295,12 @@ namespace CSC430_Payroll
                     var firstName = row.Cells["First Name"].Value;
                     string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
                     SqlCommand command = new SqlCommand(sqlquery, con);
-                    SqlDataReader reader = command.ExecuteReader();
+                    
 
+                    SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
                     {
-
                         this.txtLastName.Text = lastName.ToString();
                         this.txtFirstName.Text = firstName.ToString();
                         this.txtEmployeeID.Text = numID.ToString();
@@ -317,7 +317,10 @@ namespace CSC430_Payroll
                         this.txtDeduction.Text = reader["Deductions"].ToString();
                         this.txtGrossPay.Text = reader["GrossPay"].ToString();
                         this.txtNetPay.Text = reader["NetPay"].ToString();
+                        
                     }
+
+
                     con.Close();
                 }
                 catch (Exception ex)
@@ -587,11 +590,6 @@ namespace CSC430_Payroll
             currentPage--;
             checkPreviousPage();
             gridRefresh();
-        }
-
-        private void labelResults_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
