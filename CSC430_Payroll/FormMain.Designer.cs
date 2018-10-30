@@ -30,27 +30,20 @@ namespace CSC430_Payroll
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtNetPay = new System.Windows.Forms.TextBox();
-            this.txtTax = new System.Windows.Forms.TextBox();
-            this.txtSalary = new System.Windows.Forms.TextBox();
-            this.txtOvertime = new System.Windows.Forms.TextBox();
-            this.txtDeduction = new System.Windows.Forms.TextBox();
-            this.txtGrossPay = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnEditEmployee = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnDeleteEmployee = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtHoursWorked = new System.Windows.Forms.TextBox();
+            this.txtHourlyPay = new System.Windows.Forms.TextBox();
+            this.printBtn = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.txtEmployeeID = new System.Windows.Forms.TextBox();
             this.txtZipcode = new System.Windows.Forms.TextBox();
             this.txtAddress = new System.Windows.Forms.TextBox();
@@ -75,70 +68,12 @@ namespace CSC430_Payroll
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.txtOvertimeWorked = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // txtNetPay
-            // 
-            this.txtNetPay.Location = new System.Drawing.Point(107, 416);
-            this.txtNetPay.Margin = new System.Windows.Forms.Padding(2);
-            this.txtNetPay.Name = "txtNetPay";
-            this.txtNetPay.ReadOnly = true;
-            this.txtNetPay.Size = new System.Drawing.Size(68, 20);
-            this.txtNetPay.TabIndex = 20;
-            this.txtNetPay.TextChanged += new System.EventHandler(this.txtNetPay_TextChanged);
-            // 
-            // txtTax
-            // 
-            this.txtTax.Location = new System.Drawing.Point(107, 324);
-            this.txtTax.Margin = new System.Windows.Forms.Padding(2);
-            this.txtTax.Name = "txtTax";
-            this.txtTax.ReadOnly = true;
-            this.txtTax.Size = new System.Drawing.Size(68, 20);
-            this.txtTax.TabIndex = 16;
-            this.txtTax.TextChanged += new System.EventHandler(this.txtTax_TextChanged);
-            // 
-            // txtSalary
-            // 
-            this.txtSalary.Location = new System.Drawing.Point(10, 324);
-            this.txtSalary.Margin = new System.Windows.Forms.Padding(2);
-            this.txtSalary.Name = "txtSalary";
-            this.txtSalary.ReadOnly = true;
-            this.txtSalary.Size = new System.Drawing.Size(68, 20);
-            this.txtSalary.TabIndex = 15;
-            this.txtSalary.TextChanged += new System.EventHandler(this.txtSalary_TextChanged);
-            // 
-            // txtOvertime
-            // 
-            this.txtOvertime.Location = new System.Drawing.Point(9, 367);
-            this.txtOvertime.Margin = new System.Windows.Forms.Padding(2);
-            this.txtOvertime.Name = "txtOvertime";
-            this.txtOvertime.ReadOnly = true;
-            this.txtOvertime.Size = new System.Drawing.Size(68, 20);
-            this.txtOvertime.TabIndex = 17;
-            this.txtOvertime.TextChanged += new System.EventHandler(this.txtOvertime_TextChanged);
-            // 
-            // txtDeduction
-            // 
-            this.txtDeduction.Location = new System.Drawing.Point(107, 367);
-            this.txtDeduction.Margin = new System.Windows.Forms.Padding(2);
-            this.txtDeduction.Name = "txtDeduction";
-            this.txtDeduction.ReadOnly = true;
-            this.txtDeduction.Size = new System.Drawing.Size(68, 20);
-            this.txtDeduction.TabIndex = 18;
-            this.txtDeduction.TextChanged += new System.EventHandler(this.txtDeduction_TextChanged);
-            // 
-            // txtGrossPay
-            // 
-            this.txtGrossPay.Location = new System.Drawing.Point(9, 416);
-            this.txtGrossPay.Margin = new System.Windows.Forms.Padding(2);
-            this.txtGrossPay.Name = "txtGrossPay";
-            this.txtGrossPay.ReadOnly = true;
-            this.txtGrossPay.Size = new System.Drawing.Size(68, 20);
-            this.txtGrossPay.TabIndex = 19;
-            this.txtGrossPay.TextChanged += new System.EventHandler(this.txtGrossPay_TextChanged);
             // 
             // button1
             // 
@@ -193,22 +128,17 @@ namespace CSC430_Payroll
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.txtOvertimeWorked);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtHoursWorked);
+            this.groupBox1.Controls.Add(this.txtHourlyPay);
+            this.groupBox1.Controls.Add(this.printBtn);
             this.groupBox1.Controls.Add(this.listBox2);
             this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.txtNetPay);
-            this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.txtTax);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.txtSalary);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.txtOvertime);
-            this.groupBox1.Controls.Add(this.txtDeduction);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.txtGrossPay);
             this.groupBox1.Controls.Add(this.txtEmployeeID);
             this.groupBox1.Controls.Add(this.txtZipcode);
             this.groupBox1.Controls.Add(this.txtAddress);
@@ -229,26 +159,71 @@ namespace CSC430_Payroll
             this.groupBox1.Text = "Employee Info";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(478, 416);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(58, 13);
+            this.label9.TabIndex = 51;
+            this.label9.Text = "Hourly Pay";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(460, 365);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(76, 13);
+            this.label8.TabIndex = 50;
+            this.label8.Text = "Hours Worked";
+            // 
+            // txtHoursWorked
+            // 
+            this.txtHoursWorked.Location = new System.Drawing.Point(542, 362);
+            this.txtHoursWorked.Name = "txtHoursWorked";
+            this.txtHoursWorked.Size = new System.Drawing.Size(40, 20);
+            this.txtHoursWorked.TabIndex = 49;
+            // 
+            // txtHourlyPay
+            // 
+            this.txtHourlyPay.Location = new System.Drawing.Point(542, 413);
+            this.txtHourlyPay.Name = "txtHourlyPay";
+            this.txtHourlyPay.Size = new System.Drawing.Size(40, 20);
+            this.txtHourlyPay.TabIndex = 48;
+            // 
+            // printBtn
+            // 
+            this.printBtn.Location = new System.Drawing.Point(472, 438);
+            this.printBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.printBtn.Name = "printBtn";
+            this.printBtn.Size = new System.Drawing.Size(111, 23);
+            this.printBtn.TabIndex = 44;
+            this.printBtn.Text = "Generate Check";
+            this.printBtn.UseVisualStyleBackColor = true;
+            this.printBtn.Click += new System.EventHandler(this.btnPrintCheck_Click);
+            // 
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(407, 244);
+            this.listBox2.Location = new System.Drawing.Point(157, 301);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(163, 186);
+            this.listBox2.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBox2.Size = new System.Drawing.Size(121, 160);
             this.listBox2.TabIndex = 47;
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(206, 244);
+            this.listBox1.Location = new System.Drawing.Point(10, 301);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(163, 186);
+            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBox1.Size = new System.Drawing.Size(121, 160);
             this.listBox1.TabIndex = 46;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(404, 227);
+            this.label15.Location = new System.Drawing.Point(154, 285);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(45, 13);
             this.label15.TabIndex = 45;
@@ -257,76 +232,11 @@ namespace CSC430_Payroll
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(203, 225);
+            this.label13.Location = new System.Drawing.Point(6, 285);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(36, 13);
             this.label13.TabIndex = 44;
             this.label13.Text = "Taxes";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(107, 400);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(45, 13);
-            this.label14.TabIndex = 40;
-            this.label14.Text = "Net Pay";
-            this.label14.Click += new System.EventHandler(this.label14_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(104, 303);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(25, 13);
-            this.label12.TabIndex = 36;
-            this.label12.Text = "Tax";
-            this.label12.Click += new System.EventHandler(this.label12_Click);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(9, 303);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(36, 13);
-            this.label11.TabIndex = 34;
-            this.label11.Text = "Salary";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 352);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(49, 13);
-            this.label10.TabIndex = 33;
-            this.label10.Text = "Overtime";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(104, 352);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(61, 13);
-            this.label9.TabIndex = 30;
-            this.label9.Text = "Deductions";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(9, 401);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 29;
-            this.label8.Text = "Gross Pay";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // txtEmployeeID
             // 
@@ -558,17 +468,33 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // txtOvertimeWorked
+            // 
+            this.txtOvertimeWorked.Location = new System.Drawing.Point(542, 388);
+            this.txtOvertimeWorked.Name = "txtOvertimeWorked";
+            this.txtOvertimeWorked.Size = new System.Drawing.Size(40, 20);
+            this.txtOvertimeWorked.TabIndex = 52;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(460, 391);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 13);
+            this.label10.TabIndex = 53;
+            this.label10.Text = "Hours Overtime";
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(948, 525);
+            this.ClientSize = new System.Drawing.Size(946, 519);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.groupBox1);
-            this.MaximumSize = new System.Drawing.Size(964, 564);
-            this.MinimumSize = new System.Drawing.Size(964, 564);
+            this.MaximumSize = new System.Drawing.Size(962, 558);
+            this.MinimumSize = new System.Drawing.Size(962, 558);
             this.Name = "formMain";
             this.Text = "Payroll Management";
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -593,9 +519,6 @@ namespace CSC430_Payroll
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtFirstName;
         private System.Windows.Forms.TextBox txtLastName;
         private System.Windows.Forms.TextBox txtDateOfBirth;
@@ -603,20 +526,11 @@ namespace CSC430_Payroll
         private System.Windows.Forms.TextBox txtZipcode;
         private System.Windows.Forms.TextBox txtEmployeeID;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtNetPay;
-        private System.Windows.Forms.TextBox txtTax;
-        private System.Windows.Forms.TextBox txtSalary;
-        private System.Windows.Forms.TextBox txtOvertime;
-        private System.Windows.Forms.TextBox txtDeduction;
-        private System.Windows.Forms.TextBox txtGrossPay;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btnNextPage;
         private System.Windows.Forms.Button btnPreviousPage;
@@ -627,5 +541,12 @@ namespace CSC430_Payroll
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button printBtn;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtHoursWorked;
+        private System.Windows.Forms.TextBox txtHourlyPay;
+        private System.Windows.Forms.TextBox txtOvertimeWorked;
+        private System.Windows.Forms.Label label10;
     }
 }

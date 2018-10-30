@@ -90,7 +90,7 @@
             // btnReg
             // 
             this.btnReg.Location = new System.Drawing.Point(65, 136);
-            this.btnReg.Margin = new System.Windows.Forms.Padding(2);
+            this.btnReg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnReg.Name = "btnReg";
             this.btnReg.Size = new System.Drawing.Size(77, 25);
             this.btnReg.TabIndex = 5;
@@ -102,17 +102,18 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(311, 196);
+            this.ClientSize = new System.Drawing.Size(309, 190);
             this.Controls.Add(this.btnReg);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUsername);
-            this.MaximumSize = new System.Drawing.Size(327, 235);
-            this.MinimumSize = new System.Drawing.Size(327, 235);
+            this.MaximumSize = new System.Drawing.Size(325, 229);
+            this.MinimumSize = new System.Drawing.Size(325, 229);
             this.Name = "FormLogin";
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -314,7 +314,7 @@ namespace CSC430_Payroll
                     var id = row.Cells["ID"].Value;
                     var lastName = row.Cells["Last Name"].Value;
                     var firstName = row.Cells["First Name"].Value;
-                    string sqlquery = "SELECT DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + id;
+                    string sqlquery = "SELECT DOB, Address, ZIP, Hourly, HoursWorked, Tax, OvertimeWorked, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + id;
                     SqlCommand command = new SqlCommand(sqlquery, con);
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
@@ -327,12 +327,9 @@ namespace CSC430_Payroll
                         this.txtDateOfBirth.Text = dob;
                         this.txtAddress.Text = reader["Address"].ToString();
                         this.txtZipcode.Text = reader["ZIP"].ToString();
-                        this.txtSalary.Text = reader["Salary"].ToString();
-                        this.txtTax.Text = reader["Tax"].ToString();
-                        this.txtOvertime.Text = reader["Overtime"].ToString();
-                        this.txtDeduction.Text = reader["Deductions"].ToString();
-                        this.txtGrossPay.Text = reader["GrossPay"].ToString();
-                        this.txtNetPay.Text = reader["NetPay"].ToString();
+                        this.txtHourlyPay.Text = reader["Hourly"].ToString();
+                        this.txtHoursWorked.Text = reader["HoursWorked"].ToString();
+                        this.txtOvertimeWorked.Text = reader["OvertimeWorked"].ToString();
                     }
                     con.Close();
                 }
@@ -709,5 +706,55 @@ namespace CSC430_Payroll
             gridRefresh();
         }
 
+    
+        private void btnPrintCheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+                SqlConnection con = new SqlConnection(connectionString); // making connection
+                con.Open();
+
+                float hoursWorked = Int32.Parse(txtHoursWorked.Text);
+                float overtimeWorked = Int32.Parse(txtOvertimeWorked.Text);
+                float hourlyPay = Int32.Parse(txtHourlyPay.Text);
+                float grossPay = (hoursWorked * hourlyPay) + (overtimeWorked * hourlyPay);
+
+                if (txtOvertimeWorked.Text == "")
+                {
+                    txtOvertimeWorked.Text = 0.ToString();
+                }
+                string sqlquery = "UPDATE Employee SET HoursWorked = " + txtHoursWorked.Text + " WHERE ID = " + getSelectionID();
+                string sqlquery1 = "UPDATE Employee SET OvertimeWorked = " + txtOvertimeWorked.Text + " WHERE ID = " + getSelectionID();
+                string sqlquery2 = "UPDATE Employee SET Hourly = " + txtHourlyPay.Text + " WHERE ID = " + getSelectionID();
+                string sqlquery3 = "UPDATE Employee SET GrossPay = " + grossPay.ToString() + " WHERE ID = " + getSelectionID();
+
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                SqlCommand command1 = new SqlCommand(sqlquery1, con);
+                SqlCommand command2 = new SqlCommand(sqlquery2, con);
+                SqlCommand command3 = new SqlCommand(sqlquery3, con);
+
+                command.ExecuteNonQuery();
+                command1.ExecuteNonQuery();
+                command2.ExecuteNonQuery();
+                command3.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch(Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
+            FormCheck formCheck = new FormCheck(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text, 
+            txtDateOfBirth.Text);
+            formCheck.ShowDialog();
+        }
+
+        private void btnDetailedInfo_Click(object sender, EventArgs e)
+        {
+            DetailedInfo detailedinfo = new DetailedInfo(txtEmployeeID.Text);
+            detailedinfo.ShowDialog();
+        }
     }
 }

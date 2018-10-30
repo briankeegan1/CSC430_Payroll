@@ -106,7 +106,7 @@ namespace CSC430_Payroll
                     this.Close();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -119,7 +119,7 @@ namespace CSC430_Payroll
             SqlConnection con = new SqlConnection(connectionString); // making connection
             con.Open();
 
-            string sqlquery = "SELECT [Last Name], [First Name], DOB, Address, ZIP, Salary, Tax, Overtime, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
+            string sqlquery = "SELECT [Last Name], [First Name], DOB, Address, ZIP, Salary, Tax, OvertimeWorked, Deductions, GrossPay, NetPay FROM Employee WHERE ID = " + numID;
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -136,7 +136,7 @@ namespace CSC430_Payroll
 
                 this.txtAddress.Text = reader["Address"].ToString();
                 this.txtZipcode.Text = reader["ZIP"].ToString();
-                
+
                 //this.txtSalary.Text = reader["Salary"].ToString();
                 //this.txtTax.Text = reader["Tax"].ToString();
                 //this.txtOvertime.Text = reader["Overtime"].ToString();
@@ -198,7 +198,7 @@ namespace CSC430_Payroll
                 String sqlquery = "SELECT [" + Taxes[i] + "] FROM Employee WHERE ID = " + numID;
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 bool temp = (bool)command.ExecuteScalar();
-                if(temp == true)
+                if (temp == true)
                 {
                     checkedListBox1.SetItemChecked(i, true);
                 }
