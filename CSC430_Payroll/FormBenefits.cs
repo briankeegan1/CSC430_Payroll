@@ -32,6 +32,7 @@ namespace CSC430_Payroll
         private void UpdateBenefits()   //keeps listBox and dropdown boxes up to date
         {
             listBox1.Items.Clear();
+            listBox2.Items.Clear();
             comboBox1.Items.Clear();
             comboBox2.Items.Clear();
 
@@ -51,6 +52,7 @@ namespace CSC430_Payroll
             for (int i = 1; i <= size; i++)
             {
                 PrintBenefits(i);
+                PrintRates(i);
                 DropDownBox_Add(i);
                 DropDownBox_Delete(i);
             }
@@ -113,7 +115,8 @@ namespace CSC430_Payroll
             param.ParameterName = "@count";
             param.Value = count;
 
-            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Included = 1 AND Number = @count";
+            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Included = 1 AND Number = @count; ";
+
             String Output = "";
 
             command = new SqlCommand(sql, con);
@@ -127,6 +130,32 @@ namespace CSC430_Payroll
                 Output = "";
                 Output = Output + reader.GetValue(0);
                 listBox1.Items.Add(Output);
+            }
+
+            con.Close();
+        }
+
+        private void PrintRates(int count)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@count";
+            param.Value = count;
+
+            String sql = "SELECT Rate FROM Benefits WHERE Included = 1 AND Number = @count; ";
+
+            String Output = "";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Output = "";
+                Output = Output + reader.GetValue(0);
+                listBox2.Items.Add(Output);
             }
 
             con.Close();
