@@ -23,7 +23,7 @@ namespace CSC430_Payroll
             InitializeComponent();
 
         }
-        public FormCheck(string employeeID, string text1, string text2, string text3, string text4, string text5)
+        public FormCheck(string employeeID, string text1, string text2, string text3, string text4, string text5, decimal taxRate, decimal benefitRate)
         {
             //Note: weird format when displaying employee try to fix that 
             numID = employeeID;

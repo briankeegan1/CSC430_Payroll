@@ -331,6 +331,7 @@ namespace CSC430_Payroll
                         this.txtHoursWorked.Text = reader["HoursWorked"].ToString();
                         this.txtOvertimeWorked.Text = reader["OvertimeWorked"].ToString();
                     }
+                    reader.Close();
                     con.Close();
                 }
                 catch (Exception ex)
@@ -715,24 +716,46 @@ namespace CSC430_Payroll
                 SqlConnection con = new SqlConnection(connectionString); // making connection
                 con.Open();
 
-                float hoursWorked = Int32.Parse(txtHoursWorked.Text);
-                float overtimeWorked = Int32.Parse(txtOvertimeWorked.Text);
-                float hourlyPay = Int32.Parse(txtHourlyPay.Text);
-                float grossPay = (hoursWorked * hourlyPay) + (overtimeWorked * hourlyPay);
+                decimal taxRate = 0;
+                decimal benefitRate = 0;
 
+                decimal hoursWorked = Int32.Parse(txtHoursWorked.Text);
+                decimal overtimeWorked = Int32.Parse(txtOvertimeWorked.Text);
+                decimal hourlyPay = Int32.Parse(txtHourlyPay.Text);
+                decimal grossPay = (hoursWorked * hourlyPay) + (overtimeWorked * hourlyPay);
+                
                 if (txtOvertimeWorked.Text == "")
                 {
                     txtOvertimeWorked.Text = 0.ToString();
                 }
-                string sqlquery = "UPDATE Employee SET HoursWorked = " + txtHoursWorked.Text + " WHERE ID = " + getSelectionID();
-                string sqlquery1 = "UPDATE Employee SET OvertimeWorked = " + txtOvertimeWorked.Text + " WHERE ID = " + getSelectionID();
-                string sqlquery2 = "UPDATE Employee SET Hourly = " + txtHourlyPay.Text + " WHERE ID = " + getSelectionID();
-                string sqlquery3 = "UPDATE Employee SET GrossPay = " + grossPay.ToString() + " WHERE ID = " + getSelectionID();
+                
+
+                for(int i = 0; i < listBox1.Items.Count; i++)
+                {
+                    String sqlquery5 = "SELECT Rate FROM Taxes WHERE [Tax Name] = '" + listBox1.Items[i].ToString() +"'";
+                    SqlCommand command5 = new SqlCommand(sqlquery5, con);
+                    taxRate = taxRate + Convert.ToDecimal(command5.ExecuteScalar());
+                }
+
+                for (int i = 0; i < listBox2.Items.Count; i++)
+                {
+                    String sqlquery6 = "SELECT Rate FROM Benefits WHERE [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
+                    SqlCommand command6 = new SqlCommand(sqlquery6, con);
+                    benefitRate = benefitRate + Convert.ToDecimal(command6.ExecuteScalar());
+                }
+
+
+                String sqlquery = "UPDATE Employee SET HoursWorked = " + txtHoursWorked.Text + " WHERE ID = " + getSelectionID();
+                String sqlquery1 = "UPDATE Employee SET OvertimeWorked = " + txtOvertimeWorked.Text + " WHERE ID = " + getSelectionID();
+                String sqlquery2 = "UPDATE Employee SET Hourly = " + txtHourlyPay.Text + " WHERE ID = " + getSelectionID();
+                String sqlquery3 = "UPDATE Employee SET GrossPay = " + grossPay.ToString() + " WHERE ID = " + getSelectionID();
+                //String sqlquery4 = "UPDATE Employee SET NetPay = " ;
 
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlCommand command1 = new SqlCommand(sqlquery1, con);
                 SqlCommand command2 = new SqlCommand(sqlquery2, con);
                 SqlCommand command3 = new SqlCommand(sqlquery3, con);
+                //SqlCommand command4 = new SqlCommand(sqlquery4, con);
 
                 command.ExecuteNonQuery();
                 command1.ExecuteNonQuery();
@@ -740,15 +763,16 @@ namespace CSC430_Payroll
                 command3.ExecuteNonQuery();
 
                 con.Close();
+
+                FormCheck formCheck = new FormCheck(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text,
+                txtDateOfBirth.Text, taxRate, benefitRate);
+                formCheck.ShowDialog();
             }
             catch(Exception exc)
             {
                 MessageBox.Show(exc.Message);
             }
 
-            FormCheck formCheck = new FormCheck(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text, 
-            txtDateOfBirth.Text);
-            formCheck.ShowDialog();
         }
 
         private void btnDetailedInfo_Click(object sender, EventArgs e)
