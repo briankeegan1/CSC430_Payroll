@@ -15,16 +15,25 @@ namespace CSC430_Payroll
     public partial class FormCheck : Form
     {
         public string numID = "";
+
+        formMain form1 = Application.OpenForms.OfType<formMain>().Single();
         private List<string> Benefits = new List<string>();
         private List<string> Taxes = new List<string>();
+        private List<string> TaxRates = new List<string>();
+        private List<string> BenefitRates = new List<string>();
 
         public FormCheck()
         {
             InitializeComponent();
 
         }
-        public FormCheck(string employeeID, string text1, string text2, string text3, string text4, string text5, decimal taxRate, decimal benefitRate)
+        public FormCheck(string employeeID, string text1, string text2, string text3, string text4, string text5,
+            decimal taxRate, decimal benefitRate, List<string> taxRates, List<string> benefitRates)
         {
+            Taxes = form1.getTaxes();
+            Benefits = form1.getBenefits();
+            TaxRates = taxRates;
+            BenefitRates = benefitRates;
             //Note: weird format when displaying employee try to fix that 
             numID = employeeID;
             InitializeComponent();
@@ -53,6 +62,7 @@ namespace CSC430_Payroll
                     this.displayOvrHrs.Text = reader["OvertimeWorked"].ToString();
                     this.displayOverAmt.Text = (Convert.ToInt32(displayHourlyAmt.Text) * Convert.ToInt32(displayOvrHrs.Text)).ToString();
                     this.displayGrossPay.Text = reader["GrossPay"].ToString();
+                    this.displayNetPay.Text = reader["NetPay"].ToString();
                 }
                 con.Close();
 

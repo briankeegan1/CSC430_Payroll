@@ -710,62 +710,80 @@ namespace CSC430_Payroll
     
         private void btnPrintCheck_Click(object sender, EventArgs e)
         {
+            if (txtOvertimeWorked.Text == "")
+            {
+                txtOvertimeWorked.Text = 0.ToString();
+            }
             try
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
                 SqlConnection con = new SqlConnection(connectionString); // making connection
                 con.Open();
 
+                List<string> TaxRates = new List<string>();
+                List<string> BenefitRates = new List<string>();
+
                 decimal taxRate = 0;
                 decimal benefitRate = 0;
+                decimal netPay = 0;
 
                 decimal hoursWorked = Int32.Parse(txtHoursWorked.Text);
                 decimal overtimeWorked = Int32.Parse(txtOvertimeWorked.Text);
                 decimal hourlyPay = Int32.Parse(txtHourlyPay.Text);
                 decimal grossPay = (hoursWorked * hourlyPay) + (overtimeWorked * hourlyPay);
-                
-                if (txtOvertimeWorked.Text == "")
-                {
-                    txtOvertimeWorked.Text = 0.ToString();
-                }
-                
 
-                for(int i = 0; i < listBox1.Items.Count; i++)
-                {
-                    String sqlquery5 = "SELECT Rate FROM Taxes WHERE [Tax Name] = '" + listBox1.Items[i].ToString() +"'";
-                    SqlCommand command5 = new SqlCommand(sqlquery5, con);
-                    taxRate = taxRate + Convert.ToDecimal(command5.ExecuteScalar());
-                }
 
-                for (int i = 0; i < listBox2.Items.Count; i++)
+                if (listBox1.Items.Count > 0)
                 {
-                    String sqlquery6 = "SELECT Rate FROM Benefits WHERE [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
-                    SqlCommand command6 = new SqlCommand(sqlquery6, con);
-                    benefitRate = benefitRate + Convert.ToDecimal(command6.ExecuteScalar());
+                    for (int i = 0; i < listBox1.Items.Count; i++)
+                    {
+                        String sqlquery5 = "SELECT Rate FROM Taxes WHERE [Tax Name] = '" + listBox1.Items[i].ToString() + "'";
+                        SqlCommand command5 = new SqlCommand(sqlquery5, con);
+                        taxRate = taxRate + Convert.ToDecimal(command5.ExecuteScalar());
+                        BenefitRates.Add(Convert.ToString(command5.ExecuteScalar()));
+                    }
                 }
 
+                if (listBox2.Items.Count > 0)
+                {
+                    for (int i = 0; i < listBox2.Items.Count; i++)
+                    {
+                        String sqlquery6 = "SELECT Rate FROM Benefits WHERE [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
+                        SqlCommand command6 = new SqlCommand(sqlquery6, con);
+                        benefitRate = benefitRate + Convert.ToDecimal(command6.ExecuteScalar());
+                        TaxRates.Add(Convert.ToString(command6.ExecuteScalar()));
+                    }
+                }
+
+                if (benefitRate > 0 || taxRate > 0)
+                {
+                    netPay = (benefitRate + taxRate) * grossPay;
+                }
+                else
+                    netPay = grossPay;
 
                 String sqlquery = "UPDATE Employee SET HoursWorked = " + txtHoursWorked.Text + " WHERE ID = " + getSelectionID();
                 String sqlquery1 = "UPDATE Employee SET OvertimeWorked = " + txtOvertimeWorked.Text + " WHERE ID = " + getSelectionID();
                 String sqlquery2 = "UPDATE Employee SET Hourly = " + txtHourlyPay.Text + " WHERE ID = " + getSelectionID();
                 String sqlquery3 = "UPDATE Employee SET GrossPay = " + grossPay.ToString() + " WHERE ID = " + getSelectionID();
-                //String sqlquery4 = "UPDATE Employee SET NetPay = " ;
+                String sqlquery4 = "UPDATE Employee SET NetPay =  " + netPay.ToString();
 
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlCommand command1 = new SqlCommand(sqlquery1, con);
                 SqlCommand command2 = new SqlCommand(sqlquery2, con);
                 SqlCommand command3 = new SqlCommand(sqlquery3, con);
-                //SqlCommand command4 = new SqlCommand(sqlquery4, con);
+                SqlCommand command4 = new SqlCommand(sqlquery4, con);
 
                 command.ExecuteNonQuery();
                 command1.ExecuteNonQuery();
                 command2.ExecuteNonQuery();
                 command3.ExecuteNonQuery();
+                command4.ExecuteNonQuery();
 
                 con.Close();
 
                 FormCheck formCheck = new FormCheck(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text,
-                txtDateOfBirth.Text, taxRate, benefitRate);
+                txtDateOfBirth.Text, taxRate, benefitRate, TaxRates, BenefitRates);
                 formCheck.ShowDialog();
             }
             catch(Exception exc)
