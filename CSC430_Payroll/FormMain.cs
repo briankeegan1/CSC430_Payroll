@@ -757,7 +757,7 @@ namespace CSC430_Payroll
 
                 if (benefitRate > 0 || taxRate > 0)
                 {
-                    netPay = (benefitRate + taxRate) * grossPay;
+                    netPay = grossPay - ((benefitRate + taxRate) * grossPay);
                 }
                 else
                     netPay = grossPay;
