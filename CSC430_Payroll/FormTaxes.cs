@@ -31,6 +31,7 @@ namespace CSC430_Payroll
         private void UpdateTaxes()   //keeps listBox and dropdown boxes up to date
         {
             listBox1.Items.Clear();
+            listBox2.Items.Clear();
             comboBox1.Items.Clear();
             comboBox2.Items.Clear();
 
@@ -50,6 +51,7 @@ namespace CSC430_Payroll
             for (int i = 1; i <= size; i++)
             {
                 PrintTaxes(i);
+                PrintRates(i);
                 DropDownBox_Add(i);
                 DropDownBox_Delete(i);
             }
@@ -129,6 +131,32 @@ namespace CSC430_Payroll
             con.Close();
         }
 
+        private void PrintRates(int count)
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@count";
+            param.Value = count;
+
+            String sql = "SELECT Rate FROM Taxes WHERE Included = 1 AND Number = @count; ";
+
+            String Output = "";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Output = "";
+                Output = Output + reader.GetValue(0);
+                listBox2.Items.Add(Output);
+            }
+
+            con.Close();
+        }
+
         private void FormTaxes_Load(object sender, EventArgs e)
         {
 
@@ -161,36 +189,46 @@ namespace CSC430_Payroll
 
         private void Add_Click(object sender, EventArgs e)  //Adds Tax to listBox
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
             string input = comboBox1.GetItemText(comboBox1.SelectedItem);
-            param.Value = input;
 
-            String sql = "UPDATE Taxes SET Included = 1 WHERE [Tax Name] = @input";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@input";
+                param.Value = input;
 
-            comboBox1.SelectedItem = null;
-            con.Close();
-            AddEmployeeCol(input);
-            UpdateTaxes();
+                String sql = "UPDATE Taxes SET Included = 1 WHERE [Tax Name] = @input";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                comboBox1.SelectedItem = null;
+                con.Close();
+                AddEmployeeCol(input);
+                UpdateTaxes();
+            }
         }
 
         private void Create_Click(object sender, EventArgs e)   //Creates NEW Tax
         {
             int rateSize = textBox2.Text.Length;
 
-            if (rateSize == 1 && !char.IsDigit(textBox2.Text[0]) || 
-                rateSize == 2 && !char.IsDigit(textBox2.Text[1]))
+            if (textBox1.Text == "")
+                MessageBox.Show("Please enter a tax name.");
+
+            else if (textBox2.Text == "")
+                MessageBox.Show("Please enter the tax rate.");
+
+            else if ( (rateSize == 1 && !char.IsDigit(textBox2.Text[0])) ||
+                (rateSize == 2 && (!char.IsDigit(textBox2.Text[0]) || !char.IsDigit(textBox2.Text[1]))) )
             {   
                 MessageBox.Show("Please enter numbers only for the Rate.");
                 textBox2.Text = null;
@@ -266,30 +304,34 @@ namespace CSC430_Payroll
 
         private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Tax
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
             string input = comboBox2.GetItemText(comboBox2.SelectedItem);
-            param.Value = input;
 
-            String sql = "DELETE FROM Taxes WHERE [Tax Name] = @input;";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@input";
+                param.Value = input;
 
-            comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-            comboBox2.SelectedItem = null;
-            con.Close();
-            ResortTable();
-            RemoveEmployeeCol(input);
-            UpdateTaxes();
+                String sql = "DELETE FROM Taxes WHERE [Tax Name] = @input;";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
+                comboBox2.SelectedItem = null;
+                con.Close();
+                ResortTable();
+                RemoveEmployeeCol(input);
+                UpdateTaxes();
+            }
         }
 
         private void ResortTable()  //makes sure there isn't a number gap after deletion

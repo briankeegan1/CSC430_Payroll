@@ -193,36 +193,46 @@ namespace CSC430_Payroll
 
         private void Add_Click(object sender, EventArgs e)  //Adds Benefit from dropdown box to listBox
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
             string input = comboBox1.GetItemText(comboBox1.SelectedItem);
-            param.Value = input;
 
-            String sql = "UPDATE Benefits SET Included = 1 WHERE [Benefit Name] = @input";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@input";
+                param.Value = input;
 
-            comboBox1.SelectedItem = null;
-            con.Close();
-            AddEmployeeCol(input);
-            UpdateBenefits();
+                String sql = "UPDATE Benefits SET Included = 1 WHERE [Benefit Name] = @input";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                comboBox1.SelectedItem = null;
+                con.Close();
+                AddEmployeeCol(input);
+                UpdateBenefits();
+            }
         }
 
         private void Create_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
             int rateSize = textBox2.Text.Length;
 
-            if (rateSize == 1 && !char.IsDigit(textBox2.Text[0]) ||
-                rateSize == 2 && !char.IsDigit(textBox2.Text[1]))
+            if (textBox1.Text == "")
+                MessageBox.Show("Please enter a benefit name.");
+
+            else if (textBox2.Text == "")
+                MessageBox.Show("Please enter the benefit rate.");
+
+            else if ( rateSize == 1 && !char.IsDigit(textBox2.Text[0]) ||
+                ( rateSize == 2 && (!char.IsDigit(textBox2.Text[0]) || !char.IsDigit(textBox2.Text[1]))) )
             {
                 MessageBox.Show("Please enter numbers only for the Rate.");
                 textBox2.Text = null;
@@ -297,31 +307,35 @@ namespace CSC430_Payroll
         }
 
         private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
-        {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@benefitName";
+        {   
             string input = comboBox2.GetItemText(comboBox2.SelectedItem);
-            param.Value = input;
 
-            String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@benefitName";
+                param.Value = input;
 
-            comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-            comboBox2.SelectedItem = null;
-            con.Close();
-            ResortTable();
-            RemoveEmployeeCol(input);
-            UpdateBenefits();
+                String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
+                comboBox2.SelectedItem = null;
+                con.Close();
+                ResortTable();
+                RemoveEmployeeCol(input);
+                UpdateBenefits();
+            }
         }
 
         private void ResortTable()  //makes sure there isn't a number gap after deletion

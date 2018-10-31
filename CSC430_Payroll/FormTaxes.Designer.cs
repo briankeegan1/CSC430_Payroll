@@ -43,6 +43,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -59,14 +60,14 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 27);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(121, 199);
+            this.listBox1.Size = new System.Drawing.Size(108, 199);
             this.listBox1.TabIndex = 2;
             // 
             // Remove
             // 
             this.Remove.Location = new System.Drawing.Point(12, 232);
             this.Remove.Name = "Remove";
-            this.Remove.Size = new System.Drawing.Size(121, 23);
+            this.Remove.Size = new System.Drawing.Size(108, 23);
             this.Remove.TabIndex = 3;
             this.Remove.Text = "Remove";
             this.Remove.UseVisualStyleBackColor = true;
@@ -179,11 +180,20 @@
             this.label6.TabIndex = 15;
             this.label6.Text = "%";
             // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(127, 27);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(27, 199);
+            this.listBox2.TabIndex = 16;
+            // 
             // FormTaxes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(326, 263);
+            this.Controls.Add(this.listBox2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox2);
@@ -225,5 +235,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ListBox listBox2;
     }
 }

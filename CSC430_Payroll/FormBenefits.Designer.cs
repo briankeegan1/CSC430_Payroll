@@ -201,7 +201,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 263);
+            this.ClientSize = new System.Drawing.Size(326, 263);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.label6);
@@ -219,8 +219,8 @@
             this.Controls.Add(this.Remove);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
-            this.MaximumSize = new System.Drawing.Size(339, 302);
-            this.MinimumSize = new System.Drawing.Size(339, 302);
+            this.MaximumSize = new System.Drawing.Size(342, 302);
+            this.MinimumSize = new System.Drawing.Size(342, 302);
             this.Name = "FormBenefits";
             this.Text = "Edit Benefits";
             this.Load += new System.EventHandler(this.FormBenefits_Load);
