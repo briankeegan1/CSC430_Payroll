@@ -168,27 +168,37 @@ namespace CSC430_Payroll
 
         private void Remove_Click(object sender, EventArgs e)   //Removes Benefit from listBox and places it in dropdown box
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
             string input = listBox1.GetItemText(listBox1.SelectedItem);
-            param.Value = input;
 
-            String sql = "UPDATE Benefits SET Included = 0 WHERE [Benefit Name] = @input";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                var confirmRemoval = MessageBox.Show("Are you sure you want to remove this Benefit? You may add it back later but it will have already" +
+                " been removed from each employee.", "Confirm Removal", MessageBoxButtons.YesNo);
 
-            con.Close();
-            RemoveEmployeeCol(input);
-            UpdateBenefits();
+                if (confirmRemoval == DialogResult.Yes)
+                {
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@input";
+                    param.Value = input;
+
+                    String sql = "UPDATE Benefits SET Included = 0 WHERE [Benefit Name] = @input";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    con.Close();
+                    RemoveEmployeeCol(input);
+                    UpdateBenefits();
+                }
+            }
         }
 
         private void Add_Click(object sender, EventArgs e)  //Adds Benefit from dropdown box to listBox
@@ -312,29 +322,35 @@ namespace CSC430_Payroll
 
             if (input != "")
             {
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = "@benefitName";
-                param.Value = input;
+                var confirmDelete = MessageBox.Show("Are you sure you want to delete this Benefit? It will be removed from each employee that uses it.",
+                "Confirm Deletion", MessageBoxButtons.YesNo);
 
-                String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
-
-                command = new SqlCommand(sql, con);
-                command.Parameters.Add(param);
-
-                con.Open();
-                reader = command.ExecuteReader();
-
-                while (reader.Read())
+                if (confirmDelete == DialogResult.Yes)
                 {
-                    Console.WriteLine(reader.GetValue(0));
-                }
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@benefitName";
+                    param.Value = input;
 
-                comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-                comboBox2.SelectedItem = null;
-                con.Close();
-                ResortTable();
-                RemoveEmployeeCol(input);
-                UpdateBenefits();
+                    String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
+                    comboBox2.SelectedItem = null;
+                    con.Close();
+                    ResortTable();
+                    RemoveEmployeeCol(input);
+                    UpdateBenefits();
+                }
             }
         }
 

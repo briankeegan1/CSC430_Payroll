@@ -164,27 +164,38 @@ namespace CSC430_Payroll
 
         private void Remove_Click(object sender, EventArgs e)   //Removes Tax from listBox
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@input";
             string input = listBox1.GetItemText(listBox1.SelectedItem);
-            param.Value = input;
 
-            String sql = "UPDATE Taxes SET Included = 0 WHERE [Tax Name] = @input";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            if (input != "")
             {
-                Console.WriteLine(reader.GetValue(0));
-            }
+                var confirmDelete = MessageBox.Show("Are you sure you want to remove this Tax? You may add it back later but it will have already" +
+                " been removed from each employee.","Confirm Deletion", MessageBoxButtons.YesNo);
 
-            con.Close();
-            RemoveEmployeeCol(input);
-            UpdateTaxes();
+                if (confirmDelete == DialogResult.Yes)
+                {
+
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@input";
+                    param.Value = input;
+
+                    String sql = "UPDATE Taxes SET Included = 0 WHERE [Tax Name] = @input";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    con.Close();
+                    RemoveEmployeeCol(input);
+                    UpdateTaxes();
+                }
+            }
         }
 
         private void Add_Click(object sender, EventArgs e)  //Adds Tax to listBox
@@ -308,29 +319,35 @@ namespace CSC430_Payroll
 
             if (input != "")
             {
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = "@input";
-                param.Value = input;
+                var confirmRemoval = MessageBox.Show("Are you sure you want to delete this Tax? It will be removed from each employee.",
+                "Confirm Removal", MessageBoxButtons.YesNo);
 
-                String sql = "DELETE FROM Taxes WHERE [Tax Name] = @input;";
-
-                command = new SqlCommand(sql, con);
-                command.Parameters.Add(param);
-
-                con.Open();
-                reader = command.ExecuteReader();
-
-                while (reader.Read())
+                if (confirmRemoval == DialogResult.Yes)
                 {
-                    Console.WriteLine(reader.GetValue(0));
-                }
+                    SqlParameter param = new SqlParameter();
+                    param.ParameterName = "@input";
+                    param.Value = input;
 
-                comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-                comboBox2.SelectedItem = null;
-                con.Close();
-                ResortTable();
-                RemoveEmployeeCol(input);
-                UpdateTaxes();
+                    String sql = "DELETE FROM Taxes WHERE [Tax Name] = @input;";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
+                    comboBox2.SelectedItem = null;
+                    con.Close();
+                    ResortTable();
+                    RemoveEmployeeCol(input);
+                    UpdateTaxes();
+                }
             }
         }
 
