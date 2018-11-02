@@ -90,7 +90,7 @@
             // btnReg
             // 
             this.btnReg.Location = new System.Drawing.Point(65, 136);
-            this.btnReg.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnReg.Margin = new System.Windows.Forms.Padding(2);
             this.btnReg.Name = "btnReg";
             this.btnReg.Size = new System.Drawing.Size(77, 25);
             this.btnReg.TabIndex = 5;
@@ -112,6 +112,7 @@
             this.MaximumSize = new System.Drawing.Size(325, 229);
             this.MinimumSize = new System.Drawing.Size(325, 229);
             this.Name = "FormLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);

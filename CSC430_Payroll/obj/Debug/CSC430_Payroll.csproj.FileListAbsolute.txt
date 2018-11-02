@@ -75,3 +75,4 @@ C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payro
 C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormTaxes.resources
 C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.DetailedInfo.resources
 C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormCheck.resources
+C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormModifyTax.resources

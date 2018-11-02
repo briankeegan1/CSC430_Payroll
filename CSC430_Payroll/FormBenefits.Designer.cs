@@ -222,6 +222,7 @@
             this.MaximumSize = new System.Drawing.Size(342, 302);
             this.MinimumSize = new System.Drawing.Size(342, 302);
             this.Name = "FormBenefits";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Benefits";
             this.Load += new System.EventHandler(this.FormBenefits_Load);
             this.ResumeLayout(false);

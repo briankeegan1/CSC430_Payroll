@@ -42,7 +42,7 @@ namespace CSC430_Payroll
 
             con.Open();
             if (command.ExecuteScalar() != null)        //Error Handling for empty table
-                size = (int)command.ExecuteScalar();
+                size = (int)command.ExecuteScalar();    //get size from sal variable
             else
                 size = 0;
 
@@ -168,8 +168,8 @@ namespace CSC430_Payroll
 
             if (input != "")
             {
-                var confirmDelete = MessageBox.Show("Are you sure you want to remove this Tax? You may add it back later but it will have already" +
-                " been removed from each employee.","Confirm Deletion", MessageBoxButtons.YesNo);
+                var confirmDelete = MessageBox.Show("Are you sure you want to remove this Tax from all employee paychecks?" +
+                    " You may add it back later.", "Confirm Deletion", MessageBoxButtons.YesNo);
 
                 if (confirmDelete == DialogResult.Yes)
                 {
@@ -319,7 +319,7 @@ namespace CSC430_Payroll
 
             if (input != "")
             {
-                var confirmRemoval = MessageBox.Show("Are you sure you want to delete this Tax? It will be removed from each employee.",
+                var confirmRemoval = MessageBox.Show("Are you sure you want to delete this Tax? It will be removed from each employee's paycheck.",
                 "Confirm Removal", MessageBoxButtons.YesNo);
 
                 if (confirmRemoval == DialogResult.Yes)
@@ -423,7 +423,7 @@ namespace CSC430_Payroll
             sql = "DECLARE @SQL VARCHAR(1000);" +
                   "SET @SQL = '" +
                   "UPDATE Employee " +
-                  "SET [' + @taxName + '] = 0 " +
+                  "SET [' + @taxName + '] = 1 " +
                   "';" +
                   "EXEC (@SQL);";
 
@@ -439,6 +439,17 @@ namespace CSC430_Payroll
             }
 
             con.Close();
+        }
+
+        private void Modify_Click(object sender, EventArgs e)
+        {
+            string name = comboBox2.GetItemText(comboBox2.SelectedItem);
+            if (name != "")
+            {
+                FormModifyTax popUpForm = new FormModifyTax(name);
+                popUpForm.ShowDialog();
+                UpdateTaxes();
+            }
         }
 
         private void RemoveEmployeeCol(string taxName)

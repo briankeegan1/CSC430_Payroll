@@ -35,6 +35,8 @@ namespace CSC430_Payroll
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btnDeleteEmployee = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtOvertimeWorked = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txtHoursWorked = new System.Windows.Forms.TextBox();
@@ -68,8 +70,6 @@ namespace CSC430_Payroll
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.txtOvertimeWorked = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -158,6 +158,22 @@ namespace CSC430_Payroll
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Employee Info";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(460, 391);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 13);
+            this.label10.TabIndex = 53;
+            this.label10.Text = "Hours Overtime";
+            // 
+            // txtOvertimeWorked
+            // 
+            this.txtOvertimeWorked.Location = new System.Drawing.Point(542, 388);
+            this.txtOvertimeWorked.Name = "txtOvertimeWorked";
+            this.txtOvertimeWorked.Size = new System.Drawing.Size(40, 20);
+            this.txtOvertimeWorked.TabIndex = 52;
             // 
             // label9
             // 
@@ -468,22 +484,6 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // txtOvertimeWorked
-            // 
-            this.txtOvertimeWorked.Location = new System.Drawing.Point(542, 388);
-            this.txtOvertimeWorked.Name = "txtOvertimeWorked";
-            this.txtOvertimeWorked.Size = new System.Drawing.Size(40, 20);
-            this.txtOvertimeWorked.TabIndex = 52;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(460, 391);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(80, 13);
-            this.label10.TabIndex = 53;
-            this.label10.Text = "Hours Overtime";
-            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -496,6 +496,7 @@ namespace CSC430_Payroll
             this.MaximumSize = new System.Drawing.Size(962, 558);
             this.MinimumSize = new System.Drawing.Size(962, 558);
             this.Name = "formMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Payroll Management";
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

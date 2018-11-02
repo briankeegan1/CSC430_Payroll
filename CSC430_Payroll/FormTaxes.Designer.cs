@@ -44,6 +44,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.listBox2 = new System.Windows.Forms.ListBox();
+            this.Modify = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -129,9 +131,9 @@
             // 
             // Delete
             // 
-            this.Delete.Location = new System.Drawing.Point(175, 225);
+            this.Delete.Location = new System.Drawing.Point(244, 228);
             this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(75, 23);
+            this.Delete.Size = new System.Drawing.Size(63, 23);
             this.Delete.TabIndex = 10;
             this.Delete.Text = "Delete";
             this.Delete.UseVisualStyleBackColor = true;
@@ -150,9 +152,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(172, 182);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.Size = new System.Drawing.Size(101, 13);
             this.label4.TabIndex = 12;
-            this.label4.Text = "Delete Tax";
+            this.label4.Text = "Modify / Delete Tax";
             // 
             // textBox2
             // 
@@ -188,11 +190,32 @@
             this.listBox2.Size = new System.Drawing.Size(27, 199);
             this.listBox2.TabIndex = 16;
             // 
+            // Modify
+            // 
+            this.Modify.Location = new System.Drawing.Point(175, 228);
+            this.Modify.Name = "Modify";
+            this.Modify.Size = new System.Drawing.Size(64, 23);
+            this.Modify.TabIndex = 17;
+            this.Modify.Text = "Modify";
+            this.Modify.UseVisualStyleBackColor = true;
+            this.Modify.Click += new System.EventHandler(this.Modify_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(124, 11);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(30, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Rate";
+            // 
             // FormTaxes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(326, 263);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.Modify);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -212,6 +235,7 @@
             this.MaximumSize = new System.Drawing.Size(342, 302);
             this.MinimumSize = new System.Drawing.Size(342, 302);
             this.Name = "FormTaxes";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Taxes";
             this.Load += new System.EventHandler(this.FormTaxes_Load);
             this.ResumeLayout(false);
@@ -236,5 +260,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Button Modify;
+        private System.Windows.Forms.Label label7;
     }
 }
