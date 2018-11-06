@@ -233,67 +233,9 @@ namespace CSC430_Payroll
 
         private void Create_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
-            int rateSize = textBox2.Text.Length;
-
-            if (textBox1.Text == "")
-                MessageBox.Show("Please enter a benefit name.");
-
-            else if (textBox2.Text == "")
-                MessageBox.Show("Please enter the benefit rate.");
-
-            else if ( rateSize == 1 && !char.IsDigit(textBox2.Text[0]) ||
-                ( rateSize == 2 && (!char.IsDigit(textBox2.Text[0]) || !char.IsDigit(textBox2.Text[1]))) )
-            {
-                MessageBox.Show("Please enter numbers only for the Rate.");
-                textBox2.Text = null;
-            }
-            else
-            {
-                if (CheckDuplicate() == true)
-                {
-                    MessageBox.Show("Benefit already exists.", "Error Message");
-                }
-                else
-                {
-                    SqlParameter param1 = new SqlParameter();
-                    SqlParameter param2 = new SqlParameter();
-                    param1.ParameterName = "@benefitName";
-                    param2.ParameterName = "@rate";
-                    param1.Value = textBox1.Text;
-
-                    if (rateSize == 1)
-                        param2.Value = ".0" + textBox2.Text;
-                    else
-                        param2.Value = "." + textBox2.Text;
-
-                    String sql = "DECLARE @size INT;" +
-                                 "SET @size = 0;" +
-                                 "SELECT TOP 1 @size = Number FROM Benefits ORDER BY Number DESC;" +
-                                 "INSERT INTO Benefits (Number, [Benefit Name], Included, Rate) VALUES (@size + 1, @benefitName, 1, @rate);";
-
-                    command = new SqlCommand(sql, con);
-                    command.Parameters.Add(param1);
-                    command.Parameters.Add(param2);
-
-                    con.Open();
-                    reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetValue(0));
-                    }
-
-                    con.Close();
-                    AddEmployeeCol(textBox1.Text);
-                    UpdateBenefits();
-                }
-
-                textBox1.Text = null;
-                textBox2.Text = null;
-            }
         }
 
-        private bool CheckDuplicate()       //returns true if there is a duplicate
+       /* private bool CheckDuplicate()       //returns true if there is a duplicate
         {
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@input";
@@ -314,7 +256,7 @@ namespace CSC430_Payroll
                 return true;
             else
                 return false;
-        }
+        }*/
 
         private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
         {   
@@ -444,6 +386,51 @@ namespace CSC430_Payroll
             }
 
             con.Close();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void RemoveEmployeeCol(string benefitName)

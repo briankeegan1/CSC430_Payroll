@@ -23,8 +23,6 @@ namespace CSC430_Payroll
         public FormTaxes()
         {
             InitializeComponent();
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateTaxes();
         }
 
@@ -32,8 +30,8 @@ namespace CSC430_Payroll
         {
             listBox1.Items.Clear();
             listBox2.Items.Clear();
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
+            textBox1.Text = null;
+            textBox2.Text = null;
 
             int size;
             String sql = "SELECT TOP 1 size = Number FROM Taxes ORDER BY Number DESC;";
@@ -52,58 +50,7 @@ namespace CSC430_Payroll
             {
                 PrintTaxes(i);
                 PrintRates(i);
-                DropDownBox_Add(i);
-                DropDownBox_Delete(i);
             }
-        }
-
-        private void DropDownBox_Add(int count)
-        {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@count";
-            param.Value = count;
-
-            String sql = "SELECT [Tax Name] FROM Taxes WHERE Included = 0 AND Number = @count";
-            String Output = "";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Output = "";
-                Output = Output + reader.GetValue(0);
-                comboBox1.Items.Add(Output);
-            }
-
-            con.Close();
-        }
-
-        private void DropDownBox_Delete(int count)
-        {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@count";
-            param.Value = count;
-
-            String sql = "SELECT [Tax Name] FROM Taxes WHERE Number = @count";
-            String Output = "";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Output = "";
-                Output = Output + reader.GetValue(0);
-                comboBox2.Items.Add(Output);
-            }
-            con.Close();
         }
 
         private void PrintTaxes(int count)
@@ -162,72 +109,6 @@ namespace CSC430_Payroll
 
         }
 
-        private void Remove_Click(object sender, EventArgs e)   //Removes Tax from listBox
-        {
-            string input = listBox1.GetItemText(listBox1.SelectedItem);
-
-            if (input != "")
-            {
-                var confirmDelete = MessageBox.Show("Are you sure you want to remove this Tax from all employee paychecks?" +
-                    " You may add it back later.", "Confirm Deletion", MessageBoxButtons.YesNo);
-
-                if (confirmDelete == DialogResult.Yes)
-                {
-
-                    SqlParameter param = new SqlParameter();
-                    param.ParameterName = "@input";
-                    param.Value = input;
-
-                    String sql = "UPDATE Taxes SET Included = 0 WHERE [Tax Name] = @input";
-
-                    command = new SqlCommand(sql, con);
-                    command.Parameters.Add(param);
-
-                    con.Open();
-                    reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetValue(0));
-                    }
-
-                    con.Close();
-                    RemoveEmployeeCol(input);
-                    UpdateTaxes();
-                }
-            }
-        }
-
-        private void Add_Click(object sender, EventArgs e)  //Adds Tax to listBox
-        {
-            string input = comboBox1.GetItemText(comboBox1.SelectedItem);
-
-            if (input != "")
-            {
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = "@input";
-                param.Value = input;
-
-                String sql = "UPDATE Taxes SET Included = 1 WHERE [Tax Name] = @input";
-
-                command = new SqlCommand(sql, con);
-                command.Parameters.Add(param);
-
-                con.Open();
-                reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    Console.WriteLine(reader.GetValue(0));
-                }
-
-                comboBox1.SelectedItem = null;
-                con.Close();
-                AddEmployeeCol(input);
-                UpdateTaxes();
-            }
-        }
-
         private void Create_Click(object sender, EventArgs e)   //Creates NEW Tax
         {
             int rateSize = textBox2.Text.Length;
@@ -266,7 +147,7 @@ namespace CSC430_Payroll
                     String sql = "DECLARE @size INT;" +
                                   "SET @size = 0;" +
                                  "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
-                                 "INSERT INTO Taxes (Number, [Tax Name], Included, Rate) VALUES (@size + 1, @taxName, 1, @rate);";
+                                 "INSERT INTO Taxes (Number, [Tax Name], Rate) VALUES (@size + 1, @taxName, @rate);";
 
                     command = new SqlCommand(sql, con);
                     command.Parameters.Add(param1);
@@ -284,9 +165,6 @@ namespace CSC430_Payroll
                     AddEmployeeCol(textBox1.Text);
                     UpdateTaxes();
                 }
-
-                textBox1.Text = null;
-                textBox2.Text = null;
             }
         }
 
@@ -315,11 +193,11 @@ namespace CSC430_Payroll
 
         private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Tax
         {
-            string input = comboBox2.GetItemText(comboBox2.SelectedItem);
+            string input = listBox1.GetItemText(listBox1.SelectedItem);
 
             if (input != "")
             {
-                var confirmRemoval = MessageBox.Show("Are you sure you want to delete this Tax? It will be removed from each employee's paycheck.",
+                var confirmRemoval = MessageBox.Show("Are you sure you want to delete this Tax?",
                 "Confirm Removal", MessageBoxButtons.YesNo);
 
                 if (confirmRemoval == DialogResult.Yes)
@@ -341,8 +219,6 @@ namespace CSC430_Payroll
                         Console.WriteLine(reader.GetValue(0));
                     }
 
-                    comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-                    comboBox2.SelectedItem = null;
                     con.Close();
                     ResortTable();
                     RemoveEmployeeCol(input);
@@ -443,12 +319,75 @@ namespace CSC430_Payroll
 
         private void Modify_Click(object sender, EventArgs e)
         {
-            string name = comboBox2.GetItemText(comboBox2.SelectedItem);
-            if (name != "")
+            string oldName = listBox1.GetItemText(listBox1.SelectedItem);
+            string newName = textBox3.Text;
+            string newRate = textBox4.Text;
+            int rateSize = textBox4.Text.Length;
+
+            if (listBox1.SelectedIndex == -1)       //if no Tax is selected
+                MessageBox.Show("Please select a Tax.");
+
+            else if (newName == "")                 //if no name is entered 
+                MessageBox.Show("Please enter a Tax name.");
+
+            else if (newRate == "")                 //if no rate is entered
+                MessageBox.Show("Please enter the tax rate.");
+
+            else if ((rateSize == 1 && !char.IsDigit(textBox4.Text[0])) ||
+                (rateSize == 2 && (!char.IsDigit(textBox4.Text[0]) || !char.IsDigit(textBox4.Text[1]))))
             {
-                FormModifyTax popUpForm = new FormModifyTax(name);
-                popUpForm.ShowDialog();
+                MessageBox.Show("Please enter numbers only for the Rate."); //checks if rate is a number
+                textBox2.Text = null;
+            }
+            else if (newName != "")
+            {
+                SqlParameter param1 = new SqlParameter();
+                param1.ParameterName = "@oldName";
+                param1.Value = oldName;
+                SqlParameter param2 = new SqlParameter();
+                param2.ParameterName = "@newName";
+                param2.Value = newName;
+                SqlParameter param3 = new SqlParameter();
+                param3.ParameterName = "@newRate";
+
+                if (rateSize == 1)
+                    param3.Value = ".0" + newRate;
+                else
+                    param3.Value = "." + newRate;
+
+                String sql = "UPDATE Taxes SET [Tax Name] = @newName WHERE [Tax Name] = @oldName;" +
+                             "UPDATE Taxes SET Rate = @newRate WHERE [Tax Name] = @newName;";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param1);
+                command.Parameters.Add(param2);
+                command.Parameters.Add(param3);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                con.Close();
+                textBox3.Text = null;
+                textBox4.Text = null;
                 UpdateTaxes();
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                textBox3.Text = listBox1.GetItemText(listBox1.SelectedItem);
+                string rate = listBox2.Items[listBox1.SelectedIndex].ToString();
+                rate = rate.TrimStart(new Char[] { '0', '.' });
+                if (rate == "")
+                    rate = "0";
+                textBox4.Text = rate;
             }
         }
 
@@ -478,5 +417,6 @@ namespace CSC430_Payroll
 
             con.Close();
         }
+
     }
 }
