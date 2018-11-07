@@ -23,9 +23,6 @@ namespace CSC430_Payroll
         public FormBenefits()
         {
             InitializeComponent();
-
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateBenefits();
         }
 
@@ -33,8 +30,6 @@ namespace CSC430_Payroll
         {
             listBox1.Items.Clear();
             listBox2.Items.Clear();
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
 
             int size;
             String sql = "SELECT TOP 1 size = Number FROM Benefits ORDER BY Number DESC;";
@@ -52,61 +47,10 @@ namespace CSC430_Payroll
             for (int i = 1; i <= size; i++)
             {
                 PrintBenefits(i);
-                PrintRates(i);
-                DropDownBox_Add(i);
-                DropDownBox_Delete(i);
+                //PrintRates(i);
             }
 
                 
-        }
-
-        private void DropDownBox_Add(int count)
-        {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@count";
-            param.Value = count;
-
-            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Included = 0 AND Number = @count";
-            String Output = "";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Output = "";
-                Output = Output + reader.GetValue(0);
-                comboBox1.Items.Add(Output);
-            }
-
-            con.Close();
-        }
-
-        private void DropDownBox_Delete(int count)
-        {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@count";
-            param.Value = count;
-
-            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Number = @count";
-            String Output = "";
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Output = "";
-                Output = Output + reader.GetValue(0);
-                comboBox2.Items.Add(Output);
-            }
-            con.Close();
         }
 
         private void PrintBenefits(int count)
@@ -115,7 +59,7 @@ namespace CSC430_Payroll
             param.ParameterName = "@count";
             param.Value = count;
 
-            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Included = 1 AND Number = @count; ";
+            String sql = "SELECT [Benefit Name] FROM Benefits WHERE Number = @count; ";
 
             String Output = "";
 
@@ -135,13 +79,13 @@ namespace CSC430_Payroll
             con.Close();
         }
 
-        private void PrintRates(int count)
+       /* private void PrintRates(int count)
         {
             SqlParameter param = new SqlParameter();
             param.ParameterName = "@count";
             param.Value = count;
 
-            String sql = "SELECT Rate FROM Benefits WHERE Included = 1 AND Number = @count; ";
+            String sql = "SELECT Rate FROM Benefits WHERE Number = @count; ";
 
             String Output = "";
 
@@ -159,80 +103,18 @@ namespace CSC430_Payroll
             }
 
             con.Close();
-        }
+        }*/
 
         private void FormBenefits_Load(object sender, EventArgs e)
         {
             
         }
 
-        private void Remove_Click(object sender, EventArgs e)   //Removes Benefit from listBox and places it in dropdown box
+        private void CreateBenefit_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
-            string input = listBox1.GetItemText(listBox1.SelectedItem);
-
-            if (input != "")
-            {
-                var confirmRemoval = MessageBox.Show("Are you sure you want to remove this Benefit? You may add it back later but it will have already" +
-                " been removed from each employee.", "Confirm Removal", MessageBoxButtons.YesNo);
-
-                if (confirmRemoval == DialogResult.Yes)
-                {
-                    SqlParameter param = new SqlParameter();
-                    param.ParameterName = "@input";
-                    param.Value = input;
-
-                    String sql = "UPDATE Benefits SET Included = 0 WHERE [Benefit Name] = @input";
-
-                    command = new SqlCommand(sql, con);
-                    command.Parameters.Add(param);
-
-                    con.Open();
-                    reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Console.WriteLine(reader.GetValue(0));
-                    }
-
-                    con.Close();
-                    RemoveEmployeeCol(input);
-                    UpdateBenefits();
-                }
-            }
-        }
-
-        private void Add_Click(object sender, EventArgs e)  //Adds Benefit from dropdown box to listBox
-        {
-            string input = comboBox1.GetItemText(comboBox1.SelectedItem);
-
-            if (input != "")
-            {
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = "@input";
-                param.Value = input;
-
-                String sql = "UPDATE Benefits SET Included = 1 WHERE [Benefit Name] = @input";
-
-                command = new SqlCommand(sql, con);
-                command.Parameters.Add(param);
-
-                con.Open();
-                reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    Console.WriteLine(reader.GetValue(0));
-                }
-
-                comboBox1.SelectedItem = null;
-                con.Close();
-                AddEmployeeCol(input);
-                UpdateBenefits();
-            }
-        }
-
-        private void Create_Click(object sender, EventArgs e)   //Creates NEW Benefit
-        {
+            FormCreateBenefit popUpForm = new FormCreateBenefit();
+            popUpForm.ShowDialog();
+            UpdateBenefits();
         }
 
        /* private bool CheckDuplicate()       //returns true if there is a duplicate
@@ -258,9 +140,9 @@ namespace CSC430_Payroll
                 return false;
         }*/
 
-        private void Delete_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
+        private void DeleteBenefit_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
         {   
-            string input = comboBox2.GetItemText(comboBox2.SelectedItem);
+            string input = listBox1.GetItemText(listBox1.SelectedItem);
 
             if (input != "")
             {
@@ -286,8 +168,6 @@ namespace CSC430_Payroll
                         Console.WriteLine(reader.GetValue(0));
                     }
 
-                    comboBox1.SelectedItem = null; //clears ADD combo box incase deleted item is selected
-                    comboBox2.SelectedItem = null;
                     con.Close();
                     ResortTable();
                     RemoveEmployeeCol(input);

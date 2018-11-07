@@ -365,7 +365,7 @@ namespace CSC430_Payroll
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(870, 18);
+            this.button4.Location = new System.Drawing.Point(864, 18);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 9;
@@ -476,7 +476,7 @@ namespace CSC430_Payroll
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(789, 18);
+            this.button6.Location = new System.Drawing.Point(783, 18);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 43;

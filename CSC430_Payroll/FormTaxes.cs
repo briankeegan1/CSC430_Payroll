@@ -33,6 +33,14 @@ namespace CSC430_Payroll
             textBox1.Text = null;
             textBox2.Text = null;
 
+            if (listBox1.SelectedIndex == -1)
+            {
+                textBox3.Text = null;
+                textBox3.Enabled = false;
+                textBox4.Text = null;
+                textBox4.Enabled = false;
+            }
+
             int size;
             String sql = "SELECT TOP 1 size = Number FROM Taxes ORDER BY Number DESC;";
 
@@ -59,7 +67,7 @@ namespace CSC430_Payroll
             param.ParameterName = "@count";
             param.Value = count;
 
-            String sql = "SELECT [Tax Name] FROM Taxes WHERE Included = 1 AND Number = @count";
+            String sql = "SELECT [Tax Name] FROM Taxes WHERE Number = @count";
             String Output = "";
 
             command = new SqlCommand(sql, con);
@@ -84,7 +92,7 @@ namespace CSC430_Payroll
             param.ParameterName = "@count";
             param.Value = count;
 
-            String sql = "SELECT Rate FROM Taxes WHERE Included = 1 AND Number = @count; ";
+            String sql = "SELECT Rate FROM Taxes WHERE Number = @count; ";
 
             String Output = "";
 
@@ -145,7 +153,7 @@ namespace CSC430_Payroll
                         param2.Value = "." + textBox2.Text;
 
                     String sql = "DECLARE @size INT;" +
-                                  "SET @size = 0;" +
+                                 "SET @size = 0;" +
                                  "SELECT TOP 1 @size = Number FROM Taxes ORDER BY Number DESC;" +
                                  "INSERT INTO Taxes (Number, [Tax Name], Rate) VALUES (@size + 1, @taxName, @rate);";
 
@@ -174,7 +182,7 @@ namespace CSC430_Payroll
             param.ParameterName = "@input";
             string input = textBox1.Text;
             param.Value = input;
-            string name = "failure";
+            string name = "";
 
             String sql = "SELECT name = [Tax Name] FROM Taxes WHERE [Tax Name] = @input;";
 
@@ -382,6 +390,8 @@ namespace CSC430_Payroll
         {
             if (listBox1.SelectedIndex != -1)
             {
+                textBox3.Enabled = true;
+                textBox4.Enabled = true;
                 textBox3.Text = listBox1.GetItemText(listBox1.SelectedItem);
                 string rate = listBox2.Items[listBox1.SelectedIndex].ToString();
                 rate = rate.TrimStart(new Char[] { '0', '.' });
