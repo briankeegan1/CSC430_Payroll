@@ -24,15 +24,19 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
             UpdateBenefits();
+            comboBox1.Items.Add("Benefit");
+            comboBox1.Items.Add("Plan");
+            comboBox1.Items.Add("Credit/Deduction");
+            comboBox1.SelectedIndex = 0;
         }
 
         private void UpdateBenefits()   //keeps listBox and dropdown boxes up to date
-        {
+        { 
             listBox1.Items.Clear();
             listBox2.Items.Clear();
 
             int size;
-            String sql = "SELECT TOP 1 size = Number FROM Benefits ORDER BY Number DESC;";
+            String sql = "SELECT TOP 1 size = Number FROM Benefits ORDER BY Number DESC; ";
 
             command = new SqlCommand(sql, con);
 
@@ -41,16 +45,40 @@ namespace CSC430_Payroll
                 size = (int)command.ExecuteScalar();
             else
                 size = 0;
-
             con.Close();
 
             for (int i = 1; i <= size; i++)
             {
                 PrintBenefits(i);
-                //PrintRates(i);
             }
+        }
 
-                
+        private void UpdatePlans()
+        {
+            listBox2.Items.Clear();
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@benefitName";
+            param.Value = listBox1.SelectedItem.ToString();
+
+            int size;
+            String sql = "SELECT TOP 1 size = Number FROM BenefitPlans WHERE [Benefit Name] = @benefitName ORDER BY Number DESC; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            if (command.ExecuteScalar() != null)        //Error Handling for empty table
+                size = (int)command.ExecuteScalar();
+            else
+                size = 0;
+            con.Close();
+
+            if (listBox1.SelectedIndex != -1)
+                for (int i = 1; i <= size; i++)
+                {
+                    PrintPlans(i);
+                }
+
         }
 
         private void PrintBenefits(int count)
@@ -74,6 +102,37 @@ namespace CSC430_Payroll
                 Output = "";
                 Output = Output + reader.GetValue(0);
                 listBox1.Items.Add(Output);
+            }
+
+            con.Close();
+        }
+
+        private void PrintPlans(int count)
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@count";
+            param1.Value = count;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = listBox1.SelectedItem.ToString();
+
+            String sql = "SELECT [Plan Name] FROM BenefitPlans WHERE " +
+                         "[Benefit Name] = @benefitName AND Number = @count; ";
+
+            String Output = "";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Output = "";
+                Output = Output + reader.GetValue(0);
+                listBox2.Items.Add(Output);
             }
 
             con.Close();
@@ -109,12 +168,29 @@ namespace CSC430_Payroll
         {
             
         }
-
+        
         private void CreateBenefit_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
-            FormCreateBenefit popUpForm = new FormCreateBenefit();
-            popUpForm.ShowDialog();
-            UpdateBenefits();
+            if (comboBox1.SelectedIndex == 0)
+            {
+                FormCreateBenefit popUpForm = new FormCreateBenefit();
+                popUpForm.ShowDialog();
+                UpdateBenefits();
+            }
+            else if (comboBox1.SelectedIndex == 1)
+            {
+                if (listBox1.SelectedIndex != -1)
+                {
+                    FormCreatePlan popUpForm = new FormCreatePlan(listBox1.SelectedIndex);
+                    popUpForm.ShowDialog();
+                }
+                else
+                {
+                    FormCreatePlan popUpForm = new FormCreatePlan();
+                    popUpForm.ShowDialog();
+                }
+                UpdateBenefits();
+            }
         }
 
        /* private bool CheckDuplicate()       //returns true if there is a duplicate
@@ -142,7 +218,7 @@ namespace CSC430_Payroll
 
         private void DeleteBenefit_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
         {   
-            string input = listBox1.GetItemText(listBox1.SelectedItem);
+            string input = listBox1.SelectedItem.ToString();
 
             if (input != "")
             {
@@ -155,7 +231,8 @@ namespace CSC430_Payroll
                     param.ParameterName = "@benefitName";
                     param.Value = input;
 
-                    String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName;";
+                    String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName; " +
+                                 "DELETE FROM BenefitPlans WHERE [Benefit Name] = @benefitName;";
 
                     command = new SqlCommand(sql, con);
                     command.Parameters.Add(param);
@@ -170,7 +247,7 @@ namespace CSC430_Payroll
 
                     con.Close();
                     ResortTable();
-                    RemoveEmployeeCol(input);
+                    //RemoveEmployeeCol(input);
                     UpdateBenefits();
                 }
             }
@@ -311,6 +388,52 @@ namespace CSC430_Payroll
         private void button1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePlans();
+        }
+
+        private void DeletePlan_Click(object sender, EventArgs e)
+        {
+            string benefitName = listBox1.SelectedItem.ToString();
+            string planName = listBox2.SelectedItem.ToString();
+
+            if (benefitName != "" && planName != "")
+            {
+                var confirmDelete = MessageBox.Show("Are you sure you want to delete this Benefit Plan? It will be removed from each employee that uses it.",
+                "Confirm Deletion", MessageBoxButtons.YesNo);
+
+                if (confirmDelete == DialogResult.Yes)
+                {
+                    SqlParameter param1 = new SqlParameter();
+                    param1.ParameterName = "@benefitName";
+                    param1.Value = benefitName;
+                    SqlParameter param2 = new SqlParameter();
+                    param2.ParameterName = "@planName";
+                    param2.Value = planName;
+
+                    String sql = "DELETE FROM BenefitPlans WHERE [Benefit Name] = @benefitName AND [Plan Name] = @planName;";
+
+                    command = new SqlCommand(sql, con);
+                    command.Parameters.Add(param1);
+                    command.Parameters.Add(param2);
+
+                    con.Open();
+                    reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(reader.GetValue(0));
+                    }
+
+                    con.Close();
+                    ResortTable();
+                    //RemoveEmployeeCol(benefitName);
+                    UpdatePlans();
+                }
+            }
         }
 
         private void RemoveEmployeeCol(string benefitName)

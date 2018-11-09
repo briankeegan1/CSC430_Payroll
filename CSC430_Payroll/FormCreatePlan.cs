@@ -13,15 +13,24 @@ using System.Configuration;
 
 namespace CSC430_Payroll
 {
-    public partial class FormCreateBenefit : Form
+    public partial class FormCreatePlan : Form
     {
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["db"].ConnectionString); // making connection
         private SqlCommand command;
         private SqlDataReader reader;
 
-        public FormCreateBenefit()
+        public FormCreatePlan()
         {
             InitializeComponent();
+            CreateBenefitList();
+            textBox2.Text = "Standard";
+        }
+
+        public FormCreatePlan(int benefitNum)
+        {
+            InitializeComponent();
+            CreateBenefitList();
+            comboBox1.SelectedIndex = benefitNum;
             textBox2.Text = "Standard";
         }
 
@@ -30,9 +39,50 @@ namespace CSC430_Payroll
 
         }
 
-        private void Create_Click(object sender, EventArgs e)       //either creates Plan or writes error and/or empty field messages
+        private void CreateBenefitList()
         {
-            bool empty = CheckEmpty();  
+            int size;
+            String sql = "SELECT TOP 1 size = Number FROM Benefits ORDER BY Number DESC; ";
+
+            command = new SqlCommand(sql, con);
+
+            con.Open();
+            if (command.ExecuteScalar() != null)        //Error Handling for empty table
+                size = (int)command.ExecuteScalar();
+            else
+                size = 0;
+            con.Close();
+
+            for (int i = 0; i <= size; i++)
+            {
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@count";
+                param.Value = i;
+
+                sql = "SELECT [Benefit Name] FROM Benefits WHERE Number = @count; ";
+
+                String Output = "";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Output = "";
+                    Output = Output + reader.GetValue(0);
+                    comboBox1.Items.Add(Output);
+                }
+
+                con.Close();
+            }
+        }
+
+        private void Create_Click(object sender, EventArgs e)   //either creates Plan or writes error and/or empty field messages
+        {                               
+            bool empty = CheckEmpty();
             bool error = false;
             string rate = textBox3.Text;
             string fixedAmount = textBox4.Text;
@@ -41,14 +91,14 @@ namespace CSC430_Payroll
             int count = 0;
             bool dot = false;
 
-            if (CheckBenefitExists())
+            if (CheckPlanExists())
             {
-                benefitErrorLabel.Text = "Benefit name is already taken";
+                planErrorLabel.Text = "Plan name is already taken";
                 error = true;
             }
 
-            if ( (rateSize == 1 && !char.IsDigit(textBox3.Text[0])) ||
-                 (rateSize == 2 && (!char.IsDigit(textBox3.Text[0]) || !char.IsDigit(textBox3.Text[1]))) )
+            if ((rateSize == 1 && !char.IsDigit(textBox3.Text[0])) ||
+                 (rateSize == 2 && (!char.IsDigit(textBox3.Text[0]) || !char.IsDigit(textBox3.Text[1]))))
                 rateErrorLabel.Text = "Rate must be a number";          //rate check
 
             if (fixedAmount == ".")                         //fixed amount check
@@ -85,25 +135,23 @@ namespace CSC430_Payroll
                 }
             }
 
-            if (empty || error)          //checks for errors/empty fields after messages have been written
+            if (empty || error)         //checks for errors/empty fields after messages have been written
                 MessageBox.Show("Some of the information requirements have not been met.");
             else
             {
-                CreateBenefit();
                 CreatePlan();
                 this.Close();
             }
         }
 
-        private bool CheckBenefitExists()
+        private bool CheckPlanExists()
         {
             SqlParameter param = new SqlParameter();
-            param.ParameterName = "@newBenefit";
-            string newBenefit = textBox1.Text;
-            param.Value = newBenefit;
+            param.ParameterName = "@benefitname";
+            param.Value = comboBox1.SelectedItem.ToString();
             string name = "";
 
-            String sql = "SELECT name = [Benefit Name] FROM Benefits WHERE [Benefit Name] = @newBenefit;";
+            String sql = "SELECT name = [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = @benefitName; ";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param);
@@ -112,7 +160,7 @@ namespace CSC430_Payroll
             name = (string)command.ExecuteScalar();
             con.Close();
 
-            if (name == newBenefit)
+            if (name == textBox2.Text)
                 return true;
             else
                 return false;
@@ -143,9 +191,9 @@ namespace CSC430_Payroll
         {
             bool empty = false;
 
-            if (textBox1.Text == "")
+            if (comboBox1.SelectedIndex == -1)
             {
-                benefitErrorLabel.Text = "Please enter a Benefit name";
+                benefitErrorLabel.Text = "Please select a Benefit.";
                 empty = true;
             }
             else
@@ -187,32 +235,6 @@ namespace CSC430_Payroll
             return empty;
         }
 
-        private void CreateBenefit() {
-            SqlParameter param1 = new SqlParameter();
-            param1.ParameterName = "@benefitName";
-            param1.Value = textBox1.Text;
-
-            String sql = "DECLARE @size INT;" +
-                         "SET @size = 0;" +
-                         "SELECT TOP 1 @size = Number FROM Benefits ORDER BY Number DESC;" +
-                         "INSERT INTO Benefits (Number, [Benefit Name]) VALUES (@size + 1, @benefitName);";
-
-
-            command = new SqlCommand(sql, con);
-            command.Parameters.Add(param1);
-
-            con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Console.WriteLine(reader.GetValue(0));
-            }
-
-            con.Close();
-            //AddEmployeeCol(textBox1.Text);
-        }
-
         private void CreatePlan()
         {
             SqlParameter param1 = new SqlParameter();
@@ -220,7 +242,7 @@ namespace CSC430_Payroll
             param1.Value = textBox2.Text;
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@benefitName";
-            param2.Value = textBox1.Text;
+            param2.Value = comboBox1.SelectedItem.ToString();
 
             String sql = "INSERT INTO BenefitPlans (Number, [Plan Name], [Benefit Name])" +
                          " VALUES (1, @planName, @benefitName);";
@@ -245,7 +267,7 @@ namespace CSC430_Payroll
             if (checkBoxFixed.Checked)
                 AddFixedAmount();
 
-            //AddEmployeeCol(textBox1.Text);
+            //AddEmployeeCol(comboBox1.SelectedItem.ToString());
         }
 
         private void AddRate()
@@ -254,7 +276,7 @@ namespace CSC430_Payroll
             param1.ParameterName = "@rate";
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@benefitName";
-            param2.Value = textBox1.Text;
+            param2.Value = comboBox1.SelectedItem.ToString();
 
             int rateSize = textBox3.Text.Length;
 
@@ -263,7 +285,7 @@ namespace CSC430_Payroll
             else
                 param1.Value = "." + textBox3.Text;
 
-            String sql = "UPDATE BenefitPlans SET Rate = @rate Where [Benefit Name] = @benefitName"; 
+            String sql = "UPDATE BenefitPlans SET Rate = @rate Where [Benefit Name] = @benefitName";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
@@ -287,7 +309,7 @@ namespace CSC430_Payroll
             param1.Value = textBox4.Text;
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@benefitName";
-            param2.Value = textBox1.Text;
+            param2.Value = comboBox1.SelectedItem.ToString();
 
             String sql = "UPDATE BenefitPlans SET [Fixed Payment] = @fixedAmount Where [Benefit Name] = @benefitName";
 

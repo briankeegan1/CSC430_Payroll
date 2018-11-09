@@ -41,12 +41,13 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.RemovePlan = new System.Windows.Forms.Button();
+            this.DeletePlan = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -65,10 +66,11 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(109, 199);
             this.listBox1.TabIndex = 2;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // CreateBenefit
             // 
-            this.CreateBenefit.Location = new System.Drawing.Point(12, 263);
+            this.CreateBenefit.Location = new System.Drawing.Point(136, 277);
             this.CreateBenefit.Name = "CreateBenefit";
             this.CreateBenefit.Size = new System.Drawing.Size(109, 23);
             this.CreateBenefit.TabIndex = 9;
@@ -170,14 +172,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // RemovePlan
+            // DeletePlan
             // 
-            this.RemovePlan.Location = new System.Drawing.Point(136, 232);
-            this.RemovePlan.Name = "RemovePlan";
-            this.RemovePlan.Size = new System.Drawing.Size(109, 23);
-            this.RemovePlan.TabIndex = 26;
-            this.RemovePlan.Text = "Delete Plan";
-            this.RemovePlan.UseVisualStyleBackColor = true;
+            this.DeletePlan.Location = new System.Drawing.Point(136, 232);
+            this.DeletePlan.Name = "DeletePlan";
+            this.DeletePlan.Size = new System.Drawing.Size(109, 23);
+            this.DeletePlan.TabIndex = 26;
+            this.DeletePlan.Text = "Delete Plan";
+            this.DeletePlan.UseVisualStyleBackColor = true;
+            this.DeletePlan.Click += new System.EventHandler(this.DeletePlan_Click);
             // 
             // label8
             // 
@@ -224,17 +227,27 @@
             this.label12.TabIndex = 31;
             this.label12.Text = "Credits";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(12, 279);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(109, 21);
+            this.comboBox1.TabIndex = 32;
+            // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 438);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.RemovePlan);
+            this.Controls.Add(this.DeletePlan);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.radioButton2);
@@ -271,11 +284,12 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button RemovePlan;
+        private System.Windows.Forms.Button DeletePlan;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
