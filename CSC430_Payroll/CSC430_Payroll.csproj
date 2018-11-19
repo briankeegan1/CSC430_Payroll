@@ -47,6 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateCreditorDeduc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include=".Designer.cs">
+      <DependentUpon>CreateCreditorDeduc.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DetailedInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +122,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CreateCreditorDeduc.resx">
+      <DependentUpon>CreateCreditorDeduc.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DetailedInfo.resx">
       <DependentUpon>DetailedInfo.cs</DependentUpon>
     </EmbeddedResource>

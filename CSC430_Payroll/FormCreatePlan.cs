@@ -244,8 +244,10 @@ namespace CSC430_Payroll
             param2.ParameterName = "@benefitName";
             param2.Value = comboBox1.SelectedItem.ToString();
 
-            String sql = "INSERT INTO BenefitPlans (Number, [Plan Name], [Benefit Name])" +
-                         " VALUES (1, @planName, @benefitName);";
+            String sql = "DECLARE @num int; " +  
+                         "SELECT TOP 1 @num = Number FROM BenefitPlans WHERE [Benefit Name] = @benefitName ORDER BY Number DESC; " +
+                         "INSERT INTO BenefitPlans (Number, [Plan Name], [Benefit Name])" +
+                         " VALUES (@num + 1, @planName, @benefitName);";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
@@ -277,6 +279,9 @@ namespace CSC430_Payroll
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@benefitName";
             param2.Value = comboBox1.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@planName";
+            param3.Value = textBox3.Text;
 
             int rateSize = textBox3.Text.Length;
 
@@ -285,11 +290,12 @@ namespace CSC430_Payroll
             else
                 param1.Value = "." + textBox3.Text;
 
-            String sql = "UPDATE BenefitPlans SET Rate = @rate Where [Benefit Name] = @benefitName";
+            String sql = "UPDATE BenefitPlans SET Rate = @rate Where [Benefit Name] = @benefitName AND [Plan Name] = @planName";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
             command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
 
             con.Open();
             reader = command.ExecuteReader();
@@ -310,12 +316,16 @@ namespace CSC430_Payroll
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@benefitName";
             param2.Value = comboBox1.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@planName";
+            param3.Value = textBox4.Text;
 
-            String sql = "UPDATE BenefitPlans SET [Fixed Payment] = @fixedAmount Where [Benefit Name] = @benefitName";
+            String sql = "UPDATE BenefitPlans SET [Fixed Payment] = @fixedAmount Where [Benefit Name] = @benefitName AND [Plan Name] = @planName";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
             command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
 
             con.Open();
             reader = command.ExecuteReader();

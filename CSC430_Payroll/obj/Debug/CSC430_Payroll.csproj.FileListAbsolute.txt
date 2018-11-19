@@ -77,3 +77,4 @@ C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payrol
 C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormCheck.resources
 C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormCreateBenefit.resources
 C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormCreatePlan.resources
+C:\Users\Mike\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.CreateCreditOrDeduc.resources

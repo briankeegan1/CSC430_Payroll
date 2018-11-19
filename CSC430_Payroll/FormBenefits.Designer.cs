@@ -30,24 +30,27 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.CreateBenefit = new System.Windows.Forms.Button();
+            this.Create = new System.Windows.Forms.Button();
             this.DeleteBenefit = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.benefitTextBox = new System.Windows.Forms.TextBox();
+            this.planTextBox = new System.Windows.Forms.TextBox();
+            this.rateTextBox = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.DeletePlan = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.fixedTextBox = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -68,15 +71,15 @@
             this.listBox1.TabIndex = 2;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // CreateBenefit
+            // Create
             // 
-            this.CreateBenefit.Location = new System.Drawing.Point(136, 277);
-            this.CreateBenefit.Name = "CreateBenefit";
-            this.CreateBenefit.Size = new System.Drawing.Size(109, 23);
-            this.CreateBenefit.TabIndex = 9;
-            this.CreateBenefit.Text = "Create Benefit";
-            this.CreateBenefit.UseVisualStyleBackColor = true;
-            this.CreateBenefit.Click += new System.EventHandler(this.CreateBenefit_Click);
+            this.Create.Location = new System.Drawing.Point(136, 277);
+            this.Create.Name = "Create";
+            this.Create.Size = new System.Drawing.Size(109, 23);
+            this.Create.TabIndex = 9;
+            this.Create.Text = "Create";
+            this.Create.UseVisualStyleBackColor = true;
+            this.Create.Click += new System.EventHandler(this.CreateBenefit_Click);
             // 
             // DeleteBenefit
             // 
@@ -92,9 +95,12 @@
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(136, 27);
+            this.listBox2.MaximumSize = new System.Drawing.Size(109, 199);
+            this.listBox2.MinimumSize = new System.Drawing.Size(109, 199);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(109, 199);
             this.listBox2.TabIndex = 16;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -105,62 +111,38 @@
             this.label7.TabIndex = 17;
             this.label7.Text = "Benefit Plans";
             // 
-            // textBox3
+            // benefitTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(265, 25);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 18;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.benefitTextBox.Enabled = false;
+            this.benefitTextBox.Location = new System.Drawing.Point(265, 25);
+            this.benefitTextBox.Name = "benefitTextBox";
+            this.benefitTextBox.Size = new System.Drawing.Size(121, 20);
+            this.benefitTextBox.TabIndex = 18;
             // 
-            // textBox4
+            // planTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(266, 74);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 19;
-            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
+            this.planTextBox.Enabled = false;
+            this.planTextBox.Location = new System.Drawing.Point(265, 71);
+            this.planTextBox.Name = "planTextBox";
+            this.planTextBox.Size = new System.Drawing.Size(121, 20);
+            this.planTextBox.TabIndex = 19;
             // 
-            // textBox5
+            // rateTextBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(265, 187);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 20;
-            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(266, 123);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(48, 17);
-            this.radioButton1.TabIndex = 21;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Rate";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(266, 146);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(89, 17);
-            this.radioButton2.TabIndex = 22;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Fixed Amount";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.rateTextBox.Enabled = false;
+            this.rateTextBox.Location = new System.Drawing.Point(265, 116);
+            this.rateTextBox.Name = "rateTextBox";
+            this.rateTextBox.Size = new System.Drawing.Size(100, 20);
+            this.rateTextBox.TabIndex = 20;
             // 
             // comboBox3
             // 
+            this.comboBox3.Enabled = false;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(265, 279);
+            this.comboBox3.Location = new System.Drawing.Point(265, 218);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 23;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // button1
             // 
@@ -170,7 +152,6 @@
             this.button1.TabIndex = 25;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // DeletePlan
             // 
@@ -194,7 +175,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(265, 58);
+            this.label9.Location = new System.Drawing.Point(263, 55);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(59, 13);
             this.label9.TabIndex = 28;
@@ -203,29 +184,20 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(265, 171);
+            this.label10.Location = new System.Drawing.Point(262, 100);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(84, 13);
+            this.label10.Size = new System.Drawing.Size(30, 13);
             this.label10.TabIndex = 29;
-            this.label10.Text = "PaymentAmount";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(266, 101);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(75, 13);
-            this.label11.TabIndex = 30;
-            this.label11.Text = "Payment Type";
+            this.label10.Text = "Rate";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(262, 263);
+            this.label12.Location = new System.Drawing.Point(262, 202);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(39, 13);
+            this.label12.Size = new System.Drawing.Size(98, 13);
             this.label12.TabIndex = 31;
-            this.label12.Text = "Credits";
+            this.label12.Text = "Credits/Deductions";
             // 
             // comboBox1
             // 
@@ -236,29 +208,83 @@
             this.comboBox1.Size = new System.Drawing.Size(109, 21);
             this.comboBox1.TabIndex = 32;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(262, 150);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 33;
+            this.label2.Text = "Fixed Amount";
+            // 
+            // fixedTextBox
+            // 
+            this.fixedTextBox.Enabled = false;
+            this.fixedTextBox.Location = new System.Drawing.Point(265, 166);
+            this.fixedTextBox.Name = "fixedTextBox";
+            this.fixedTextBox.Size = new System.Drawing.Size(100, 20);
+            this.fixedTextBox.TabIndex = 34;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(403, 219);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 35;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Enabled = false;
+            this.textBox6.Location = new System.Drawing.Point(403, 262);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(100, 20);
+            this.textBox6.TabIndex = 36;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(400, 202);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(105, 13);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "Credit/Deduc. Name";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(403, 246);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.TabIndex = 38;
+            this.label4.Text = "Amount";
+            // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 438);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.fixedTextBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.DeletePlan);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.rateTextBox);
+            this.Controls.Add(this.planTextBox);
+            this.Controls.Add(this.benefitTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.DeleteBenefit);
-            this.Controls.Add(this.CreateBenefit);
+            this.Controls.Add(this.Create);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
             this.Name = "FormBenefits";
@@ -273,23 +299,26 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button CreateBenefit;
+        private System.Windows.Forms.Button Create;
         private System.Windows.Forms.Button DeleteBenefit;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.TextBox benefitTextBox;
+        private System.Windows.Forms.TextBox planTextBox;
+        private System.Windows.Forms.TextBox rateTextBox;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button DeletePlan;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox fixedTextBox;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
