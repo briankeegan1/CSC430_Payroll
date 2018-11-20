@@ -219,7 +219,7 @@ namespace CSC430_Payroll
                     }
 
                     con.Close();
-                    ResortTable("Benefits");
+                    ResortBenefitsTable();
                     //RemoveEmployeeCol(input);
                     UpdateBenefits();
                     printInfo();
@@ -227,12 +227,8 @@ namespace CSC430_Payroll
             }
         }
 
-        private void ResortTable(string Table)  //makes sure there isn't a number gap after deletion
+        private void ResortBenefitsTable()  //makes sure there isn't a number gap after deletion
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "tableName";
-            param.Value = Table;
-
             String sql = "DECLARE @rowNum INT;" +
                          "DECLARE @count INT;" +
                          "DECLARE @nextRowNum INT;" +
@@ -246,16 +242,53 @@ namespace CSC430_Payroll
                          "WHILE(@count < @size) " +
                          "BEGIN " +
                          "SET @rowNum = -1;" +
-                         "SELECT @rowNum = Number FROM @tableName WHERE Number = @count;" +
+                         "SELECT @rowNum = Number FROM Benefits WHERE Number = @count;" +
 
                          "IF(@rowNum = -1) " +
                          "BEGIN " +
                          "UPDATE Benefits SET Number = @count WHERE Number = (@count + 1);" +
-                         "SELECT @rowNum = Number FROM @tableName WHERE Number = @count;" +
-                         "PRINT @rowNum;" +
                          "END " +
-                         "ELSE " +
-                         "PRINT @rowNum;" +
+                         "SET @count += 1;" +
+                         "END";
+
+            command = new SqlCommand(sql, con);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
+
+        private void ResortPlansTable()  //makes sure there isn't a number gap after deletion
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@benefitName";
+            param.Value = listBox1.SelectedItem.ToString();
+
+            String sql = "DECLARE @rowNum INT;" +
+                         "DECLARE @count INT;" +
+                         "DECLARE @nextRowNum INT;" +
+                         "SET @count = 1;" +
+
+                         "DECLARE @size INT;" +
+                         "SELECT TOP 1 @size = Number " +
+                         "FROM BenefitPlans WHERE [Benefit Name] = @benefitName " +
+                         "ORDER BY Number DESC;" +
+
+                         "WHILE(@count < @size) " +
+                         "BEGIN " +
+                         "SET @rowNum = -1;" +
+                         "SELECT @rowNum = Number FROM BenefitPlans WHERE Number = @count AND [Benefit Name] = @benefitName;" +
+
+                         "IF(@rowNum = -1) " +
+                         "BEGIN " +
+                         "UPDATE BenefitPlans SET Number = @count WHERE Number = (@count + 1) AND [Benefit Name] = @benefitName;" +
+                         "END " +
                          "SET @count += 1;" +
                          "END";
 
@@ -363,7 +396,7 @@ namespace CSC430_Payroll
                     }
 
                     con.Close();
-                    ResortTable("BenefitPlans");
+                    ResortPlansTable();
                     //RemoveEmployeeCol(benefitName);
                     UpdatePlans();
                     printInfo();
