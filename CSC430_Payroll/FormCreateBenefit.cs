@@ -32,58 +32,8 @@ namespace CSC430_Payroll
 
         private void Create_Click(object sender, EventArgs e)       //either creates Plan or writes error and/or empty field messages
         {
-            bool empty = CheckEmpty();  
-            bool error = false;
-            string rate = textBox3.Text;
-            string fixedAmount = textBox4.Text;
-            int amtSize = fixedAmount.Length;
-            int rateSize = rate.Length;
-            int count = 0;
-            bool dot = false;
-
-            if (CheckBenefitExists())
-            {
-                benefitErrorLabel.Text = "Benefit name is already taken";
-                error = true;
-            }
-
-            if ( (rateSize == 1 && !char.IsDigit(textBox3.Text[0])) ||
-                 (rateSize == 2 && (!char.IsDigit(textBox3.Text[0]) || !char.IsDigit(textBox3.Text[1]))) )
-                rateErrorLabel.Text = "Rate must be a number";          //rate check
-
-            if (fixedAmount == ".")                         //fixed amount check
-            {
-                fixedAmtErrorLabel.Text = "Amount must be a number";
-                error = true;
-            }
-            else
-            {
-                for (int i = 0; i < amtSize; i++)           //loop through fixed amount
-                {
-                    if (!char.IsDigit(textBox4.Text[i]))    //check for non digits
-                    {
-                        if (textBox4.Text[i] == '.' && dot == false)    //exclude first decimal, if used
-                            dot = true;
-                        else
-                        {
-                            fixedAmtErrorLabel.Text = "Amount must be a number";
-                            error = true;
-                            break;
-                        }
-                    }
-                    else if (dot == true)                 //checks how many numbers after decimal, if used
-                    {
-                        if (count == 2)
-                        {
-                            fixedAmtErrorLabel.Text = "Amount exceeded two decimal spaces";
-                            error = true;
-                            break;
-                        }
-                        else
-                            count++;
-                    }
-                }
-            }
+            bool empty = CheckEmpty();
+            bool error = CheckError();
 
             if (empty || error)          //checks for errors/empty fields after messages have been written
                 MessageBox.Show("Some of the information requirements have not been met.");
@@ -185,6 +135,63 @@ namespace CSC430_Payroll
                 fixedAmtErrorLabel.Text = "";
 
             return empty;
+        }
+
+        private bool CheckError()
+        {
+            bool error = false;
+            string rate = textBox3.Text;
+            string fixedAmount = textBox4.Text;
+            int amtSize = fixedAmount.Length;
+            int rateSize = rate.Length;
+            int count = 0;
+            bool dot = false;
+
+            if (CheckBenefitExists())
+            {
+                benefitErrorLabel.Text = "Benefit name is already taken";
+                error = true;
+            }
+
+            if ((rateSize == 1 && !char.IsDigit(textBox3.Text[0])) ||
+                 (rateSize == 2 && (!char.IsDigit(textBox3.Text[0]) || !char.IsDigit(textBox3.Text[1]))))
+                rateErrorLabel.Text = "Rate must be a number";          //rate check
+
+            if (fixedAmount == ".")                         //fixed amount check
+            {
+                fixedAmtErrorLabel.Text = "Amount must be a number";
+                error = true;
+            }
+            else
+            {
+                for (int i = 0; i < amtSize; i++)           //loop through fixed amount
+                {
+                    if (!char.IsDigit(textBox4.Text[i]))    //check for non digits
+                    {
+                        if (textBox4.Text[i] == '.' && dot == false)    //exclude first decimal, if used
+                            dot = true;
+                        else
+                        {
+                            fixedAmtErrorLabel.Text = "Amount must be a number";
+                            error = true;
+                            break;
+                        }
+                    }
+                    else if (dot == true)                 //checks how many numbers after decimal, if used
+                    {
+                        if (count == 2)
+                        {
+                            fixedAmtErrorLabel.Text = "Amount exceeded two decimal places";
+                            error = true;
+                            break;
+                        }
+                        else
+                            count++;
+                    }
+                }
+            }
+
+            return error;
         }
 
         private void CreateBenefit() {

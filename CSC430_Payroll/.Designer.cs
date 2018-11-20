@@ -1,6 +1,6 @@
 ﻿namespace CSC430_Payroll
 {
-    partial class CreateCreditOrDeduc
+    partial class FormCreateModifier
     {
         /// <summary>
         /// Required designer variable.
@@ -39,6 +39,11 @@
             this.radioCredit = new System.Windows.Forms.RadioButton();
             this.radioDeduction = new System.Windows.Forms.RadioButton();
             this.Create = new System.Windows.Forms.Button();
+            this.benefitErrorLabel = new System.Windows.Forms.Label();
+            this.planErrorLabel = new System.Windows.Forms.Label();
+            this.radioErrorLabel = new System.Windows.Forms.Label();
+            this.nameErrorLabel = new System.Windows.Forms.Label();
+            this.amountErrorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -88,7 +93,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(12, 158);
+            this.textBox2.Location = new System.Drawing.Point(12, 156);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(100, 20);
             this.textBox2.TabIndex = 5;
@@ -105,7 +110,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 142);
+            this.label4.Location = new System.Drawing.Point(9, 140);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(43, 13);
             this.label4.TabIndex = 7;
@@ -139,12 +144,68 @@
             this.Create.TabIndex = 10;
             this.Create.Text = "Create";
             this.Create.UseVisualStyleBackColor = true;
+            this.Create.Click += new System.EventHandler(this.Create_Click);
+            // 
+            // benefitErrorLabel
+            // 
+            this.benefitErrorLabel.AutoSize = true;
+            this.benefitErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.benefitErrorLabel.Location = new System.Drawing.Point(56, 9);
+            this.benefitErrorLabel.Name = "benefitErrorLabel";
+            this.benefitErrorLabel.Size = new System.Drawing.Size(10, 13);
+            this.benefitErrorLabel.TabIndex = 12;
+            this.benefitErrorLabel.Text = " ";
+            // 
+            // planErrorLabel
+            // 
+            this.planErrorLabel.AutoSize = true;
+            this.planErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.planErrorLabel.Location = new System.Drawing.Point(183, 9);
+            this.planErrorLabel.Name = "planErrorLabel";
+            this.planErrorLabel.Size = new System.Drawing.Size(10, 13);
+            this.planErrorLabel.TabIndex = 13;
+            this.planErrorLabel.Text = " ";
+            // 
+            // radioErrorLabel
+            // 
+            this.radioErrorLabel.AutoSize = true;
+            this.radioErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.radioErrorLabel.Location = new System.Drawing.Point(142, 65);
+            this.radioErrorLabel.Name = "radioErrorLabel";
+            this.radioErrorLabel.Size = new System.Drawing.Size(10, 13);
+            this.radioErrorLabel.TabIndex = 14;
+            this.radioErrorLabel.Text = " ";
+            // 
+            // nameErrorLabel
+            // 
+            this.nameErrorLabel.AutoSize = true;
+            this.nameErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.nameErrorLabel.Location = new System.Drawing.Point(119, 113);
+            this.nameErrorLabel.Name = "nameErrorLabel";
+            this.nameErrorLabel.Size = new System.Drawing.Size(10, 13);
+            this.nameErrorLabel.TabIndex = 15;
+            this.nameErrorLabel.Text = " ";
+            // 
+            // amountErrorLabel
+            // 
+            this.amountErrorLabel.AutoSize = true;
+            this.amountErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.amountErrorLabel.Location = new System.Drawing.Point(119, 162);
+            this.amountErrorLabel.Name = "amountErrorLabel";
+            this.amountErrorLabel.Size = new System.Drawing.Size(10, 13);
+            this.amountErrorLabel.TabIndex = 16;
+            this.amountErrorLabel.Text = " ";
             // 
             // CreateCreditOrDeduc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(285, 219);
+            this.Controls.Add(this.amountErrorLabel);
+            this.Controls.Add(this.nameErrorLabel);
+            this.Controls.Add(this.radioErrorLabel);
+            this.Controls.Add(this.planErrorLabel);
+            this.Controls.Add(this.benefitErrorLabel);
             this.Controls.Add(this.Create);
             this.Controls.Add(this.radioDeduction);
             this.Controls.Add(this.radioCredit);
@@ -179,5 +240,10 @@
         private System.Windows.Forms.RadioButton radioCredit;
         private System.Windows.Forms.RadioButton radioDeduction;
         private System.Windows.Forms.Button Create;
+        private System.Windows.Forms.Label benefitErrorLabel;
+        private System.Windows.Forms.Label planErrorLabel;
+        private System.Windows.Forms.Label radioErrorLabel;
+        private System.Windows.Forms.Label nameErrorLabel;
+        private System.Windows.Forms.Label amountErrorLabel;
     }
 }

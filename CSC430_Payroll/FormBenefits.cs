@@ -173,18 +173,18 @@ namespace CSC430_Payroll
                 {
                     if (listBox2.SelectedIndex != -1)   //if both benefit and plan are selected
                     {
-                        CreateCreditOrDeduc popupForm = new CreateCreditOrDeduc(listBox1.SelectedItem.ToString(), listBox2.SelectedItem.ToString());
+                        FormCreateModifier popupForm = new FormCreateModifier(listBox1.SelectedItem.ToString(), listBox2.SelectedItem.ToString());
                         popupForm.ShowDialog();
                     }
                     else                                //if only benefit is selected
                     {
-                        CreateCreditOrDeduc popupForm = new CreateCreditOrDeduc(listBox1.SelectedItem.ToString());
+                        FormCreateModifier popupForm = new FormCreateModifier(listBox1.SelectedItem.ToString());
                         popupForm.ShowDialog();
                     }
                 }
                 else                                    //if nothing is selected
                 {
-                    CreateCreditOrDeduc popupForm = new CreateCreditOrDeduc();
+                    FormCreateModifier popupForm = new FormCreateModifier();
                     popupForm.ShowDialog();
                 }
             }
