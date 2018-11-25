@@ -173,7 +173,6 @@ namespace CSC430_Payroll
 
         private void PrintModifiers(int count)
         {
-            comboBox3.Items.Clear();
             SqlParameter param1 = new SqlParameter();
             param1.ParameterName = "@planName";
             param1.Value = listBox2.SelectedItem.ToString();
@@ -214,17 +213,18 @@ namespace CSC430_Payroll
         
         private void CreateBenefit_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
-            if (comboBox1.SelectedIndex == 0)       //create benefits
-            {
                 FormCreateBenefit popUpForm = new FormCreateBenefit();
                 popUpForm.ShowDialog();
                 UpdateBenefits();
-            }
-            else if (comboBox1.Items.Count == 0)        //if there are no benefits, dont allow creation of plans or modifiers
+        }
+
+        private void CreatePlan_Click(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count == 0)        //if there are no benefits, don't allow plan creation
             {
                 MessageBox.Show("Please create a Benefit first", "Error");
             }
-            else if (comboBox1.SelectedIndex == 1)      //create plans
+            else     //create plans
             {
                 if (listBox1.SelectedIndex != -1)
                 {
@@ -238,9 +238,17 @@ namespace CSC430_Payroll
                 }
                 UpdatePlans();
             }
-            else if (comboBox1.SelectedIndex == 2)      //create modifiers
+        }
+
+        private void CreateModifier_Click(object sender, EventArgs e)
+        {
+            if (listBox1.Items.Count == 0)        //if there are no benefits, don't allow plan creation
             {
-                if (listBox1.SelectedIndex != -1)       
+                MessageBox.Show("Please create a Benefit first", "Error");
+            }
+            else        //create modifiers
+            {
+                if (listBox1.SelectedIndex != -1)
                 {
                     if (listBox2.SelectedIndex != -1)   //if both benefit and plan are selected
                     {
@@ -259,7 +267,7 @@ namespace CSC430_Payroll
                     popupForm.ShowDialog();
                 }
             }
-        }
+        }    
 
         private void DeleteBenefit_Click(object sender, EventArgs e)   //Permanently Deletes a Benefit
         {   
@@ -517,41 +525,105 @@ namespace CSC430_Payroll
 
         private void printInfo()
         {
-            if (listBox1.SelectedIndex != -1)       //print benefit name
+            if (listBox1.SelectedIndex != -1)           //if benefit is selected
             {
-                benefitTextBox.Enabled = true;
+                benefitTextBox.Enabled = true;                           //print benefit name
                 benefitTextBox.Text = listBox1.SelectedItem.ToString();
+
+                if (listBox2.SelectedIndex != -1)           //if plan is selected 
+                {
+                    planTextBox.Enabled = true;                             //print plan name
+                    planTextBox.Text = listBox2.SelectedItem.ToString();
+                    rateTextBox.Enabled = true;
+                    fixedTextBox.Enabled = true;
+                    printRateAndFixed();
+
+                    UpdateModifiers();
+                    if (comboBox3.Items.Count != 0)     //if plan has modifiers
+                    {
+                        comboBox3.Enabled = true;
+                        comboBox3.SelectedIndex = 0;
+                        modifierTextBox.Enabled = true;
+                        modifierTextBox.Text = comboBox3.SelectedItem.ToString();
+                        modAmtTextBox.Enabled = true;
+                        printmodifierAmt();
+                    }
+                    else    //if plan has no modifiers
+                    {
+                        comboBox3.Enabled = false;
+                        modifierTextBox.Enabled = false;
+                        modAmtTextBox.Enabled = false;
+                        comboBox3.Text = null;
+                        modifierTextBox.Text = null;
+                        modAmtTextBox.Text = null;
+                    }
+
+                }
+                else        //if no plan selected
+                {
+                    planTextBox.Enabled = false;
+                    rateTextBox.Enabled = false;
+                    fixedTextBox.Enabled = false;
+                    planTextBox.Text = null;
+                    rateTextBox.Text = null;
+                    fixedTextBox.Text = null;
+                    comboBox3.Enabled = false;
+                    modifierTextBox.Enabled = false;
+                    modAmtTextBox.Enabled = false;
+                    comboBox3.Text = null;
+                    modifierTextBox.Text = null;
+                    modAmtTextBox.Text = null;
+                }
             }
-            else
+            else            //if no benefit selected
             {
                 benefitTextBox.Enabled = false;
                 benefitTextBox.Text = null;
             }
 
-            if (listBox2.SelectedIndex != -1)       //print plan name
-            {
-                planTextBox.Enabled = true;
-                planTextBox.Text = listBox2.SelectedItem.ToString();
-                rateTextBox.Enabled = true;
-                fixedTextBox.Enabled = true;
-                printRateAndFixed();
-            }
-            else
-            {
-                planTextBox.Enabled = false;
-                rateTextBox.Enabled = false;
-                fixedTextBox.Enabled = false;
-                planTextBox.Text = null;
-                rateTextBox.Text = null;
-                fixedTextBox.Text = null;
-            }
+        }
 
-            if (listBox2.SelectedIndex != -1)
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox3.SelectedIndex != -1)
             {
-                comboBox3.Enabled = true;
-                UpdateModifiers();
+                modifierTextBox.Text = comboBox3.SelectedItem.ToString();
+                printmodifierAmt();
             }
         }
+
+        private void printmodifierAmt()
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@planName";
+            param1.Value = listBox2.SelectedItem.ToString();
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = listBox1.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@modName";
+            param3.Value = comboBox3.SelectedItem.ToString();
+
+            String sql = "SELECT amt = Amount FROM [Credits/Deductions] WHERE " +
+                         "[Benefit Name] = @benefitName AND [Plan Name] = @planName AND Name = @modName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                modAmtTextBox.Text = reader["amt"].ToString();
+            }
+
+            con.Close();
+        }
+
+
 
         private void printRateAndFixed()
         {

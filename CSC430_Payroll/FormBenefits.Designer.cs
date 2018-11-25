@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.Create = new System.Windows.Forms.Button();
+            this.CreateBenefit = new System.Windows.Forms.Button();
             this.DeleteBenefit = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -47,10 +47,12 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.fixedTextBox = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.modifierTextBox = new System.Windows.Forms.TextBox();
+            this.modAmtTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.CreatePlan = new System.Windows.Forms.Button();
+            this.CreateModifier = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -71,15 +73,15 @@
             this.listBox1.TabIndex = 2;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // Create
+            // CreateBenefit
             // 
-            this.Create.Location = new System.Drawing.Point(136, 277);
-            this.Create.Name = "Create";
-            this.Create.Size = new System.Drawing.Size(109, 23);
-            this.Create.TabIndex = 9;
-            this.Create.Text = "Create";
-            this.Create.UseVisualStyleBackColor = true;
-            this.Create.Click += new System.EventHandler(this.CreateBenefit_Click);
+            this.CreateBenefit.Location = new System.Drawing.Point(12, 261);
+            this.CreateBenefit.Name = "CreateBenefit";
+            this.CreateBenefit.Size = new System.Drawing.Size(109, 23);
+            this.CreateBenefit.TabIndex = 9;
+            this.CreateBenefit.Text = "Create Benefit";
+            this.CreateBenefit.UseVisualStyleBackColor = true;
+            this.CreateBenefit.Click += new System.EventHandler(this.CreateBenefit_Click);
             // 
             // DeleteBenefit
             // 
@@ -137,16 +139,18 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.Enabled = false;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(265, 218);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 23;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(265, 331);
+            this.button1.Location = new System.Drawing.Point(266, 331);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 25;
@@ -203,7 +207,7 @@
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 279);
+            this.comboBox1.Location = new System.Drawing.Point(12, 331);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(109, 21);
             this.comboBox1.TabIndex = 32;
@@ -225,21 +229,21 @@
             this.fixedTextBox.Size = new System.Drawing.Size(100, 20);
             this.fixedTextBox.TabIndex = 34;
             // 
-            // textBox2
+            // modifierTextBox
             // 
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(403, 219);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 35;
+            this.modifierTextBox.Enabled = false;
+            this.modifierTextBox.Location = new System.Drawing.Point(403, 219);
+            this.modifierTextBox.Name = "modifierTextBox";
+            this.modifierTextBox.Size = new System.Drawing.Size(100, 20);
+            this.modifierTextBox.TabIndex = 35;
             // 
-            // textBox6
+            // modAmtTextBox
             // 
-            this.textBox6.Enabled = false;
-            this.textBox6.Location = new System.Drawing.Point(403, 262);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 36;
+            this.modAmtTextBox.Enabled = false;
+            this.modAmtTextBox.Location = new System.Drawing.Point(403, 262);
+            this.modAmtTextBox.Name = "modAmtTextBox";
+            this.modAmtTextBox.Size = new System.Drawing.Size(100, 20);
+            this.modAmtTextBox.TabIndex = 36;
             // 
             // label3
             // 
@@ -259,15 +263,37 @@
             this.label4.TabIndex = 38;
             this.label4.Text = "Amount";
             // 
+            // CreatePlan
+            // 
+            this.CreatePlan.Location = new System.Drawing.Point(136, 261);
+            this.CreatePlan.Name = "CreatePlan";
+            this.CreatePlan.Size = new System.Drawing.Size(109, 23);
+            this.CreatePlan.TabIndex = 39;
+            this.CreatePlan.Text = "Create Plan";
+            this.CreatePlan.UseVisualStyleBackColor = true;
+            this.CreatePlan.Click += new System.EventHandler(this.CreatePlan_Click);
+            // 
+            // CreateModifier
+            // 
+            this.CreateModifier.Location = new System.Drawing.Point(265, 246);
+            this.CreateModifier.Name = "CreateModifier";
+            this.CreateModifier.Size = new System.Drawing.Size(109, 23);
+            this.CreateModifier.TabIndex = 40;
+            this.CreateModifier.Text = "Create Cred/Deduc";
+            this.CreateModifier.UseVisualStyleBackColor = true;
+            this.CreateModifier.Click += new System.EventHandler(this.CreateModifier_Click);
+            // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 438);
+            this.Controls.Add(this.CreateModifier);
+            this.Controls.Add(this.CreatePlan);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.modAmtTextBox);
+            this.Controls.Add(this.modifierTextBox);
             this.Controls.Add(this.fixedTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
@@ -284,7 +310,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.DeleteBenefit);
-            this.Controls.Add(this.Create);
+            this.Controls.Add(this.CreateBenefit);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
             this.Name = "FormBenefits";
@@ -299,7 +325,7 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button Create;
+        private System.Windows.Forms.Button CreateBenefit;
         private System.Windows.Forms.Button DeleteBenefit;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Label label7;
@@ -316,9 +342,11 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox fixedTextBox;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox modifierTextBox;
+        private System.Windows.Forms.TextBox modAmtTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button CreatePlan;
+        private System.Windows.Forms.Button CreateModifier;
     }
 }
