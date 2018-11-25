@@ -474,10 +474,6 @@ namespace CSC430_Payroll
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void label9_Click(object sender, EventArgs e)
         {

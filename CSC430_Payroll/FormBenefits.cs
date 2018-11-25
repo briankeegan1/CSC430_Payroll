@@ -716,7 +716,7 @@ namespace CSC430_Payroll
 
         private void ModifyInfo_Click(object sender, EventArgs e)
         {
-            string benefitName = "", planName = "", modName = "";
+            string benefitName = "", planName = "", oldModName = "", newModName = "", modAmt = "";
             if (listBox1.SelectedIndex != -1)
                 benefitName = listBox1.SelectedItem.ToString();
             
@@ -724,12 +724,17 @@ namespace CSC430_Payroll
                 planName = listBox2.SelectedItem.ToString();
 
             if (comboBox3.Enabled == true)
-                modName = comboBox3.SelectedItem.ToString();
+            {
+                oldModName = comboBox3.SelectedItem.ToString();
+                newModName = modifierTextBox.Text;
+                modAmt = modAmtTextBox.Text;
+            }
 
             ModifyBenefitName(benefitName);
             if (planName != "")
                 ModifyPlanInfo(planName);
-            //ModifyMods(modName);
+           if (oldModName != "")
+                ModifyMods(oldModName, newModName, modAmt);
             printInfo();
         }
 
@@ -831,6 +836,37 @@ namespace CSC430_Payroll
             printInfo();
         }
 
+        private void ModifyMods(string oldName, string newName, string AMT)
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@oldName";
+            param1.Value = oldName;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@newName";
+            param2.Value = newName;
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@AMT";
+            param3.Value = AMT;
 
+            String sql = "UPDATE [Credits/Deductions] " +
+                         "SET [Name] = @newName, [Amount] = @AMT " +
+                         "WHERE [Name] = @oldName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+            printInfo();
+        }
     }
 }
