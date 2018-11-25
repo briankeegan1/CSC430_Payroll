@@ -214,13 +214,17 @@ namespace CSC430_Payroll
         
         private void CreateBenefit_Click(object sender, EventArgs e)   //Creates NEW Benefit
         {
-            if (comboBox1.SelectedIndex == 0)
+            if (comboBox1.SelectedIndex == 0)       //create benefits
             {
                 FormCreateBenefit popUpForm = new FormCreateBenefit();
                 popUpForm.ShowDialog();
                 UpdateBenefits();
             }
-            else if (comboBox1.SelectedIndex == 1)
+            else if (comboBox1.Items.Count == 0)        //if there are no benefits, dont allow creation of plans or modifiers
+            {
+                MessageBox.Show("Please create a Benefit first", "Error");
+            }
+            else if (comboBox1.SelectedIndex == 1)      //create plans
             {
                 if (listBox1.SelectedIndex != -1)
                 {
@@ -234,7 +238,7 @@ namespace CSC430_Payroll
                 }
                 UpdatePlans();
             }
-            else if (comboBox1.SelectedIndex == 2)
+            else if (comboBox1.SelectedIndex == 2)      //create modifiers
             {
                 if (listBox1.SelectedIndex != -1)       
                 {
