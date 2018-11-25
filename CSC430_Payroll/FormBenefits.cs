@@ -24,10 +24,6 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
             UpdateBenefits();
-            comboBox1.Items.Add("Benefit");
-            comboBox1.Items.Add("Plan");
-            comboBox1.Items.Add("Credit/Deduction");
-            comboBox1.SelectedIndex = 0;
         }
 
         private void UpdateBenefits()   //keeps Benefits up to date
@@ -266,6 +262,7 @@ namespace CSC430_Payroll
                     FormCreateModifier popupForm = new FormCreateModifier();
                     popupForm.ShowDialog();
                 }
+                printInfo();
             }
         }    
 
@@ -284,7 +281,8 @@ namespace CSC430_Payroll
                     param.Value = input;
 
                     String sql = "DELETE FROM Benefits WHERE [Benefit Name] = @benefitName; " +
-                                 "DELETE FROM BenefitPlans WHERE [Benefit Name] = @benefitName;";
+                                 "DELETE FROM BenefitPlans WHERE [Benefit Name] = @benefitName;" +
+                                 "DELETE FROM [Credits/Deductions] WHERE [Benefit Name] = @benefitName;";
 
                     command = new SqlCommand(sql, con);
                     command.Parameters.Add(param);
@@ -385,6 +383,52 @@ namespace CSC430_Payroll
             con.Close();
         }
 
+        private void ResortModifiersTable()
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@planName";
+            param1.Value = listBox2.SelectedItem.ToString();
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = listBox1.SelectedItem.ToString();
+
+            String sql = "DECLARE @rowNum INT;" +
+                         "DECLARE @count INT;" +
+                         "DECLARE @nextRowNum INT;" +
+                         "SET @count = 1;" +
+
+                         "DECLARE @size INT;" +
+                         "SELECT TOP 1 @size = Number " +
+                         "FROM [Credits/Deductions] WHERE [Plan Name] = @planName AND [Benefit Name] = @benefitName " +
+                         "ORDER BY Number DESC;" +
+
+                         "WHILE(@count < @size) " +
+                         "BEGIN " +
+                         "SET @rowNum = -1;" +
+                         "SELECT @rowNum = Number FROM [Credits/Deductions] WHERE Number = @count AND [Plan Name] = @planName AND [Benefit Name] = @benefitName;" +
+
+                         "IF(@rowNum = -1) " +
+                         "BEGIN " +
+                         "UPDATE [Credits/Deductions] SET Number = @count WHERE Number = (@count + 1) AND [Plan Name] = @planName AND [Benefit Name] = @benefitName;" +
+                         "END " +
+                         "SET @count += 1;" +
+                         "END";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+        }
+
         private void AddEmployeeCol(string benefitName)
         {
             benefitName = "BFT: " + benefitName;
@@ -440,6 +484,17 @@ namespace CSC430_Payroll
         {
             UpdatePlans();
             printInfo();
+            DeletePlan.Enabled = false;
+            if (listBox1.SelectedIndex != -1 && listBox1.Items.Count != 0)
+            {
+                DeleteBenefit.Enabled = true;
+                ModifyInfo.Enabled = true;
+            }
+            else
+            {
+                DeleteBenefit.Enabled = false;
+                ModifyInfo.Enabled = false;
+            }
         }
 
         private void DeletePlan_Click(object sender, EventArgs e)
@@ -521,6 +576,11 @@ namespace CSC430_Payroll
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             printInfo();
+
+            if (listBox2.SelectedIndex != -1 && listBox2.Items.Count != 0)
+                DeletePlan.Enabled = true;
+            else
+                DeletePlan.Enabled = false;
         }
 
         private void printInfo()
@@ -532,7 +592,7 @@ namespace CSC430_Payroll
 
                 if (listBox2.SelectedIndex != -1)           //if plan is selected 
                 {
-                    planTextBox.Enabled = true;                             //print plan name
+                    planTextBox.Enabled = true;                             //print plan info
                     planTextBox.Text = listBox2.SelectedItem.ToString();
                     rateTextBox.Enabled = true;
                     fixedTextBox.Enabled = true;
@@ -541,43 +601,39 @@ namespace CSC430_Payroll
                     UpdateModifiers();
                     if (comboBox3.Items.Count != 0)     //if plan has modifiers
                     {
-                        comboBox3.Enabled = true;
+                        comboBox3.Enabled = true;       //print modifier info
                         comboBox3.SelectedIndex = 0;
                         modifierTextBox.Enabled = true;
                         modifierTextBox.Text = comboBox3.SelectedItem.ToString();
                         modAmtTextBox.Enabled = true;
+                        DeleteModifier.Enabled = true;
                         printmodifierAmt();
                     }
-                    else    //if plan has no modifiers
-                    {
-                        comboBox3.Enabled = false;
-                        modifierTextBox.Enabled = false;
-                        modAmtTextBox.Enabled = false;
-                        comboBox3.Text = null;
-                        modifierTextBox.Text = null;
-                        modAmtTextBox.Text = null;
-                    }
-
-                }
-                else        //if no plan selected
-                {
-                    planTextBox.Enabled = false;
-                    rateTextBox.Enabled = false;
-                    fixedTextBox.Enabled = false;
-                    planTextBox.Text = null;
-                    rateTextBox.Text = null;
-                    fixedTextBox.Text = null;
-                    comboBox3.Enabled = false;
-                    modifierTextBox.Enabled = false;
-                    modAmtTextBox.Enabled = false;
-                    comboBox3.Text = null;
-                    modifierTextBox.Text = null;
-                    modAmtTextBox.Text = null;
                 }
             }
-            else            //if no benefit selected
+
+            if (comboBox3.Items.Count == 0 || listBox2.SelectedIndex == -1)//if plan has no modifiers
             {
-                benefitTextBox.Enabled = false;
+                comboBox3.Enabled = false;          //disable and clear info
+                modifierTextBox.Enabled = false;
+                modAmtTextBox.Enabled = false;
+                DeleteModifier.Enabled = false;
+                comboBox3.Text = null;
+                modifierTextBox.Text = null;
+                modAmtTextBox.Text = null;
+            }
+            if (listBox2.SelectedIndex == -1)   //if no plan selected
+            {
+                planTextBox.Enabled = false;    //disable and clear info
+                rateTextBox.Enabled = false;
+                fixedTextBox.Enabled = false;
+                planTextBox.Text = null;
+                rateTextBox.Text = null;
+                fixedTextBox.Text = null;
+            }
+            if (listBox1.SelectedIndex == -1)   //if no benefit selected
+            {
+                benefitTextBox.Enabled = false; //disable and clear info
                 benefitTextBox.Text = null;
             }
 
@@ -623,8 +679,6 @@ namespace CSC430_Payroll
             con.Close();
         }
 
-
-
         private void printRateAndFixed()
         {
             string rate = "", fixedAmt = "";
@@ -659,5 +713,124 @@ namespace CSC430_Payroll
             rateTextBox.Text = rate;
             fixedTextBox.Text = fixedAmt;       
         }
+
+        private void ModifyInfo_Click(object sender, EventArgs e)
+        {
+            string benefitName = "", planName = "", modName = "";
+            if (listBox1.SelectedIndex != -1)
+                benefitName = listBox1.SelectedItem.ToString();
+            
+            if (listBox2.SelectedIndex != -1)
+                planName = listBox2.SelectedItem.ToString();
+
+            if (comboBox3.Enabled == true)
+                modName = comboBox3.SelectedItem.ToString();
+
+            ModifyBenefitName(benefitName);
+            if (planName != "")
+                ModifyPlanInfo(planName);
+            //ModifyMods(modName);
+            printInfo();
+        }
+
+        private void ModifyBenefitName (string benefitName)
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@oldName";
+            param1.Value = benefitName;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@newName";
+            param2.Value = benefitTextBox.Text;
+
+            String sql = "UPDATE Benefits SET [Benefit Name] = @newName WHERE [Benefit Name] = @oldName; " +
+                         "UPDATE BenefitPlans SET [Benefit Name] = @newName WHERE [Benefit Name] = @oldName; " +
+                         "UPDATE [Credits/Deductions] SET [Benefit Name] = @newName WHERE [Benefit Name] = @oldName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+            UpdateBenefits();
+        }
+
+        private void DeleteModifier_Click(object sender, EventArgs e)
+        {
+            var confirmDelete = MessageBox.Show("Are you sure you want to delete this Credit/Deduction? It will be removed from each employee that uses it.",
+            "Confirm Deletion", MessageBoxButtons.YesNo);
+
+            if (confirmDelete == DialogResult.Yes)
+            {
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@name";
+                param.Value = comboBox3.SelectedItem.ToString();
+
+                String sql = "DELETE FROM [Credits/Deductions] WHERE [Name] = @name;";
+
+                command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Console.WriteLine(reader.GetValue(0));
+                }
+
+                con.Close();
+                ResortModifiersTable();
+                printInfo();
+            }
+        }
+
+        private void ModifyPlanInfo(string planName)
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@oldName";
+            param1.Value = planName;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@newName";
+            param2.Value = planTextBox.Text;
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@rate";
+            param3.Value = rateTextBox.Text;
+            SqlParameter param4 = new SqlParameter();
+            param4.ParameterName = "@fixedAmt";
+            param4.Value = fixedTextBox.Text;
+
+            String sql = "UPDATE BenefitPlans " +
+                         "SET [Plan Name] = @newName, Rate = @rate, [Fixed Payment] = @fixedAmt " +
+                         "WHERE [Plan Name] = @oldName; " +
+                         "UPDATE [Credits/Deductions] SET [Plan Name] = @newName WHERE [Plan Name] = @oldName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
+            command.Parameters.Add(param4);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+            UpdatePlans();
+            printInfo();
+        }
+
+
     }
 }
