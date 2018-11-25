@@ -19,7 +19,6 @@ namespace CSC430_Payroll
         private SqlCommand command;
         private SqlDataReader reader;
 
-
         public FormCreateModifier()
         {
             InitializeComponent();

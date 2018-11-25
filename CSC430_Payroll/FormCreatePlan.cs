@@ -293,7 +293,7 @@ namespace CSC430_Payroll
             param2.Value = comboBox1.SelectedItem.ToString();
             SqlParameter param3 = new SqlParameter();
             param3.ParameterName = "@planName";
-            param3.Value = textBox3.Text;
+            param3.Value = textBox2.Text;
 
             int rateSize = textBox3.Text.Length;
 
@@ -330,7 +330,7 @@ namespace CSC430_Payroll
             param2.Value = comboBox1.SelectedItem.ToString();
             SqlParameter param3 = new SqlParameter();
             param3.ParameterName = "@planName";
-            param3.Value = textBox4.Text;
+            param3.Value = textBox2.Text;
 
             String sql = "UPDATE BenefitPlans SET [Fixed Payment] = @fixedAmount Where [Benefit Name] = @benefitName AND [Plan Name] = @planName";
 
