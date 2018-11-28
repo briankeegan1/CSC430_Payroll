@@ -53,6 +53,12 @@
             this.CreatePlan = new System.Windows.Forms.Button();
             this.CreateModifier = new System.Windows.Forms.Button();
             this.DeleteModifier = new System.Windows.Forms.Button();
+            this.benefitErrorLabel = new System.Windows.Forms.Label();
+            this.planErrorLabel = new System.Windows.Forms.Label();
+            this.rateErrorLabel = new System.Windows.Forms.Label();
+            this.fixedErrorLabel = new System.Windows.Forms.Label();
+            this.modifierErrorLabel = new System.Windows.Forms.Label();
+            this.modAmtErrorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -136,6 +142,7 @@
             // 
             this.rateTextBox.Enabled = false;
             this.rateTextBox.Location = new System.Drawing.Point(265, 115);
+            this.rateTextBox.MaxLength = 2;
             this.rateTextBox.Name = "rateTextBox";
             this.rateTextBox.Size = new System.Drawing.Size(100, 20);
             this.rateTextBox.TabIndex = 20;
@@ -154,7 +161,7 @@
             // ModifyInfo
             // 
             this.ModifyInfo.Enabled = false;
-            this.ModifyInfo.Location = new System.Drawing.Point(403, 305);
+            this.ModifyInfo.Location = new System.Drawing.Point(540, 283);
             this.ModifyInfo.Name = "ModifyInfo";
             this.ModifyInfo.Size = new System.Drawing.Size(102, 23);
             this.ModifyInfo.TabIndex = 25;
@@ -196,9 +203,9 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(262, 99);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(30, 13);
+            this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 29;
-            this.label10.Text = "Rate";
+            this.label10.Text = "Rate (%)";
             // 
             // label12
             // 
@@ -291,11 +298,77 @@
             this.DeleteModifier.UseVisualStyleBackColor = true;
             this.DeleteModifier.Click += new System.EventHandler(this.DeleteModifier_Click);
             // 
+            // benefitErrorLabel
+            // 
+            this.benefitErrorLabel.AutoSize = true;
+            this.benefitErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.benefitErrorLabel.Location = new System.Drawing.Point(392, 28);
+            this.benefitErrorLabel.Name = "benefitErrorLabel";
+            this.benefitErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.benefitErrorLabel.TabIndex = 42;
+            this.benefitErrorLabel.Text = "*";
+            // 
+            // planErrorLabel
+            // 
+            this.planErrorLabel.AutoSize = true;
+            this.planErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.planErrorLabel.Location = new System.Drawing.Point(392, 73);
+            this.planErrorLabel.Name = "planErrorLabel";
+            this.planErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.planErrorLabel.TabIndex = 43;
+            this.planErrorLabel.Text = "*";
+            // 
+            // rateErrorLabel
+            // 
+            this.rateErrorLabel.AutoSize = true;
+            this.rateErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.rateErrorLabel.Location = new System.Drawing.Point(371, 118);
+            this.rateErrorLabel.Name = "rateErrorLabel";
+            this.rateErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.rateErrorLabel.TabIndex = 44;
+            this.rateErrorLabel.Text = "*";
+            // 
+            // fixedErrorLabel
+            // 
+            this.fixedErrorLabel.AutoSize = true;
+            this.fixedErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.fixedErrorLabel.Location = new System.Drawing.Point(371, 164);
+            this.fixedErrorLabel.Name = "fixedErrorLabel";
+            this.fixedErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.fixedErrorLabel.TabIndex = 45;
+            this.fixedErrorLabel.Text = "*";
+            // 
+            // modifierErrorLabel
+            // 
+            this.modifierErrorLabel.AutoSize = true;
+            this.modifierErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.modifierErrorLabel.Location = new System.Drawing.Point(509, 208);
+            this.modifierErrorLabel.Name = "modifierErrorLabel";
+            this.modifierErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.modifierErrorLabel.TabIndex = 46;
+            this.modifierErrorLabel.Text = "*";
+            // 
+            // modAmtErrorLabel
+            // 
+            this.modAmtErrorLabel.AutoSize = true;
+            this.modAmtErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.modAmtErrorLabel.Location = new System.Drawing.Point(509, 251);
+            this.modAmtErrorLabel.Name = "modAmtErrorLabel";
+            this.modAmtErrorLabel.Size = new System.Drawing.Size(11, 13);
+            this.modAmtErrorLabel.TabIndex = 47;
+            this.modAmtErrorLabel.Text = "*";
+            // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 340);
+            this.ClientSize = new System.Drawing.Size(652, 340);
+            this.Controls.Add(this.modAmtErrorLabel);
+            this.Controls.Add(this.modifierErrorLabel);
+            this.Controls.Add(this.fixedErrorLabel);
+            this.Controls.Add(this.rateErrorLabel);
+            this.Controls.Add(this.planErrorLabel);
+            this.Controls.Add(this.benefitErrorLabel);
             this.Controls.Add(this.DeleteModifier);
             this.Controls.Add(this.CreateModifier);
             this.Controls.Add(this.CreatePlan);
@@ -321,6 +394,8 @@
             this.Controls.Add(this.CreateBenefit);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
+            this.MaximumSize = new System.Drawing.Size(668, 379);
+            this.MinimumSize = new System.Drawing.Size(668, 379);
             this.Name = "FormBenefits";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Benefits";
@@ -356,5 +431,11 @@
         private System.Windows.Forms.Button CreatePlan;
         private System.Windows.Forms.Button CreateModifier;
         private System.Windows.Forms.Button DeleteModifier;
+        private System.Windows.Forms.Label benefitErrorLabel;
+        private System.Windows.Forms.Label planErrorLabel;
+        private System.Windows.Forms.Label rateErrorLabel;
+        private System.Windows.Forms.Label fixedErrorLabel;
+        private System.Windows.Forms.Label modifierErrorLabel;
+        private System.Windows.Forms.Label modAmtErrorLabel;
     }
 }

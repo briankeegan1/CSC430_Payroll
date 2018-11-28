@@ -19,11 +19,18 @@ namespace CSC430_Payroll
         private SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["db"].ConnectionString); // making connection
         private SqlCommand command, command2;
         private SqlDataReader reader;
+        private string curBenefitName, curPlanName, curModName;
 
         public FormBenefits()
         {
             InitializeComponent();
             UpdateBenefits();
+            benefitErrorLabel.Text = "";
+            planErrorLabel.Text = "";
+            rateErrorLabel.Text = "";
+            fixedErrorLabel.Text = "";
+            modifierErrorLabel.Text = "";
+            modAmtErrorLabel.Text = "";
         }
 
         private void UpdateBenefits()   //keeps Benefits up to date
@@ -495,6 +502,13 @@ namespace CSC430_Payroll
                 DeleteBenefit.Enabled = false;
                 ModifyInfo.Enabled = false;
             }
+
+            benefitErrorLabel.Text = "";
+            planErrorLabel.Text = "";
+            rateErrorLabel.Text = "";
+            fixedErrorLabel.Text = "";
+            modifierErrorLabel.Text = "";
+            modAmtErrorLabel.Text = "";
         }
 
         private void DeletePlan_Click(object sender, EventArgs e)
@@ -581,6 +595,13 @@ namespace CSC430_Payroll
                 DeletePlan.Enabled = true;
             else
                 DeletePlan.Enabled = false;
+
+            benefitErrorLabel.Text = "";
+            planErrorLabel.Text = "";
+            rateErrorLabel.Text = "";
+            fixedErrorLabel.Text = "";
+            modifierErrorLabel.Text = "";
+            modAmtErrorLabel.Text = "";
         }
 
         private void printInfo()
@@ -589,11 +610,13 @@ namespace CSC430_Payroll
             {
                 benefitTextBox.Enabled = true;                           //print benefit name
                 benefitTextBox.Text = listBox1.SelectedItem.ToString();
+                curBenefitName = listBox1.SelectedItem.ToString();
 
                 if (listBox2.SelectedIndex != -1)           //if plan is selected 
                 {
                     planTextBox.Enabled = true;                             //print plan info
                     planTextBox.Text = listBox2.SelectedItem.ToString();
+                    curPlanName = listBox2.SelectedItem.ToString();
                     rateTextBox.Enabled = true;
                     fixedTextBox.Enabled = true;
                     printRateAndFixed();
@@ -605,6 +628,7 @@ namespace CSC430_Payroll
                         comboBox3.SelectedIndex = 0;
                         modifierTextBox.Enabled = true;
                         modifierTextBox.Text = comboBox3.SelectedItem.ToString();
+                        curModName = comboBox3.SelectedItem.ToString();
                         modAmtTextBox.Enabled = true;
                         DeleteModifier.Enabled = true;
                         printmodifierAmt();
@@ -703,10 +727,11 @@ namespace CSC430_Payroll
             while (reader.Read())
             {
                 rate = reader["rate"].ToString();
+                if (rate != "")
+                    rate = rate.Remove(0, 2);
                 fixedAmt = reader["fixedAmt"].ToString();
             }
             con.Close();
-
 
             rateTextBox.Text = null;
             fixedTextBox.Text = null;
@@ -716,33 +741,41 @@ namespace CSC430_Payroll
 
         private void ModifyInfo_Click(object sender, EventArgs e)
         {
-            string benefitName = "", planName = "", oldModName = "", newModName = "", modAmt = "";
-            if (listBox1.SelectedIndex != -1)
-                benefitName = listBox1.SelectedItem.ToString();
-            
+            bool planSelected = false, modSelected = false, empty = false, error = false ;
+
+            benefitErrorLabel.Text = "";
+            planErrorLabel.Text = "";
+            rateErrorLabel.Text = "";
+            fixedErrorLabel.Text = "";
+            modifierErrorLabel.Text = "";
+            modAmtErrorLabel.Text = "";
+
             if (listBox2.SelectedIndex != -1)
-                planName = listBox2.SelectedItem.ToString();
+                planSelected = true;
 
             if (comboBox3.Enabled == true)
-            {
-                oldModName = comboBox3.SelectedItem.ToString();
-                newModName = modifierTextBox.Text;
-                modAmt = modAmtTextBox.Text;
-            }
+                modSelected = true;
 
-            ModifyBenefitName(benefitName);
-            if (planName != "")
-                ModifyPlanInfo(planName);
-           if (oldModName != "")
-                ModifyMods(oldModName, newModName, modAmt);
-            printInfo();
+            empty = CheckInfoEmpty();
+            error = CheckInfoErrors();
+
+            if (!empty && !error)
+            {
+                ModifyBenefitName();             //modify benefit
+                if (planSelected)
+                    ModifyPlanInfo();               //modify plan
+                if (modSelected)
+                    ModifyMods();     //modify credits/deductions
+                UpdateBenefits();
+                printInfo();
+            }
         }
 
-        private void ModifyBenefitName (string benefitName)
+        private void ModifyBenefitName()
         {
             SqlParameter param1 = new SqlParameter();
             param1.ParameterName = "@oldName";
-            param1.Value = benefitName;
+            param1.Value = curBenefitName;
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@newName";
             param2.Value = benefitTextBox.Text;
@@ -764,7 +797,7 @@ namespace CSC430_Payroll
             }
 
             con.Close();
-            UpdateBenefits();
+            //UpdateBenefits();
         }
 
         private void DeleteModifier_Click(object sender, EventArgs e)
@@ -797,31 +830,92 @@ namespace CSC430_Payroll
             }
         }
 
-        private void ModifyPlanInfo(string planName)
+        private void ModifyPlanInfo()
         {
             SqlParameter param1 = new SqlParameter();
             param1.ParameterName = "@oldName";
-            param1.Value = planName;
+            param1.Value = curPlanName;
             SqlParameter param2 = new SqlParameter();
             param2.ParameterName = "@newName";
             param2.Value = planTextBox.Text;
             SqlParameter param3 = new SqlParameter();
             param3.ParameterName = "@rate";
-            param3.Value = rateTextBox.Text;
             SqlParameter param4 = new SqlParameter();
             param4.ParameterName = "@fixedAmt";
             param4.Value = fixedTextBox.Text;
+            SqlParameter param5 = new SqlParameter();
+            param5.ParameterName = "@benefitName";
+            param5.Value = benefitTextBox.Text;
+
+            int rateSize = rateTextBox.Text.Length;
+            string rateSQL = "Rate = @rate, ", fixedSQL = "[Fixed Payment] = @fixedAmt ";
+
+            if (rateSize == 1)
+                param3.Value = ".0" + rateTextBox.Text;
+            else if (rateSize == 2)
+                param3.Value = "." + rateTextBox.Text;
+            else if (rateSize == 0)
+                rateSQL = "Rate = NULL, ";
+
+            if (fixedTextBox.Text == "")
+                fixedSQL = "[Fixed Payment] = NULL ";
 
             String sql = "UPDATE BenefitPlans " +
-                         "SET [Plan Name] = @newName, Rate = @rate, [Fixed Payment] = @fixedAmt " +
-                         "WHERE [Plan Name] = @oldName; " +
-                         "UPDATE [Credits/Deductions] SET [Plan Name] = @newName WHERE [Plan Name] = @oldName; ";
+                         "SET [Plan Name] = @newName, " + rateSQL + fixedSQL +
+                         "WHERE [Plan Name] = @oldName AND [Benefit Name] = @benefitName; " +
+                         "UPDATE [Credits/Deductions] SET [Plan Name] = @newName WHERE [Plan Name] = @oldName " +
+                         "AND [Benefit Name] = @benefitName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            if (rateSize != 0)
+                command.Parameters.Add(param3);
+            if (fixedTextBox.Text != "")
+                command.Parameters.Add(param4);
+            command.Parameters.Add(param5);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Console.WriteLine(reader.GetValue(0));
+            }
+
+            con.Close();
+            //UpdatePlans();
+            //printInfo();
+        }
+
+        private void ModifyMods()
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@oldName";
+            param1.Value = curModName;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@newName";
+            param2.Value = modifierTextBox.Text;
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@AMT";
+            param3.Value = modAmtTextBox.Text;
+            SqlParameter param4 = new SqlParameter();
+            param4.ParameterName = "@planName";
+            param4.Value = planTextBox.Text;
+            SqlParameter param5 = new SqlParameter();
+            param5.ParameterName = "@benefitName";
+            param5.Value = benefitTextBox.Text;
+
+            String sql = "UPDATE [Credits/Deductions] " +
+                         "SET [Name] = @newName, [Amount] = @AMT " +
+                         "WHERE [Name] = @oldName AND [Plan Name] = @planName AND [Benefit Name] = @benefitName; ";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
             command.Parameters.Add(param2);
             command.Parameters.Add(param3);
             command.Parameters.Add(param4);
+            command.Parameters.Add(param5);
 
             con.Open();
             reader = command.ExecuteReader();
@@ -832,25 +926,246 @@ namespace CSC430_Payroll
             }
 
             con.Close();
-            UpdatePlans();
             printInfo();
         }
 
-        private void ModifyMods(string oldName, string newName, string AMT)
+        private bool CheckInfoEmpty()
+        {
+            bool empty = false;
+
+            int rateSize = rateTextBox.Text.Length;
+            int amtSize = fixedTextBox.Text.Length;
+            bool dot = false;
+            int count = 0;
+
+            if (benefitTextBox.Text != curBenefitName)  //if benefit name was edited
+            {
+                if (benefitTextBox.Text == "")          //if benefit name is empty
+                {
+                    benefitErrorLabel.Text = "*";
+                    empty = true;
+                }
+            }
+
+            if (listBox2.SelectedIndex != -1)       //if plan is selected
+            {
+                if (planTextBox.Text != curPlanName)        //if plan name was edited
+                {
+                    if (planTextBox.Text == "")             //if plan name is empty
+                    {
+                        planErrorLabel.Text = "*";
+                        empty = true;
+                    }
+                }
+                else
+                    planErrorLabel.Text = "";
+
+                if (rateTextBox.Text == "" && fixedTextBox.Text == "")   //if rate and fixed are empty
+                {
+                    rateErrorLabel.Text = "Please enter a Rate and/or Fixed Amount";
+                    empty = true;
+                }                  
+
+                if (comboBox3.Enabled == true)      //if plan has credits/deductions
+                {
+                    if (modifierTextBox.Text != curModName)     //if mod name was edited
+                    {
+                        if (modifierTextBox.Text == "")         //if mod name is empty
+                        {
+                            modifierErrorLabel.Text = "*";
+                            empty = true;
+                        }
+                    }
+
+                    if (modAmtTextBox.Text == "")               //if mod amount is empty
+                    {
+                        modAmtErrorLabel.Text = "*";
+                        empty = true;
+                    }
+                }
+            }
+
+            return empty;
+        }
+
+        private bool CheckInfoErrors() {
+            bool error = false;
+            int rateSize = rateTextBox.Text.Length;
+            bool dot = false;
+            int count = 0;
+
+            if (benefitTextBox.Text != curBenefitName)  //if benefit name was edited
+            {
+                if (CheckBenefitExists())          //if benefit name exists
+                {
+                    benefitErrorLabel.Text = "Benefit name is already taken";
+                    error = true;
+                }
+            }
+
+            if (listBox2.SelectedIndex != -1)       //if plan is selected
+            {
+                if (planTextBox.Text != curPlanName)        //if plan name was edited
+                {
+                    if (CheckPlanExists())             //if plan name exists
+                    {
+                        planErrorLabel.Text = "Plan Name already Exists";
+                        error = true;
+                    }
+                }
+
+                if ((rateSize == 1 && !char.IsDigit(rateTextBox.Text[0])) ||
+                    (rateSize == 2 && (!char.IsDigit(rateTextBox.Text[0]) || !char.IsDigit(rateTextBox.Text[1]))))
+                    rateErrorLabel.Text = "Rate must be a number";      //if rate isn't a number
+
+                if (fixedTextBox.Text == ".")                         //fixed amount check
+                {
+                    fixedErrorLabel.Text = "Amount must be a number";
+                    error = true;
+                }
+                else
+                {
+                    for (int i = 0; i < fixedTextBox.Text.Length; i++)           //loop through fixed amount
+                    {
+                        if (!char.IsDigit(fixedTextBox.Text[i]))    //check for non digits
+                        {
+                            if (fixedTextBox.Text[i] == '.' && dot == false)    //exclude first decimal, if used
+                                dot = true;
+                            else
+                            {
+                                fixedErrorLabel.Text = "Amount must be a number";
+                                error = true;
+                                break;
+                            }
+                        }
+                        else if (dot == true)                 //checks how many numbers after decimal, if used
+                        {
+                            if (count == 2)
+                            {
+                                fixedErrorLabel.Text = "Amount exceeded two decimal places";
+                                error = true;
+                                break;
+                            }
+                            else
+                                count++;
+                        }
+                    }
+                }
+
+                if (comboBox3.Enabled == true)      //if plan has credits/deductions
+                {
+                    if (modifierTextBox.Text != curModName)     //if mod name was edited
+                    {
+                        if (CheckModExists())              //if mod name exists
+                        {
+                            modifierErrorLabel.Text = "C/D Name already Exists";
+                            error = true;
+                        }
+                    }
+
+                    if (modAmtTextBox.Text == ".")              //mod amount check
+                    {
+                        modAmtErrorLabel.Text = "Amount must be a number";
+                        error = true;
+                    }
+                    else
+                    {
+                        dot = false;
+                        for (int i = 0; i < modAmtTextBox.Text.Length; i++)           //loop through mod amount
+                        {
+                            if (!char.IsDigit(modAmtTextBox.Text[i]))    //check for non digits
+                            {
+                                if (modAmtTextBox.Text[i] == '.' && dot == false)    //exclude first decimal, if used
+                                    dot = true;
+                                else
+                                {
+                                    modAmtErrorLabel.Text = "Amount must be a number";
+                                    error = true;
+                                    break;
+                                }
+                            }
+                            else if (dot == true)                 //checks how many numbers after decimal, if used
+                            {
+                                if (count == 2)
+                                {
+                                    modAmtErrorLabel.Text = "Amount exceeded two decimal places";
+                                    error = true;
+                                    break;
+                                }
+                                else
+                                    count++;
+                            }
+                        }
+                    }
+                }
+            }
+            return error;
+        }
+
+        private bool CheckBenefitExists()
+        {
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@newBenefit";
+            string newBenefit = benefitTextBox.Text;
+            param.Value = newBenefit;
+            string name = "";
+
+            String sql = "SELECT name = [Benefit Name] FROM Benefits WHERE [Benefit Name] = @newBenefit;";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param);
+
+            con.Open();
+            name = (string)command.ExecuteScalar();
+            con.Close();
+
+            if (name == newBenefit)
+                return true;
+            else
+                return false;
+        }
+
+        private bool CheckPlanExists()
         {
             SqlParameter param1 = new SqlParameter();
-            param1.ParameterName = "@oldName";
-            param1.Value = oldName;
+            param1.ParameterName = "@benefitname";
+            param1.Value = listBox1.SelectedItem.ToString();
             SqlParameter param2 = new SqlParameter();
-            param2.ParameterName = "@newName";
-            param2.Value = newName;
-            SqlParameter param3 = new SqlParameter();
-            param3.ParameterName = "@AMT";
-            param3.Value = AMT;
+            param2.ParameterName = "@planName";
+            param2.Value = planTextBox.Text;
+            string name = "";
 
-            String sql = "UPDATE [Credits/Deductions] " +
-                         "SET [Name] = @newName, [Amount] = @AMT " +
-                         "WHERE [Name] = @oldName; ";
+            String sql = "SELECT name = [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = @benefitName AND [Plan Name] = @planName; ";
+
+            command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            name = (string)command.ExecuteScalar();
+            con.Close();
+
+            if (name == planTextBox.Text)
+                return true;
+            else
+                return false;
+        }
+
+        private bool CheckModExists()
+        {
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@newName";
+            param1.Value = modifierTextBox.Text;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = listBox1.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@planName";
+            param3.Value = listBox2.SelectedItem.ToString();
+            string name = "";
+
+            String sql = "SELECT name = [Name] FROM [Credits/Deductions] WHERE [Benefit Name] = @benefitName AND " +
+                         "[Plan Name] = @planName AND [Name] = @newName;";
 
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
@@ -858,15 +1173,14 @@ namespace CSC430_Payroll
             command.Parameters.Add(param3);
 
             con.Open();
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                Console.WriteLine(reader.GetValue(0));
-            }
-
+            name = (string)command.ExecuteScalar();
             con.Close();
-            printInfo();
+
+            if (name == modifierTextBox.Text)
+                return true;
+            else
+                return false;
         }
+
     }
 }

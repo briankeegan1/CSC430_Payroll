@@ -98,15 +98,19 @@ namespace CSC430_Payroll
         {
             if (comboBox1.SelectedIndex != -1)
             {
-                SqlParameter param = new SqlParameter();
-                param.ParameterName = "@benefitname";
-                param.Value = comboBox1.SelectedItem.ToString();
+                SqlParameter param1 = new SqlParameter();
+                param1.ParameterName = "@benefitname";
+                param1.Value = comboBox1.SelectedItem.ToString();
+                SqlParameter param2 = new SqlParameter();
+                param2.ParameterName = "@planName";
+                param2.Value = textBox2.Text;
                 string name = "";
 
-                String sql = "SELECT name = [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = @benefitName; ";
+                String sql = "SELECT name = [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = @benefitName AND [Plan Name] = @planName; ";
 
                 command = new SqlCommand(sql, con);
-                command.Parameters.Add(param);
+                command.Parameters.Add(param1);
+                command.Parameters.Add(param2);
 
                 con.Open();
                 name = (string)command.ExecuteScalar();
@@ -148,7 +152,7 @@ namespace CSC430_Payroll
 
             if (comboBox1.SelectedIndex == -1)
             {
-                benefitErrorLabel.Text = "Please select a Benefit.";
+                benefitErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -156,7 +160,7 @@ namespace CSC430_Payroll
 
             if (textBox2.Text == "")
             {
-                planErrorLabel.Text = "Please enter a Benefit Plan name";
+                planErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -165,7 +169,7 @@ namespace CSC430_Payroll
 
             if (!checkBoxRate.Checked && !checkBoxFixed.Checked)
             {
-                payTypeErrorLabel.Text = "Please select at least one Payment Type";
+                payTypeErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -173,7 +177,7 @@ namespace CSC430_Payroll
 
             if (textBox3.Text == "" && checkBoxRate.Checked)
             {
-                rateErrorLabel.Text = "Please enter a Rate";
+                rateErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -181,7 +185,7 @@ namespace CSC430_Payroll
 
             if (textBox4.Text == "" && checkBoxFixed.Checked)
             {
-                fixedAmtErrorLabel.Text = "Please enter a Fixed Payment Amount";
+                fixedAmtErrorLabel.Text = "*";
                 empty = true;
             }
             else

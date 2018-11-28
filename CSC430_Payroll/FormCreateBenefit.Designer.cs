@@ -247,6 +247,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
+            this.MaximumSize = new System.Drawing.Size(365, 344);
+            this.MinimumSize = new System.Drawing.Size(365, 344);
             this.Name = "FormCreateBenefit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create a Benefit";

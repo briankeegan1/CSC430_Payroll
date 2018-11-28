@@ -146,15 +146,24 @@ namespace CSC430_Payroll
 
         private bool CheckExists()
         {
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@newName";
-            param.Value = textBox1.Text;
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@newName";
+            param1.Value = textBox1.Text;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = comboBox1.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@planName";
+            param3.Value = comboBox2.SelectedItem.ToString();
             string name = "";
 
-            String sql = "SELECT name = [Name] FROM [Credits/Deductions] WHERE [Name] = @newName;";
+            String sql = "SELECT name = [Name] FROM [Credits/Deductions] WHERE [Benefit Name] = @benefitName AND " +
+                         "[Plan Name] = @planName AND [Name] = @newName;";
 
             command = new SqlCommand(sql, con);
-            command.Parameters.Add(param);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
 
             con.Open();
             name = (string)command.ExecuteScalar();
