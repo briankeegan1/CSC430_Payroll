@@ -59,6 +59,9 @@
             this.fixedErrorLabel = new System.Windows.Forms.Label();
             this.modifierErrorLabel = new System.Windows.Forms.Label();
             this.modAmtErrorLabel = new System.Windows.Forms.Label();
+            this.radioRate = new System.Windows.Forms.RadioButton();
+            this.radioFixed = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -141,7 +144,7 @@
             // rateTextBox
             // 
             this.rateTextBox.Enabled = false;
-            this.rateTextBox.Location = new System.Drawing.Point(265, 115);
+            this.rateTextBox.Location = new System.Drawing.Point(265, 152);
             this.rateTextBox.MaxLength = 2;
             this.rateTextBox.Name = "rateTextBox";
             this.rateTextBox.Size = new System.Drawing.Size(100, 20);
@@ -152,7 +155,7 @@
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.Enabled = false;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(265, 205);
+            this.comboBox3.Location = new System.Drawing.Point(265, 242);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 23;
@@ -161,7 +164,7 @@
             // ModifyInfo
             // 
             this.ModifyInfo.Enabled = false;
-            this.ModifyInfo.Location = new System.Drawing.Point(540, 283);
+            this.ModifyInfo.Location = new System.Drawing.Point(538, 305);
             this.ModifyInfo.Name = "ModifyInfo";
             this.ModifyInfo.Size = new System.Drawing.Size(102, 23);
             this.ModifyInfo.TabIndex = 25;
@@ -201,7 +204,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(262, 99);
+            this.label10.Location = new System.Drawing.Point(262, 136);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 29;
@@ -210,7 +213,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(262, 189);
+            this.label12.Location = new System.Drawing.Point(262, 226);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(98, 13);
             this.label12.TabIndex = 31;
@@ -219,7 +222,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(262, 145);
+            this.label2.Location = new System.Drawing.Point(262, 182);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 33;
@@ -228,7 +231,7 @@
             // fixedTextBox
             // 
             this.fixedTextBox.Enabled = false;
-            this.fixedTextBox.Location = new System.Drawing.Point(265, 161);
+            this.fixedTextBox.Location = new System.Drawing.Point(265, 198);
             this.fixedTextBox.Name = "fixedTextBox";
             this.fixedTextBox.Size = new System.Drawing.Size(100, 20);
             this.fixedTextBox.TabIndex = 34;
@@ -236,7 +239,7 @@
             // modifierTextBox
             // 
             this.modifierTextBox.Enabled = false;
-            this.modifierTextBox.Location = new System.Drawing.Point(403, 205);
+            this.modifierTextBox.Location = new System.Drawing.Point(403, 242);
             this.modifierTextBox.Name = "modifierTextBox";
             this.modifierTextBox.Size = new System.Drawing.Size(100, 20);
             this.modifierTextBox.TabIndex = 35;
@@ -244,7 +247,7 @@
             // modAmtTextBox
             // 
             this.modAmtTextBox.Enabled = false;
-            this.modAmtTextBox.Location = new System.Drawing.Point(403, 248);
+            this.modAmtTextBox.Location = new System.Drawing.Point(403, 285);
             this.modAmtTextBox.Name = "modAmtTextBox";
             this.modAmtTextBox.Size = new System.Drawing.Size(100, 20);
             this.modAmtTextBox.TabIndex = 36;
@@ -252,7 +255,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(400, 189);
+            this.label3.Location = new System.Drawing.Point(400, 226);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 13);
             this.label3.TabIndex = 37;
@@ -261,7 +264,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(400, 232);
+            this.label4.Location = new System.Drawing.Point(400, 269);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(43, 13);
             this.label4.TabIndex = 38;
@@ -279,7 +282,7 @@
             // 
             // CreateModifier
             // 
-            this.CreateModifier.Location = new System.Drawing.Point(265, 261);
+            this.CreateModifier.Location = new System.Drawing.Point(265, 298);
             this.CreateModifier.Name = "CreateModifier";
             this.CreateModifier.Size = new System.Drawing.Size(109, 23);
             this.CreateModifier.TabIndex = 40;
@@ -290,7 +293,7 @@
             // DeleteModifier
             // 
             this.DeleteModifier.Enabled = false;
-            this.DeleteModifier.Location = new System.Drawing.Point(265, 232);
+            this.DeleteModifier.Location = new System.Drawing.Point(265, 269);
             this.DeleteModifier.Name = "DeleteModifier";
             this.DeleteModifier.Size = new System.Drawing.Size(109, 23);
             this.DeleteModifier.TabIndex = 41;
@@ -322,7 +325,7 @@
             // 
             this.rateErrorLabel.AutoSize = true;
             this.rateErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.rateErrorLabel.Location = new System.Drawing.Point(371, 118);
+            this.rateErrorLabel.Location = new System.Drawing.Point(371, 155);
             this.rateErrorLabel.Name = "rateErrorLabel";
             this.rateErrorLabel.Size = new System.Drawing.Size(11, 13);
             this.rateErrorLabel.TabIndex = 44;
@@ -332,7 +335,7 @@
             // 
             this.fixedErrorLabel.AutoSize = true;
             this.fixedErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.fixedErrorLabel.Location = new System.Drawing.Point(371, 164);
+            this.fixedErrorLabel.Location = new System.Drawing.Point(371, 201);
             this.fixedErrorLabel.Name = "fixedErrorLabel";
             this.fixedErrorLabel.Size = new System.Drawing.Size(11, 13);
             this.fixedErrorLabel.TabIndex = 45;
@@ -342,7 +345,7 @@
             // 
             this.modifierErrorLabel.AutoSize = true;
             this.modifierErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.modifierErrorLabel.Location = new System.Drawing.Point(509, 208);
+            this.modifierErrorLabel.Location = new System.Drawing.Point(509, 245);
             this.modifierErrorLabel.Name = "modifierErrorLabel";
             this.modifierErrorLabel.Size = new System.Drawing.Size(11, 13);
             this.modifierErrorLabel.TabIndex = 46;
@@ -352,17 +355,55 @@
             // 
             this.modAmtErrorLabel.AutoSize = true;
             this.modAmtErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.modAmtErrorLabel.Location = new System.Drawing.Point(509, 251);
+            this.modAmtErrorLabel.Location = new System.Drawing.Point(509, 288);
             this.modAmtErrorLabel.Name = "modAmtErrorLabel";
             this.modAmtErrorLabel.Size = new System.Drawing.Size(11, 13);
             this.modAmtErrorLabel.TabIndex = 47;
             this.modAmtErrorLabel.Text = "*";
+            // 
+            // radioRate
+            // 
+            this.radioRate.AutoSize = true;
+            this.radioRate.Enabled = false;
+            this.radioRate.Location = new System.Drawing.Point(265, 113);
+            this.radioRate.Name = "radioRate";
+            this.radioRate.Size = new System.Drawing.Size(48, 17);
+            this.radioRate.TabIndex = 48;
+            this.radioRate.TabStop = true;
+            this.radioRate.Text = "Rate";
+            this.radioRate.UseVisualStyleBackColor = true;
+            this.radioRate.CheckedChanged += new System.EventHandler(this.radioRate_CheckedChanged);
+            // 
+            // radioFixed
+            // 
+            this.radioFixed.AutoSize = true;
+            this.radioFixed.Enabled = false;
+            this.radioFixed.Location = new System.Drawing.Point(319, 113);
+            this.radioFixed.Name = "radioFixed";
+            this.radioFixed.Size = new System.Drawing.Size(86, 17);
+            this.radioFixed.TabIndex = 49;
+            this.radioFixed.TabStop = true;
+            this.radioFixed.Text = "FixedAmount";
+            this.radioFixed.UseVisualStyleBackColor = true;
+            this.radioFixed.CheckedChanged += new System.EventHandler(this.radioFixed_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(262, 97);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(75, 13);
+            this.label5.TabIndex = 50;
+            this.label5.Text = "Payment Type";
             // 
             // FormBenefits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 340);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.radioFixed);
+            this.Controls.Add(this.radioRate);
             this.Controls.Add(this.modAmtErrorLabel);
             this.Controls.Add(this.modifierErrorLabel);
             this.Controls.Add(this.fixedErrorLabel);
@@ -437,5 +478,8 @@
         private System.Windows.Forms.Label fixedErrorLabel;
         private System.Windows.Forms.Label modifierErrorLabel;
         private System.Windows.Forms.Label modAmtErrorLabel;
+        private System.Windows.Forms.RadioButton radioRate;
+        private System.Windows.Forms.RadioButton radioFixed;
+        private System.Windows.Forms.Label label5;
     }
 }

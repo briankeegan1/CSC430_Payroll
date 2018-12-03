@@ -617,8 +617,8 @@ namespace CSC430_Payroll
                     planTextBox.Enabled = true;                             //print plan info
                     planTextBox.Text = listBox2.SelectedItem.ToString();
                     curPlanName = listBox2.SelectedItem.ToString();
-                    rateTextBox.Enabled = true;
-                    fixedTextBox.Enabled = true;
+                    radioRate.Enabled = true;
+                    radioFixed.Enabled = true;
                     printRateAndFixed();
 
                     UpdateModifiers();
@@ -651,9 +651,13 @@ namespace CSC430_Payroll
                 planTextBox.Enabled = false;    //disable and clear info
                 rateTextBox.Enabled = false;
                 fixedTextBox.Enabled = false;
+                radioRate.Enabled = false;
+                radioFixed.Enabled = false;
                 planTextBox.Text = null;
                 rateTextBox.Text = null;
                 fixedTextBox.Text = null;
+                radioRate.Checked = false;
+                radioFixed.Checked = false;
             }
             if (listBox1.SelectedIndex == -1)   //if no benefit selected
             {
@@ -737,15 +741,25 @@ namespace CSC430_Payroll
             }
             con.Close();
 
-            rateTextBox.Text = null;
             fixedTextBox.Text = null;
-            rateTextBox.Text = rate;
-            fixedTextBox.Text = fixedAmt;       
+            rateTextBox.Text = null;
+
+            if (rate != "")
+            {
+                radioRate.Checked = true;
+                rateTextBox.Text = rate;
+            }
+            else if (fixedAmt != "")
+            {
+                radioFixed.Checked = true;
+                fixedTextBox.Text = fixedAmt;
+            }
         }
 
         private void ModifyInfo_Click(object sender, EventArgs e)
         {
             bool planSelected = false, modSelected = false, empty = false, error = false ;
+            int benefitIndex = listBox1.SelectedIndex, planIndex = listBox2.SelectedIndex;
 
             benefitErrorLabel.Text = "";
             planErrorLabel.Text = "";
@@ -772,6 +786,9 @@ namespace CSC430_Payroll
                     ModifyMods();     //modify credits/deductions
                 UpdateBenefits();
                 printInfo();
+                MessageBox.Show("Your information has been updated.", "Confirmation Message");
+                listBox1.SelectedIndex = benefitIndex;
+                listBox2.SelectedIndex = planIndex;
             }
         }
 
@@ -852,20 +869,29 @@ namespace CSC430_Payroll
             param5.Value = benefitTextBox.Text;
 
             int rateSize = rateTextBox.Text.Length;
-            string rateSQL = "Rate = @rate, ", fixedSQL = "[Fixed Payment] = @fixedAmt ";
+            string rateSQL = ", Rate = NULL ", fixedSQL = ", [Fixed Payment] = NULL ";
 
-            if (rateSize == 1)
-                param3.Value = ".0" + rateTextBox.Text;
-            else if (rateSize == 2)
-                param3.Value = "." + rateTextBox.Text;
-            else if (rateSize == 0)
-                rateSQL = "Rate = NULL, ";
+            if (radioRate.Checked == true)  //if rate is selected, specify sql
+            {
+                rateSQL = ", Rate = @rate ";
 
-            if (fixedTextBox.Text == "")
-                fixedSQL = "[Fixed Payment] = NULL ";
+                if (rateSize == 1)
+                    param3.Value = ".0" + rateTextBox.Text;
+                else if (rateSize == 2)
+                    param3.Value = "." + rateTextBox.Text;
+                else if (rateSize == 0)
+                    rateSQL = ",Rate = NULL ";
+            }
+            else if (radioFixed.Checked == true)
+            {
+                fixedSQL = ", [Fixed Payment] = @fixedAmt ";
+
+                if (fixedTextBox.Text == "")
+                    fixedSQL = ",[Fixed Payment] = NULL ";
+            }
 
             String sql = "UPDATE BenefitPlans " +
-                         "SET [Plan Name] = @newName, " + rateSQL + fixedSQL +
+                         "SET [Plan Name] = @newName " + rateSQL + fixedSQL +
                          "WHERE [Plan Name] = @oldName AND [Benefit Name] = @benefitName; " +
                          "UPDATE [Credits/Deductions] SET [Plan Name] = @newName WHERE [Plan Name] = @oldName " +
                          "AND [Benefit Name] = @benefitName; ";
@@ -873,9 +899,9 @@ namespace CSC430_Payroll
             command = new SqlCommand(sql, con);
             command.Parameters.Add(param1);
             command.Parameters.Add(param2);
-            if (rateSize != 0)
+            if (radioRate.Checked == true && rateSize != 0)
                 command.Parameters.Add(param3);
-            if (fixedTextBox.Text != "")
+            if (radioFixed.Checked = true && fixedTextBox.Text != "")
                 command.Parameters.Add(param4);
             command.Parameters.Add(param5);
 
@@ -1108,6 +1134,25 @@ namespace CSC430_Payroll
                 }
             }
             return error;
+        }
+
+        private void radioRate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioRate.Checked == true)
+            {
+                rateTextBox.Enabled = true;
+                fixedTextBox.Enabled = false;
+            }
+
+        }
+
+        private void radioFixed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioFixed.Checked == true)
+            {
+                rateTextBox.Enabled = false;
+                fixedTextBox.Enabled = true;
+            }
         }
 
         private bool CheckBenefitExists()
