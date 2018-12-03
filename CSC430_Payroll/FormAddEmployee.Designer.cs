@@ -52,12 +52,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -301,38 +301,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Personal Information";
             // 
-            // textBox1
+            // label13
             // 
-            this.textBox1.Location = new System.Drawing.Point(221, 243);
-            this.textBox1.MaxLength = 3;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(24, 20);
-            this.textBox1.TabIndex = 12;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(218, 227);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(98, 13);
-            this.label11.TabIndex = 13;
-            this.label11.Text = "SSN (123-45-6789)";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(267, 243);
-            this.textBox2.MaxLength = 2;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(20, 20);
-            this.textBox2.TabIndex = 14;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(307, 243);
-            this.textBox3.MaxLength = 4;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(28, 20);
-            this.textBox3.TabIndex = 15;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(291, 246);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(10, 13);
+            this.label13.TabIndex = 17;
+            this.label13.Text = "-";
             // 
             // label12
             // 
@@ -343,14 +319,38 @@
             this.label12.TabIndex = 16;
             this.label12.Text = "-";
             // 
-            // label13
+            // textBox3
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(291, 246);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(10, 13);
-            this.label13.TabIndex = 17;
-            this.label13.Text = "-";
+            this.textBox3.Location = new System.Drawing.Point(307, 243);
+            this.textBox3.MaxLength = 4;
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(30, 20);
+            this.textBox3.TabIndex = 15;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(267, 243);
+            this.textBox2.MaxLength = 2;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(20, 20);
+            this.textBox2.TabIndex = 14;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(218, 227);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(98, 13);
+            this.label11.TabIndex = 13;
+            this.label11.Text = "SSN (123-45-6789)";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(221, 243);
+            this.textBox1.MaxLength = 3;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(25, 20);
+            this.textBox1.TabIndex = 12;
             // 
             // FormAddEmployee
             // 
