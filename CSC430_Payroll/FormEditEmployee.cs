@@ -169,21 +169,23 @@ namespace CSC430_Payroll
         private void editBenefits(SqlConnection con, int id)
         {
             string sqlquery = "";
-            for (int i = 0; i < Benefits.Count(); i++)
+            string benefitsString = "";
+
+            if (checkedListBox2.CheckedItems.Count > 0)
             {
-                if (checkedListBox2.GetItemChecked(i) == true)
+                foreach (object Item in checkedListBox2.CheckedItems)
                 {
-                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 1 + "WHERE ID = " + id;
-                    SqlCommand command = new SqlCommand(sqlquery, con);
-                    command.ExecuteNonQuery();
+                    benefitsString += Item.ToString();
+                    benefitsString += ",";
                 }
-                else
-                {
-                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 0 + "WHERE ID = " + id;
-                    SqlCommand command = new SqlCommand(sqlquery, con);
-                    command.ExecuteNonQuery();
-                }
+                benefitsString = benefitsString.Substring(0, (benefitsString.Length - 1));
             }
+            else
+                benefitsString = "";
+
+            sqlquery = "UPDATE Employee SET Benefits =" +"'"+benefitsString+"'"+ " WHERE ID = " + id;
+            SqlCommand command = new SqlCommand(sqlquery, con);
+            command.ExecuteNonQuery();
         }
 
         private void refreshTaxesListBox()
@@ -211,19 +213,23 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
             Benefits = form1.getBenefits();
-            con.Open();
             for (int i = 0; i < Benefits.Count(); i++)
             {
+                con.Open();
                 checkedListBox2.Items.Add(Benefits[i]);
-                String sqlquery = "SELECT [" + Benefits[i] + "] FROM Employee WHERE ID = " + numID;
+                String sqlquery = "SELECT Benefits FROM Employee WHERE ID = " + numID;
                 SqlCommand command = new SqlCommand(sqlquery, con);
-                bool temp = (bool)command.ExecuteScalar();
-                if (temp == true)
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    checkedListBox2.SetItemChecked(i, true);
+                    if (reader["Benefits"].ToString().Contains(Benefits[i]))
+                    {
+                        checkedListBox2.SetItemChecked(i, true);
+                    }
                 }
+                con.Close();
             }
-            con.Close();
         }
     }
 }

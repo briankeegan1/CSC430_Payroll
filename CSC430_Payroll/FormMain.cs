@@ -379,27 +379,24 @@ namespace CSC430_Payroll
             {
                 if (dgv.SelectedRows.Count > 0)
                 {
-                    con.Open();
                     for (int i = 0; i < Benefits.Count(); i++)
                     {
+                        con.Open();
                         DataGridViewRow row = dgv.SelectedRows[0];
                         var id = row.Cells["ID"].Value;
-                        String sqlquery = "SELECT [" + Benefits[i] + "] FROM Employee WHERE ID = " + id;
+                        String sqlquery = "SELECT Benefits FROM Employee WHERE ID = " + id;
                         SqlCommand command = new SqlCommand(sqlquery, con);
                         SqlDataReader reader = command.ExecuteReader();
 
                         while (reader.Read())
                         {
-                            if (reader[Benefits[i]].ToString() == "True")
+                            if (reader["Benefits"].ToString().Contains(Benefits[i]))
                             {
-                                string temp = Benefits[i];
-                                temp = temp.Remove(0, 5);
-                                listBox2.Items.Add(temp);
+                                listBox2.Items.Add(Benefits[i]);
                             }
                         }
-                        reader.Close();
+                        con.Close();
                     }
-                    con.Close();
                 }
             }
         }
@@ -430,7 +427,7 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
             con.Open();
-            String sqlquery = "SELECT column_name " +
+            /*String sqlquery = "SELECT column_name " +
                 "FROM information_schema.columns " +
                 "WHERE table_name = 'Employee' " +
                 "AND column_name " +
@@ -440,6 +437,13 @@ namespace CSC430_Payroll
             while (reader.Read())
             {
                 Benefits.Add(reader["column_name"].ToString());
+            }*/
+            String sqlquery = "SELECT [Benefit Name] FROM Benefits";
+            SqlCommand command = new SqlCommand(sqlquery, con);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Benefits.Add(reader["Benefit Name"].ToString());
             }
             reader.Close();
             con.Close();
