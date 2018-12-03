@@ -217,7 +217,6 @@ namespace CSC430_Payroll
             }
 
             con.Close();
-            //AddEmployeeCol(textBox1.Text);
         }
 
         private void CreatePlan()
@@ -252,7 +251,6 @@ namespace CSC430_Payroll
             if (checkBoxFixed.Checked)
                 AddFixedAmount();
 
-            //AddEmployeeCol(textBox1.Text);
         }
 
         private void AddRate()
