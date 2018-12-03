@@ -125,6 +125,7 @@
             this.radioCredit.TabIndex = 8;
             this.radioCredit.Text = "Credit";
             this.radioCredit.UseVisualStyleBackColor = true;
+            this.radioCredit.CheckedChanged += new System.EventHandler(this.radioCredit_CheckedChanged);
             // 
             // radioDeduction
             // 
@@ -196,7 +197,7 @@
             this.amountErrorLabel.TabIndex = 16;
             this.amountErrorLabel.Text = " ";
             // 
-            // CreateCreditOrDeduc
+            // FormCreateModifier
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -219,7 +220,7 @@
             this.Controls.Add(this.comboBox1);
             this.MaximumSize = new System.Drawing.Size(301, 258);
             this.MinimumSize = new System.Drawing.Size(301, 258);
-            this.Name = "CreateCreditOrDeduc";
+            this.Name = "FormCreateModifier";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CreateCreditOrDeduc";
             this.ResumeLayout(false);
