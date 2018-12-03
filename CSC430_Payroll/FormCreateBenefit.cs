@@ -96,7 +96,7 @@ namespace CSC430_Payroll
 
             if (textBox1.Text == "")
             {
-                benefitErrorLabel.Text = "Please enter a Benefit name";
+                benefitErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -104,24 +104,15 @@ namespace CSC430_Payroll
 
             if (textBox2.Text == "")
             {
-                planErrorLabel.Text = "Please enter a Benefit Plan name";
+                planErrorLabel.Text = "*";
                 empty = true;
             }
             else
                 planErrorLabel.Text = "";
 
-
-            if (!radioRate.Checked && !radioFixed.Checked)
-            {
-                payTypeErrorLabel.Text = "Please select at least one Payment Type";
-                empty = true;
-            }
-            else
-                payTypeErrorLabel.Text = "";
-
             if (textBox3.Text == "" && radioRate.Checked)
             {
-                rateErrorLabel.Text = "Please enter a Rate";
+                rateErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -129,7 +120,7 @@ namespace CSC430_Payroll
 
             if (textBox4.Text == "" && radioFixed.Checked)
             {
-                fixedAmtErrorLabel.Text = "Please enter a Fixed Payment Amount";
+                fixedAmtErrorLabel.Text = "*";
                 empty = true;
             }
             else

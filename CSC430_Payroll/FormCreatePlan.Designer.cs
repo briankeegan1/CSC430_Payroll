@@ -42,12 +42,12 @@
             this.planErrorLabel = new System.Windows.Forms.Label();
             this.payTypeErrorLabel = new System.Windows.Forms.Label();
             this.rateErrorLabel = new System.Windows.Forms.Label();
-            this.checkBoxRate = new System.Windows.Forms.CheckBox();
-            this.checkBoxFixed = new System.Windows.Forms.CheckBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.fixedAmtErrorLabel = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.radioRate = new System.Windows.Forms.RadioButton();
+            this.radioFixed = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -167,28 +167,6 @@
             this.rateErrorLabel.TabIndex = 15;
             this.rateErrorLabel.Text = "        ";
             // 
-            // checkBoxRate
-            // 
-            this.checkBoxRate.AutoSize = true;
-            this.checkBoxRate.Location = new System.Drawing.Point(15, 127);
-            this.checkBoxRate.Name = "checkBoxRate";
-            this.checkBoxRate.Size = new System.Drawing.Size(49, 17);
-            this.checkBoxRate.TabIndex = 16;
-            this.checkBoxRate.Text = "Rate";
-            this.checkBoxRate.UseVisualStyleBackColor = true;
-            this.checkBoxRate.CheckedChanged += new System.EventHandler(this.checkBoxRate_CheckedChanged);
-            // 
-            // checkBoxFixed
-            // 
-            this.checkBoxFixed.AutoSize = true;
-            this.checkBoxFixed.Location = new System.Drawing.Point(15, 150);
-            this.checkBoxFixed.Name = "checkBoxFixed";
-            this.checkBoxFixed.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxFixed.TabIndex = 17;
-            this.checkBoxFixed.Text = "Fixed Amount";
-            this.checkBoxFixed.UseVisualStyleBackColor = true;
-            this.checkBoxFixed.CheckedChanged += new System.EventHandler(this.checkBoxFixed_CheckedChanged);
-            // 
             // textBox4
             // 
             this.textBox4.Enabled = false;
@@ -226,17 +204,41 @@
             this.comboBox1.Size = new System.Drawing.Size(149, 21);
             this.comboBox1.TabIndex = 20;
             // 
+            // radioRate
+            // 
+            this.radioRate.AutoSize = true;
+            this.radioRate.Location = new System.Drawing.Point(15, 121);
+            this.radioRate.Name = "radioRate";
+            this.radioRate.Size = new System.Drawing.Size(48, 17);
+            this.radioRate.TabIndex = 21;
+            this.radioRate.TabStop = true;
+            this.radioRate.Text = "Rate";
+            this.radioRate.UseVisualStyleBackColor = true;
+            this.radioRate.CheckedChanged += new System.EventHandler(this.radioRate_CheckedChanged);
+            // 
+            // radioFixed
+            // 
+            this.radioFixed.AutoSize = true;
+            this.radioFixed.Location = new System.Drawing.Point(15, 144);
+            this.radioFixed.Name = "radioFixed";
+            this.radioFixed.Size = new System.Drawing.Size(50, 17);
+            this.radioFixed.TabIndex = 22;
+            this.radioFixed.TabStop = true;
+            this.radioFixed.Text = "Fixed";
+            this.radioFixed.UseVisualStyleBackColor = true;
+            this.radioFixed.CheckedChanged += new System.EventHandler(this.radioFixed_CheckedChanged);
+            // 
             // FormCreatePlan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(349, 305);
+            this.Controls.Add(this.radioFixed);
+            this.Controls.Add(this.radioRate);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.fixedAmtErrorLabel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.checkBoxFixed);
-            this.Controls.Add(this.checkBoxRate);
             this.Controls.Add(this.rateErrorLabel);
             this.Controls.Add(this.payTypeErrorLabel);
             this.Controls.Add(this.planErrorLabel);
@@ -274,11 +276,11 @@
         private System.Windows.Forms.Label planErrorLabel;
         private System.Windows.Forms.Label payTypeErrorLabel;
         private System.Windows.Forms.Label rateErrorLabel;
-        private System.Windows.Forms.CheckBox checkBoxRate;
-        private System.Windows.Forms.CheckBox checkBoxFixed;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label fixedAmtErrorLabel;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RadioButton radioRate;
+        private System.Windows.Forms.RadioButton radioFixed;
     }
 }
