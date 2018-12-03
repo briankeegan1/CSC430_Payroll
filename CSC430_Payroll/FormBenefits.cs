@@ -670,6 +670,10 @@ namespace CSC430_Payroll
                 modifierTextBox.Text = comboBox3.SelectedItem.ToString();
                 printmodifierAmt();
             }
+
+            curModName = modifierTextBox.Text;
+            modifierErrorLabel.Text = "";
+            modAmtErrorLabel.Text = "";
         }
 
         private void printmodifierAmt()
@@ -1070,30 +1074,34 @@ namespace CSC430_Payroll
                     }
                     else
                     {
+                        count = 0;
                         dot = false;
                         for (int i = 0; i < modAmtTextBox.Text.Length; i++)           //loop through mod amount
                         {
-                            if (!char.IsDigit(modAmtTextBox.Text[i]))    //check for non digits
+                            if (!(i == 0 && (modAmtTextBox.Text[0] == '-' || modAmtTextBox.Text[0] == '+')))   //skips first char if its a + or -
                             {
-                                if (modAmtTextBox.Text[i] == '.' && dot == false)    //exclude first decimal, if used
-                                    dot = true;
-                                else
+                                if (!char.IsDigit(modAmtTextBox.Text[i]))    //check for non digits
                                 {
-                                    modAmtErrorLabel.Text = "Amount must be a number";
-                                    error = true;
-                                    break;
+                                    if (modAmtTextBox.Text[i] == '.' && dot == false)    //exclude first decimal, if used
+                                        dot = true;
+                                    else
+                                    {
+                                        modAmtErrorLabel.Text = "Amount must be a number";
+                                        error = true;
+                                        break;
+                                    }
                                 }
-                            }
-                            else if (dot == true)                 //checks how many numbers after decimal, if used
-                            {
-                                if (count == 2)
+                                else if (dot == true)                 //checks how many numbers after decimal, if used
                                 {
-                                    modAmtErrorLabel.Text = "Amount exceeded two decimal places";
-                                    error = true;
-                                    break;
+                                    if (count == 2)
+                                    {
+                                        modAmtErrorLabel.Text = "Amount exceeded two decimal places";
+                                        error = true;
+                                        break;
+                                    }
+                                    else
+                                        count++;
                                 }
-                                else
-                                    count++;
                             }
                         }
                     }

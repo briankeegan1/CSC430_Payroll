@@ -23,6 +23,7 @@ namespace CSC430_Payroll
         {
             InitializeComponent();
             textBox2.Text = "Standard";
+            radioRate.Checked = true;
         }
 
         private void FormCreateBenefit_Load(object sender, EventArgs e)
@@ -73,17 +74,17 @@ namespace CSC430_Payroll
             this.Close();
         }
 
-        private void checkBoxRate_CheckedChanged(object sender, EventArgs e)
+        private void radioRate_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxRate.Checked)
+            if (radioRate.Checked)
                 textBox3.Enabled = true;
             else
                 textBox3.Enabled = false;
         }
 
-        private void checkBoxFixed_CheckedChanged(object sender, EventArgs e)
+        private void radioFixed_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxFixed.Checked)
+            if (radioFixed.Checked)
                 textBox4.Enabled = true;
             else
                 textBox4.Enabled = false;
@@ -95,7 +96,7 @@ namespace CSC430_Payroll
 
             if (textBox1.Text == "")
             {
-                benefitErrorLabel.Text = "Please enter a Benefit name";
+                benefitErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -103,32 +104,23 @@ namespace CSC430_Payroll
 
             if (textBox2.Text == "")
             {
-                planErrorLabel.Text = "Please enter a Benefit Plan name";
+                planErrorLabel.Text = "*";
                 empty = true;
             }
             else
                 planErrorLabel.Text = "";
 
-
-            if (!checkBoxRate.Checked && !checkBoxFixed.Checked)
+            if (textBox3.Text == "" && radioRate.Checked)
             {
-                payTypeErrorLabel.Text = "Please select at least one Payment Type";
-                empty = true;
-            }
-            else
-                payTypeErrorLabel.Text = "";
-
-            if (textBox3.Text == "" && checkBoxRate.Checked)
-            {
-                rateErrorLabel.Text = "Please enter a Rate";
+                rateErrorLabel.Text = "*";
                 empty = true;
             }
             else
                 rateErrorLabel.Text = "";
 
-            if (textBox4.Text == "" && checkBoxFixed.Checked)
+            if (textBox4.Text == "" && radioFixed.Checked)
             {
-                fixedAmtErrorLabel.Text = "Please enter a Fixed Payment Amount";
+                fixedAmtErrorLabel.Text = "*";
                 empty = true;
             }
             else
@@ -245,10 +237,10 @@ namespace CSC430_Payroll
 
             con.Close();
 
-            if (checkBoxRate.Checked)
+            if (radioRate.Checked)
                 AddRate();
 
-            if (checkBoxFixed.Checked)
+            if (radioFixed.Checked)
                 AddFixedAmount();
 
         }
@@ -310,6 +302,7 @@ namespace CSC430_Payroll
 
             con.Close();
         }
+
 
     }
 }

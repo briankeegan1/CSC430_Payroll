@@ -24,6 +24,7 @@ namespace CSC430_Payroll
             InitializeComponent();
             CreateBenefitsList();
             CreatePlansList();
+            radioCredit.Checked = true;
         }
 
         public FormCreateModifier(string benefitName)
@@ -31,7 +32,8 @@ namespace CSC430_Payroll
             InitializeComponent();
             CreateBenefitsList();
             comboBox1.SelectedItem = benefitName;
-;        }
+            radioCredit.Checked = true;
+        }
 
         public FormCreateModifier(string benefitName, string planName)
         {
@@ -40,6 +42,7 @@ namespace CSC430_Payroll
             comboBox1.SelectedItem = benefitName;
             CreatePlansList();
             comboBox2.SelectedItem = planName;
+            radioCredit.Checked = true;
         }
 
         private int GetBenefitsSize()
@@ -325,5 +328,14 @@ namespace CSC430_Payroll
 
             con.Close();
         }
+
+        private void radioCredit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioCredit.Checked)
+                label4.Text = "Amount (+)";
+            else
+                label4.Text = "Amount (-)";
+        }
+
     }
 }
