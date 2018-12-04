@@ -341,7 +341,9 @@ namespace CSC430_Payroll
                 }
                 else
                     checkedListBox4.Enabled = false;
-            }                
+            }
+            else
+                checkedListBox4.Enabled = false;
         }
 
         private void updateModifiers()
