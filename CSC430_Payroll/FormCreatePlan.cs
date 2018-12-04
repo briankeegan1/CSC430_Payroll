@@ -88,7 +88,7 @@ namespace CSC430_Payroll
             bool error = CheckError();
 
             if (empty || error)         //checks for errors/empty fields after messages have been written
-                MessageBox.Show("Some of the information requirements have not been met.");
+                MessageBox.Show("Some of the field requirements have not been met.");
             else
             {
                 CreatePlan();
