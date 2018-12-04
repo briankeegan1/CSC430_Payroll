@@ -19,6 +19,8 @@ namespace CSC430_Payroll
         private readonly formMain form1;
         private List<string> Benefits = new List<string>();
         private List<string> Taxes = new List<string>();
+        private List<object> AppliedPlans = new List<object>();
+        private List<object> AppliedCreditsDeductions = new List<object>();
 
         public FormAddEmployee()
         {
@@ -182,9 +184,319 @@ namespace CSC430_Payroll
 
         }
 
+        private void printPlans(int count)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlDataReader reader;
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@count";
+            param1.Value = count;
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = checkedListBox2.SelectedItem.ToString();
+
+            String sql = "SELECT [Plan Name] FROM BenefitPlans WHERE " +
+                         "[Benefit Name] = @benefitName AND Number = @count; ";
+
+            String Output = "";
+
+            SqlCommand command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Output = "";
+                Output = Output + reader.GetValue(0);
+                checkedListBox3.Items.Add(Output);
+            }
+
+            int checkedIndex = 0;
+            for(int i = 0; i < AppliedPlans.Count(); i++)
+            {
+                if (checkedListBox3.Items.Contains(AppliedPlans[i]))
+                {
+                    checkedIndex = checkedListBox3.Items.IndexOf(AppliedPlans[i]);
+                    checkedListBox3.SetItemCheckState(checkedIndex, CheckState.Checked);
+                }
+            }
+
+            con.Close();
+        }
+
+        private void updatePlans()
+        {
+            checkedListBox3.Items.Clear();
+            if (checkedListBox2.SelectedIndex != -1)
+            {
+                SqlParameter param = new SqlParameter();
+                string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                param.ParameterName = "@benefitName";
+                param.Value = checkedListBox2.SelectedItem.ToString();
+
+                int size;
+                String sql = "SELECT TOP 1 size = Number FROM BenefitPlans WHERE [Benefit Name] = @benefitName ORDER BY Number DESC; ";
+                
+                SqlCommand command = new SqlCommand(sql, con);
+                command.Parameters.Add(param);
+
+                con.Open();
+                if (command.ExecuteScalar() != null)        //Error Handling for empty table
+                    size = (int)command.ExecuteScalar();
+                else
+                    size = 0;
+                con.Close();
+
+                if (checkedListBox2.SelectedIndex != -1)
+                {
+                    for (int i = 1; i <= size; i++)
+                    {
+                        printPlans(i);
+                    }
+                }
+
+                if (checkedListBox2.CheckedItems.Count > 0 && checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
+                {
+                    checkedListBox3.Enabled = true;
+                }
+                else
+                {
+                    checkedListBox3.Enabled = false;
+                    for (int i = 0; i < checkedListBox3.Items.Count; i++)
+                    {
+                        checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
+                        AppliedPlans.Remove(checkedListBox3.Items[i]);
+                    }
+                    checkedListBox4.Items.Clear();
+                }
+            }
+        }
+
+        private void PrintModifiers(int count)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@planName";
+            param1.Value = checkedListBox3.SelectedItem.ToString();
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = checkedListBox2.SelectedItem.ToString();
+            SqlParameter param3 = new SqlParameter();
+            param3.ParameterName = "@count";
+            param3.Value = count;
+
+            String sql = "SELECT [Name] FROM [Credits/Deductions] WHERE " +
+                         "[Benefit Name] = @benefitName AND [Plan Name] = @planName AND Number = @count; ";
+
+            String Output = "";
+
+            SqlCommand command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+            command.Parameters.Add(param3);
+
+            con.Open();
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Output = "";
+                Output = Output + reader.GetValue(0);
+                checkedListBox4.Items.Add(Output);
+            }
+
+            int checkedIndex = 0;
+            for (int i = 0; i < AppliedCreditsDeductions.Count(); i++)
+            {
+                if (checkedListBox4.Items.Contains(AppliedCreditsDeductions[i]))
+                {
+                    checkedIndex = checkedListBox4.Items.IndexOf(AppliedCreditsDeductions[i]);
+                    checkedListBox4.SetItemCheckState(checkedIndex, CheckState.Checked);
+                }
+            }
+
+            con.Close();
+        }
+
+        private void ifPlanCheckedOrNot()
+        {
+            int[] checkedIndex = new int[999];
+            foreach (int index in checkedListBox3.CheckedIndices)
+            {
+                checkedIndex[index] = index;
+            }
+
+            if (checkedListBox3.CheckedItems.Count > 0)
+            {
+                if (checkedListBox3.GetItemCheckState(checkedIndex[checkedListBox3.SelectedIndex]) == CheckState.Checked
+                    && checkedListBox3.SelectedIndex == checkedIndex[checkedListBox3.SelectedIndex])
+                {
+                    checkedListBox4.Enabled = true;
+                }
+                else
+                    checkedListBox4.Enabled = false;
+            }                
+        }
+
+        private void updateModifiers()
+        {
+            checkedListBox4.Items.Clear();
+            string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlParameter param1 = new SqlParameter();
+            param1.ParameterName = "@planName";
+            param1.Value = checkedListBox3.SelectedItem.ToString();
+            SqlParameter param2 = new SqlParameter();
+            param2.ParameterName = "@benefitName";
+            param2.Value = checkedListBox2.SelectedItem.ToString();
+
+            int size;
+            String sql = "SELECT TOP 1 size = Number FROM [Credits/Deductions] " +
+                         "WHERE [Benefit Name] = @benefitName AND [Plan Name] = @planName ORDER BY Number DESC; ";
+
+            SqlCommand command = new SqlCommand(sql, con);
+            command.Parameters.Add(param1);
+            command.Parameters.Add(param2);
+
+            con.Open();
+            if (command.ExecuteScalar() != null)        //Error Handling for empty table
+                size = (int)command.ExecuteScalar();
+            else
+                size = 0;
+            con.Close();
+
+            for (int i = 1; i <= size; i++)
+            {
+                PrintModifiers(i);
+            }
+        }
+
         private void checkedListBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            checkedListBox4.Items.Clear();
+            updatePlans();
+            
+        }
+        public void checkedListBox2_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void checkedListBox2_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (checkedListBox2.CheckedItems.Count > 0 && checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
+            {
+                checkedListBox3.Enabled = false;
+                for (int i = 0; i < checkedListBox3.Items.Count; i++)
+                {
+                    checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
+                    AppliedPlans.Remove(checkedListBox3.Items[i]);
+                }
+                for (int i = 0; i < checkedListBox4.Items.Count; i++)
+                {
+                    checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
+                    AppliedCreditsDeductions.Remove(checkedListBox4.Items[i]);
+                }
+                checkedListBox4.Items.Clear();
+            }
+            else
+            {
+                checkedListBox3.Enabled = true;
+            }
+        }
+
+        private void checkedListBox3_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                bool added = false;
+                bool removed = false;
+                foreach (object Item in checkedListBox3.CheckedItems)
+                {
+                    if(!AppliedPlans.Contains(Item))
+                    {
+                        AppliedPlans.Add(Item);
+                        MessageBox.Show("Added " + Item.ToString() + " count: " + AppliedPlans.Count.ToString());
+                        added = true;
+                    }
+                }
+                foreach (object Item in checkedListBox3.Items)
+                {
+                    if (!checkedListBox3.CheckedItems.Contains(Item))
+                    {
+                        if (AppliedPlans.Contains(Item))
+                        {
+                            AppliedPlans.Remove(Item);
+                            MessageBox.Show("Removed " + Item.ToString() + " count: " + AppliedPlans.Count.ToString());
+                            removed = true;
+                        }
+                    }
+                }
+                if(added)
+                {
+                    ifPlanCheckedOrNot();
+                }
+                else if(removed)
+                {
+                    updatePlans();
+                    checkedListBox4.Items.Clear();
+                }
+            }));
+            if (checkedListBox3.CheckedItems.Count > 0 && checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
+            {
+                for (int i = 0; i < checkedListBox4.Items.Count; i++)
+                {
+                    checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
+                    AppliedCreditsDeductions.Remove(checkedListBox4.Items[i]);
+                }
+            }
+        }
+
+        private void checkedListBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void checkedListBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ifPlanCheckedOrNot();
+            if(checkedListBox3.SelectedItem != null)
+            {
+                updateModifiers();
+            }
+            
+        }
+
+        private void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                foreach (object Item in checkedListBox4.CheckedItems)
+                {
+                    if (!AppliedCreditsDeductions.Contains(Item))
+                    {
+                        AppliedCreditsDeductions.Add(Item);
+                        MessageBox.Show("Added " + Item.ToString() + " count: " + AppliedCreditsDeductions.Count.ToString());
+                    }
+                }
+                foreach (object Item in checkedListBox4.Items)
+                {
+                    if (!checkedListBox4.CheckedItems.Contains(Item))
+                    {
+                        if (AppliedCreditsDeductions.Contains(Item))
+                        {
+                            AppliedCreditsDeductions.Remove(Item);
+                            MessageBox.Show("Removed " + Item.ToString() + " count: " + AppliedCreditsDeductions.Count.ToString());
+                        }
+                    }
+                }
+            }));
         }
     }
 }
