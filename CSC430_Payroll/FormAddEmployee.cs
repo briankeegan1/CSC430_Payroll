@@ -392,6 +392,7 @@ namespace CSC430_Payroll
 
         private void checkedListBox2_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            bool removed = false;
             if (checkedListBox2.CheckedItems.Count > 0 && checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
             {
                 checkedListBox3.Enabled = false;
@@ -399,6 +400,7 @@ namespace CSC430_Payroll
                 {
                     checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
                     AppliedPlans.Remove(checkedListBox3.Items[i]);
+                    removed = true;
                 }
                 for (int i = 0; i < checkedListBox4.Items.Count; i++)
                 {
@@ -410,6 +412,23 @@ namespace CSC430_Payroll
             else
             {
                 checkedListBox3.Enabled = true;
+            }
+            if(removed)
+            {
+                removeCreditsDeductions();
+            }
+        }
+
+        private void removeCreditsDeductions()
+        {
+            checkedListBox3.SelectedIndex = 0;
+            for(int i = 0; i < checkedListBox3.Items.Count; i++)
+            {
+                checkedListBox3.SelectedIndex = i;
+                foreach (object Item in checkedListBox4.Items)
+                {
+                    AppliedCreditsDeductions.Remove(Item);
+                }
             }
         }
 
@@ -424,7 +443,6 @@ namespace CSC430_Payroll
                     if(!AppliedPlans.Contains(Item))
                     {
                         AppliedPlans.Add(Item);
-                        MessageBox.Show("Added " + Item.ToString() + " count: " + AppliedPlans.Count.ToString());
                         added = true;
                     }
                 }
@@ -435,7 +453,6 @@ namespace CSC430_Payroll
                         if (AppliedPlans.Contains(Item))
                         {
                             AppliedPlans.Remove(Item);
-                            MessageBox.Show("Removed " + Item.ToString() + " count: " + AppliedPlans.Count.ToString());
                             removed = true;
                         }
                     }
@@ -484,7 +501,6 @@ namespace CSC430_Payroll
                     if (!AppliedCreditsDeductions.Contains(Item))
                     {
                         AppliedCreditsDeductions.Add(Item);
-                        MessageBox.Show("Added " + Item.ToString() + " count: " + AppliedCreditsDeductions.Count.ToString());
                     }
                 }
                 foreach (object Item in checkedListBox4.Items)
@@ -494,7 +510,6 @@ namespace CSC430_Payroll
                         if (AppliedCreditsDeductions.Contains(Item))
                         {
                             AppliedCreditsDeductions.Remove(Item);
-                            MessageBox.Show("Removed " + Item.ToString() + " count: " + AppliedCreditsDeductions.Count.ToString());
                         }
                     }
                 }
