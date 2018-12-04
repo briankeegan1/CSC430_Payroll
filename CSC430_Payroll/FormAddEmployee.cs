@@ -343,7 +343,11 @@ namespace CSC430_Payroll
                     checkedListBox4.Enabled = false;
             }
             else
+            {
                 checkedListBox4.Enabled = false;
+                checkedListBox4.Items.Clear();
+            }
+                
         }
 
         private void updateModifiers()
@@ -392,6 +396,10 @@ namespace CSC430_Payroll
 
         private void checkedListBox2_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            if (checkedListBox2.CheckedItems.Count == 0)
+            {
+                checkedListBox4.Items.Clear();
+            }
             bool removed = false;
             if (checkedListBox2.CheckedItems.Count > 0 && checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
             {
@@ -416,6 +424,7 @@ namespace CSC430_Payroll
             if(removed)
             {
                 removeCreditsDeductions();
+                checkedListBox4.Items.Clear();
             }
         }
 
