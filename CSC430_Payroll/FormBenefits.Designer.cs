@@ -164,7 +164,7 @@
             // ModifyInfo
             // 
             this.ModifyInfo.Enabled = false;
-            this.ModifyInfo.Location = new System.Drawing.Point(538, 305);
+            this.ModifyInfo.Location = new System.Drawing.Point(538, 314);
             this.ModifyInfo.Name = "ModifyInfo";
             this.ModifyInfo.Size = new System.Drawing.Size(102, 23);
             this.ModifyInfo.TabIndex = 25;
@@ -400,7 +400,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 340);
+            this.ClientSize = new System.Drawing.Size(652, 349);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.radioFixed);
             this.Controls.Add(this.radioRate);
@@ -435,8 +435,8 @@
             this.Controls.Add(this.CreateBenefit);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label1);
-            this.MaximumSize = new System.Drawing.Size(668, 379);
-            this.MinimumSize = new System.Drawing.Size(668, 379);
+            this.MaximumSize = new System.Drawing.Size(668, 388);
+            this.MinimumSize = new System.Drawing.Size(668, 388);
             this.Name = "FormBenefits";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Benefits";

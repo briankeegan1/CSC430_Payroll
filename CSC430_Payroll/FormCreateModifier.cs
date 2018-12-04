@@ -144,7 +144,7 @@ namespace CSC430_Payroll
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
            CreatePlansList();
-           comboBox2.SelectedIndex = -1;
+           comboBox2.SelectedIndex = 0;
         }
 
         private bool CheckExists()
@@ -245,10 +245,13 @@ namespace CSC430_Payroll
             int count = 0;
             int amountSize = textBox2.Text.Length;
 
-            if (CheckExists())
+            if (comboBox2.SelectedIndex != -1)
             {
-                error = true;
-                nameErrorLabel.Text = "Name already Exists";
+                if (CheckExists())
+                {
+                    error = true;
+                    nameErrorLabel.Text = "Name already Exists";
+                }
             }
 
             for (int i = 0; i < amountSize; i++)

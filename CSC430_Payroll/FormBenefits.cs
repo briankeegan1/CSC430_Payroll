@@ -54,6 +54,11 @@ namespace CSC430_Payroll
             {
                 PrintBenefits(i);
             }
+
+            if (listBox1.Items.Count == 0)
+                DeleteBenefit.Enabled = false;
+            else
+                DeleteBenefit.Enabled = true;
         }
 
         private void UpdatePlans()      //keeps Plans up to date
@@ -790,6 +795,8 @@ namespace CSC430_Payroll
                 listBox1.SelectedIndex = benefitIndex;
                 listBox2.SelectedIndex = planIndex;
             }
+            else
+                MessageBox.Show("Some of the field requirements have not been met.", "Error Message");
         }
 
         private void ModifyBenefitName()
