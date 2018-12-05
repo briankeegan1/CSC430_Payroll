@@ -478,6 +478,7 @@ namespace CSC430_Payroll
             }));
             if (checkedListBox3.CheckedItems.Count > 0 && checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
             {
+                updateModifiers();
                 for (int i = 0; i < checkedListBox4.Items.Count; i++)
                 {
                     checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
