@@ -16,6 +16,8 @@ namespace CSC430_Payroll
     {
         private List<string> Taxes = new List<string>();
         private List<string> Benefits = new List<string>();
+        private List<string> BenefitPlans = new List<string>();
+        private List<string> CreditsDeductions = new List<string>();
 
         //the program always knows what it is searching for. these conditions are important
         //in order to access the right SQL commands.
@@ -45,6 +47,8 @@ namespace CSC430_Payroll
             InitializeComponent();
             updateTaxes();
             updateBenefits();
+            updateBenefitPlans();
+            updateCreditsDeductions();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -231,6 +235,15 @@ namespace CSC430_Payroll
             {
                 //do nothing
             }
+        }
+
+        public List<string> getCreditsDeductions()
+        {
+            return CreditsDeductions;
+        }
+        public List<string> getBenefitPlans()
+        {
+            return BenefitPlans;
         }
 
         public List<string> getTaxes()
@@ -421,23 +434,57 @@ namespace CSC430_Payroll
             con.Close();
         }
 
+        private void updateCreditsDeductions()
+        {
+            CreditsDeductions.Clear();
+            for (int i = 0; i < BenefitPlans.Count; i++)
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+                SqlConnection con = new SqlConnection(connectionString); // making connection
+                con.Open();
+
+                string temp = BenefitPlans[i].ToString();
+                char last = temp[temp.Length - 1];
+                temp = temp.Substring(0, temp.Length - 2);
+                String sqlquery = "SELECT [Name] FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp + "'";
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    CreditsDeductions.Add(reader["Name"].ToString() + "," + last + "," + (i + 1).ToString());
+                }
+
+                reader.Close();
+                con.Close();
+            }
+        }
+
+        private void updateBenefitPlans()
+        {
+            BenefitPlans.Clear();
+            for (int i = 0; i < Benefits.Count; i++)
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
+                SqlConnection con = new SqlConnection(connectionString); // making connection
+                con.Open();
+                String sqlquery = "SELECT [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = '" + Benefits[i] + "'";
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    BenefitPlans.Add(reader["Plan Name"].ToString() + "," + (i+1).ToString());
+                }
+                reader.Close();
+                con.Close();
+            }
+        }
+
         private void updateBenefits()
         {
             Benefits.Clear();
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
             con.Open();
-            /*String sqlquery = "SELECT column_name " +
-                "FROM information_schema.columns " +
-                "WHERE table_name = 'Employee' " +
-                "AND column_name " +
-                "LIKE 'BFT: %'";
-            SqlCommand command = new SqlCommand(sqlquery, con);
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Benefits.Add(reader["column_name"].ToString());
-            }*/
             String sqlquery = "SELECT [Benefit Name] FROM Benefits";
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlDataReader reader = command.ExecuteReader();
@@ -460,6 +507,8 @@ namespace CSC430_Payroll
             popUpForm.ShowDialog();
             this.resetPlacementValues();
             this.updateBenefits();
+            this.updateBenefitPlans();
+            this.updateCreditsDeductions();
             this.gridRefresh();
         }
 
