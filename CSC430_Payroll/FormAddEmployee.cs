@@ -509,11 +509,11 @@ namespace CSC430_Payroll
                 }
                 else if(removed)
                 {
-                    updatePlans();
                     foreach (object Item in checkedListBox4.Items)
                     {
                         AppliedCreditsDeductions.Remove(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString());
                     }
+                    updatePlans();
                     checkedListBox4.Items.Clear();
                 }
             }));
