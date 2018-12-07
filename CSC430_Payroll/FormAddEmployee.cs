@@ -21,8 +21,11 @@ namespace CSC430_Payroll
         private List<string> BenefitPlans = new List<string>();
         private List<string> CreditsDeductions = new List<string>();
 
+        private List<object> AppliedBenefits = new List<object>();
         private List<object> AppliedPlans = new List<object>();
         private List<object> AppliedCreditsDeductions = new List<object>();
+
+        private int noInvoke = 0;
 
         public FormAddEmployee()
         {
@@ -82,6 +85,8 @@ namespace CSC430_Payroll
 
         }
 
+        
+
         private void btnCreateEmployee_Click(object sender, EventArgs e)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
@@ -118,6 +123,8 @@ namespace CSC430_Payroll
                     command.ExecuteNonQuery();
                     addTaxes(con, numID);
                     addBenefits(con, numID);
+                    addPlans(con, numID);
+                    addCreditsDeductions(con, numID);
                     MessageBox.Show("Employee Created.");
                     form1.resetPlacementValues();
                     //calling grid refresh function from FormMain
@@ -149,15 +156,59 @@ namespace CSC430_Payroll
         private void addBenefits(SqlConnection con, int id)
         {
             string sqlquery = "";
-            for (int i = 0; i < Benefits.Count(); i++)
+            string insertion = "";
+            for (int i = 0; i < AppliedBenefits.Count(); i++)
             {
-                if (checkedListBox2.GetItemChecked(i) == true)
+                insertion += AppliedBenefits[i];
+                sqlquery = "UPDATE Employee SET Benefits = " + "'"+insertion+"'"+ " WHERE ID = " + id;
+                SqlCommand command = new SqlCommand(sqlquery, con);
+                command.ExecuteNonQuery();
+                insertion += ", ";
+            }
+        }
+
+        private void addPlans(SqlConnection con, int id)
+        {
+            string sqlquery = "";
+            string insertion = "";
+            /*for(int i = 0; i < AppliedBenefits.Count(); i++)
+            {
+                for (int j = 0; j < AppliedPlans.Count(); j++)
                 {
-                    sqlquery = "UPDATE Employee SET [" + Benefits[i] + "] = " + 1 + "WHERE ID = " + id;
+                    insertion += AppliedBenefits[i].ToString() + "-" + AppliedPlans[j].ToString();
+                    insertion = insertion.Substring(0, insertion.Length - 2);
+                    sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
                     SqlCommand command = new SqlCommand(sqlquery, con);
                     command.ExecuteNonQuery();
+                    insertion += ", ";
+                }
+            }*/
+            string temp;
+            string temp2;
+            char last;
+            for (int i = 0; i < AppliedPlans.Count(); i++)
+            {
+                temp = AppliedPlans[i].ToString();
+                last = temp[temp.Length - 1];
+                for(int j = 0; j <= AppliedBenefits.Count(); j++)
+                {
+                    temp2 = AppliedBenefits[i].ToString();
+                    if (temp == j.ToString())
+                    {
+                        insertion += temp2 + "-" + temp;
+                        insertion = insertion.Substring(0, insertion.Length - 2);
+                        sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
+                        SqlCommand command = new SqlCommand(sqlquery, con);
+                        command.ExecuteNonQuery();
+                        insertion += ", ";
+                    }
                 }
             }
+        }
+
+        private void addCreditsDeductions(SqlConnection con, int id)
+        {
+            string sqlquery = "";
         }
 
         private void refreshTaxesListBox()
@@ -174,7 +225,7 @@ namespace CSC430_Payroll
             Benefits = form1.getBenefits();
             for (int i = 0; i < Benefits.Count(); i++)
             {
-                checkedListBox2.Items.Add(Benefits[i]);
+                checkedListBox2.Items.Add(Benefits[i].Substring(0, Benefits[i].Length - 2));
             }
         }
 
@@ -267,21 +318,24 @@ namespace CSC430_Payroll
                     }
                 }
 
-                int checkedIndex = 0;
                 if (AppliedPlans.Count() > 0)
-                {
-                    for(int i = 0; i < AppliedPlans.Count(); i++)
+                { 
+                    for(int i = 0; i < checkedListBox3.Items.Count; i++)
                     {
-                        string temp = AppliedPlans[i].ToString();
-                        string temp2 = AppliedPlans[i].ToString().Substring(0, AppliedPlans[i].ToString().Length - 2);
-                        char last = temp[temp.Length - 1];
-                        int benefitNum = (last - '0') - 1;
-                        if (checkedListBox2.SelectedIndex == benefitNum)
+                        if(checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
                         {
-                            checkedIndex = checkedListBox3.Items.IndexOf(temp2);
-                            if(checkedIndex >= 0)
+                            string temp = (checkedListBox2.SelectedIndex+1).ToString() + "," + (i+1).ToString(); //bnum,plannum
+                            if (AppliedPlans.Contains(temp))
                             {
-                                checkedListBox3.SetItemCheckState(checkedIndex, CheckState.Checked);
+                                char planNum = temp[temp.Length - 1];
+                                char benefitNum = temp[temp.Length - 3];
+                                int planNumInt = Convert.ToInt32(new string(planNum, 1));
+                                int benefitNumInt = Convert.ToInt32(new string(benefitNum, 1));
+                                if ((checkedListBox2.SelectedIndex+1) == benefitNumInt)
+                                {
+                                    checkedListBox3.SetItemCheckState((planNumInt - 1), CheckState.Checked);
+                                    noInvoke++;
+                                }
                             }
                         }
                     }
@@ -297,7 +351,7 @@ namespace CSC430_Payroll
                     for (int i = 0; i < checkedListBox3.Items.Count; i++)
                     {
                         checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
-                        AppliedPlans.Remove(checkedListBox3.Items[i]);
+                        //AppliedPlans.Remove(checkedListBox3.Items[i]);
                     }
                     checkedListBox4.Items.Clear();
                 }
@@ -367,6 +421,31 @@ namespace CSC430_Payroll
             }
         }
 
+        private void ifBenefitCheckedOrNot()
+        {
+            int[] checkedIndex = new int[999];
+            foreach (int index in checkedListBox2.CheckedIndices)
+            {
+                checkedIndex[index] = index;
+            }
+
+            if (checkedListBox2.CheckedItems.Count > 0)
+            {
+                if (checkedListBox2.GetItemCheckState(checkedIndex[checkedListBox2.SelectedIndex]) == CheckState.Checked
+                    && checkedListBox2.SelectedIndex == checkedIndex[checkedListBox2.SelectedIndex])
+                {
+                    checkedListBox3.Enabled = true;
+                }
+                else
+                    checkedListBox3.Enabled = false;
+            }
+            else
+            {
+                checkedListBox3.Enabled = false;
+                checkedListBox3.Items.Clear();
+            }
+        }
+
         private void updateModifiers()
         {
             checkedListBox4.Items.Clear();
@@ -401,132 +480,195 @@ namespace CSC430_Payroll
 
             if (AppliedCreditsDeductions.Count() > 0)
             {
-                for(int i = 0; i < AppliedCreditsDeductions.Count(); i++)
+                for (int i = 0; i < checkedListBox4.Items.Count; i++)
                 {
-                    int checkedIndex = 0;
-                    string temp = AppliedCreditsDeductions[i].ToString();
-                    string temp2 = AppliedCreditsDeductions[i].ToString().Substring(0, AppliedCreditsDeductions[i].ToString().Length - 4);
-                    char last = temp[temp.Length - 1];
-                    int planNum = (last - '0') - 1;
-                    if (checkedListBox3.SelectedIndex == planNum)
+                    if (checkedListBox3.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
                     {
-                        checkedIndex = checkedListBox4.Items.IndexOf(temp2);
-                        if(checkedIndex >= 0)
+                        string temp = (checkedListBox2.SelectedIndex + 1).ToString() + 
+                            "," + (checkedListBox3.SelectedIndex + 1).ToString() + "," + (i+1).ToString(); //bnum,plannum,creditnum
+                        if (AppliedCreditsDeductions.Contains(temp))
                         {
-                            checkedListBox4.SetItemCheckState(checkedIndex, CheckState.Checked);
+                            char creditNum = temp[temp.Length - 1];
+                            char planNum = temp[temp.Length - 3];
+                            char benefitNum = temp[temp.Length - 5];
+
+                            int creditNumInt = Convert.ToInt32(new string(creditNum, 1));
+                            int planNumInt = Convert.ToInt32(new string(planNum, 1));
+                            int benefitNumInt = Convert.ToInt32(new string(benefitNum, 1));
+ 
+                            if ((checkedListBox2.SelectedIndex + 1) == benefitNumInt && 
+                                (checkedListBox3.SelectedIndex + 1) == planNumInt)
+                            {
+                                checkedListBox4.SetItemCheckState((creditNumInt - 1), CheckState.Checked);
+                                noInvoke++;
+                            }
                         }
                     }
                 }
             }
         }
 
-        private void checkedListBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            checkedListBox4.Items.Clear();
-            updatePlans();
-            
-        }
+        
         public void checkedListBox2_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void checkedListBox2_ItemCheck(object sender, ItemCheckEventArgs e)
+        
+
+        private void removeAllPlans()
         {
-            if (checkedListBox2.CheckedItems.Count == 0)
+            for (int i = 0; i < checkedListBox3.Items.Count; i++)
             {
-                checkedListBox4.Items.Clear();
-            }
-            bool removed = false;
-            if (checkedListBox2.CheckedItems.Count > 0 && checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
-            {
-                checkedListBox3.Enabled = false;
-                for (int i = 0; i < checkedListBox3.Items.Count; i++)
-                {
-                    checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
-                    AppliedPlans.Remove(checkedListBox3.Items[i]);
-                    removed = true;
-                }
-                for (int i = 0; i < checkedListBox4.Items.Count; i++)
-                {
-                    checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
-                    AppliedCreditsDeductions.Remove(checkedListBox4.Items[i]);
-                }
-                checkedListBox4.Items.Clear();
-            }
-            else
-            {
-                checkedListBox3.Enabled = true;
-            }
-            if(removed)
-            {
-                removeCreditsDeductions();
-                checkedListBox4.Items.Clear();
+                checkedListBox3.SelectedIndex = i;
+                string temp = (checkedListBox2.SelectedIndex + 1).ToString() + ","
+                    + (checkedListBox3.SelectedIndex + 1).ToString();
+                    AppliedPlans.Remove(temp);
+                checkedListBox3.SetItemCheckState(i, CheckState.Unchecked);
             }
         }
 
-        private void removeCreditsDeductions()
+        private void removeAllCreditsDeductions()
         {
-            checkedListBox3.SelectedIndex = 0;
             for(int i = 0; i < checkedListBox3.Items.Count; i++)
             {
                 checkedListBox3.SelectedIndex = i;
-                foreach (object Item in checkedListBox4.Items)
+                for(int j = 0; j < checkedListBox4.Items.Count; j++)
                 {
-                    AppliedCreditsDeductions.Remove(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString());
+                    checkedListBox4.SelectedIndex = j;
+                    string temp = (checkedListBox2.SelectedIndex + 1).ToString() + ","
+                        + (checkedListBox3.SelectedIndex + 1).ToString() + ","
+                        + (checkedListBox4.SelectedIndex + 1).ToString();
+                    checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
+                    AppliedCreditsDeductions.Remove(temp);
                 }
             }
+        }
+
+        private void removeCreditsDeductionsOnIndex()
+        {
+            for(int i = 0; i < checkedListBox4.Items.Count; i++)
+            {
+                checkedListBox4.SelectedIndex = i;
+                string temp = (checkedListBox2.SelectedIndex + 1).ToString() + ","
+                    + (checkedListBox3.SelectedIndex + 1).ToString() + ","
+                    + (checkedListBox4.SelectedIndex + 1).ToString();
+                checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
+                AppliedCreditsDeductions.Remove(temp);
+            }
+        }
+
+        private void checkedListBox2_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                if (!AppliedBenefits.Contains((checkedListBox2.SelectedIndex + 1).ToString()))
+                {
+                    AppliedBenefits.Add((checkedListBox2.SelectedIndex + 1).ToString());
+                }
+
+                if (!checkedListBox2.CheckedItems.Contains(checkedListBox2.SelectedItem))
+                {
+                    if (AppliedBenefits.Contains((checkedListBox2.SelectedIndex + 1).ToString()))
+                    {
+                        AppliedBenefits.Remove((checkedListBox2.SelectedIndex + 1).ToString());
+                    }
+                }
+                //unsure
+                if (checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
+                {
+                    checkedListBox3.Enabled = true;
+                }
+                else
+                {
+                    checkedListBox3.Enabled = false;
+                    removeAllPlans();
+                    removeAllCreditsDeductions();
+                }
+                //^^^
+            }));
+            
+
         }
 
         private void checkedListBox3_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             this.BeginInvoke(new Action(() =>
             {
-                bool added = false;
-                bool removed = false;
-                foreach (object Item in checkedListBox3.CheckedItems)
+                if(noInvoke == 0)
                 {
-                    if(!AppliedPlans.Contains(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString()))
+                    string temp = (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString();
+                    if (!AppliedPlans.Contains(temp))
                     {
-                        AppliedPlans.Add(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString());
-                        added = true;
+                        AppliedPlans.Add(temp);
                     }
-                }
-                foreach (object Item in checkedListBox3.Items)
-                {
-                    if (!checkedListBox3.CheckedItems.Contains(Item))
+
+                    if (!checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
                     {
-                        if (AppliedPlans.Contains(Item + "," + (checkedListBox2.SelectedIndex+1).ToString()))
+                        if (AppliedPlans.Contains(temp))
                         {
-                            AppliedPlans.Remove(Item + "," + (checkedListBox2.SelectedIndex+1).ToString());
-                            removed = true;
+                            AppliedPlans.Remove(temp);
+                        }
+                    }
+
+                }
+                //unsure
+                if (checkedListBox3.SelectedIndex != -1)
+                {
+                    if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
+                    {
+                        checkedListBox4.Enabled = true;
+                    }
+                    else
+                    {
+                        checkedListBox4.Enabled = false;
+                        removeCreditsDeductionsOnIndex();
+                    }
+                        
+                }
+                
+                //^^^
+                if (noInvoke != 0)
+                {
+                    noInvoke--;
+                }
+            }));
+            
+        }
+
+        
+
+        private void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                if (noInvoke == 0)
+                {
+                    string temp = (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString() + "," + (checkedListBox4.SelectedIndex + 1).ToString();
+                    if (!AppliedCreditsDeductions.Contains(temp))
+                    {
+
+                        AppliedCreditsDeductions.Add(temp);
+                    }
+
+                    if (!checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
+                    {
+                        if (AppliedCreditsDeductions.Contains(temp))
+                        {
+                            AppliedCreditsDeductions.Remove(temp);
                         }
                     }
                 }
-                if(added)
+                if (noInvoke != 0)
                 {
-                    ifPlanCheckedOrNot();
+                    noInvoke--;
                 }
-                else if(removed)
-                {
-                    foreach (object Item in checkedListBox4.Items)
-                    {
-                        AppliedCreditsDeductions.Remove(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString());
-                    }
-                    updatePlans();
-                    checkedListBox4.Items.Clear();
-                }
+
             }));
-            if (checkedListBox3.CheckedItems.Count > 0 && checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
-            {
-                updateModifiers();
-                for (int i = 0; i < checkedListBox4.Items.Count; i++)
-                {
-                    checkedListBox4.SetItemCheckState(i, CheckState.Unchecked);
-                    AppliedCreditsDeductions.Remove(checkedListBox4.Items[i]);
-                }
-            }
         }
+
+
+
 
         private void checkedListBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -535,36 +677,31 @@ namespace CSC430_Payroll
 
         private void checkedListBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ifPlanCheckedOrNot();
-            if(checkedListBox3.SelectedItem != null)
+            if (checkedListBox3.SelectedItem != null)
             {
                 updateModifiers();
             }
-            
+
+            if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
+            {
+                checkedListBox4.Enabled = true;
+            }
+            else
+                checkedListBox4.Enabled = false;
+        }
+        private void checkedListBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
+            {
+                checkedListBox3.Enabled = true;
+            }
+            else
+                checkedListBox3.Enabled = false;
+
+            checkedListBox4.Items.Clear();
+            updatePlans();
         }
 
-        private void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            this.BeginInvoke(new Action(() =>
-            {
-                foreach (object Item in checkedListBox4.CheckedItems)
-                {
-                    if (!AppliedCreditsDeductions.Contains(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString()))
-                    {
-                        AppliedCreditsDeductions.Add(Item + "," + (checkedListBox2.SelectedIndex + 1).ToString() + "," + (checkedListBox3.SelectedIndex + 1).ToString());
-                    }
-                }
-                foreach (object Item in checkedListBox4.Items)
-                {
-                    if (!checkedListBox4.CheckedItems.Contains(Item))
-                    {
-                        if (AppliedCreditsDeductions.Contains(Item + "," + (checkedListBox2.SelectedIndex+1).ToString() + "," + (checkedListBox3.SelectedIndex+1).ToString()))
-                        {
-                            AppliedCreditsDeductions.Remove(Item + "," + (checkedListBox2.SelectedIndex+1).ToString() + "," + (checkedListBox3.SelectedIndex+1).ToString());
-                        }
-                    }
-                }
-            }));
-        }
+
     }
 }

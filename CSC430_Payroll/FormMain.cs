@@ -403,9 +403,9 @@ namespace CSC430_Payroll
 
                         while (reader.Read())
                         {
-                            if (reader["Benefits"].ToString().Contains(Benefits[i]))
+                            if (reader["Benefits"].ToString().Contains(Benefits[i].Substring(0, Benefits[i].Length - 2)))
                             {
-                                listBox2.Items.Add(Benefits[i]);
+                                listBox2.Items.Add(Benefits[i].Substring(0, Benefits[i].Length - 2));
                             }
                         }
                         con.Close();
@@ -444,14 +444,15 @@ namespace CSC430_Payroll
                 con.Open();
 
                 string temp = BenefitPlans[i].ToString();
-                char last = temp[temp.Length - 1];
-                temp = temp.Substring(0, temp.Length - 2);
-                String sqlquery = "SELECT [Name] FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp + "'";
+                char last = temp[temp.Length - 1]; //plannum
+                char first = temp[temp.Length - 3]; //benefitnum
+                temp = temp.Substring(0, temp.Length - 4);
+                String sqlquery = "SELECT [Name], Number FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp + "'";
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    CreditsDeductions.Add(reader["Name"].ToString() + "," + last + "," + (i + 1).ToString());
+                    CreditsDeductions.Add(reader["Name"].ToString() + "," + first + "," + last + "," + reader["Number"].ToString());
                 }
 
                 reader.Close();
@@ -467,12 +468,12 @@ namespace CSC430_Payroll
                 string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
                 SqlConnection con = new SqlConnection(connectionString); // making connection
                 con.Open();
-                String sqlquery = "SELECT [Plan Name] FROM BenefitPlans WHERE [Benefit Name] = '" + Benefits[i] + "'";
+                String sqlquery = "SELECT [Plan Name], Number FROM BenefitPlans WHERE [Benefit Name] = '" + Benefits[i].Substring(0, Benefits[i].Length - 2) + "'";
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    BenefitPlans.Add(reader["Plan Name"].ToString() + "," + (i+1).ToString());
+                    BenefitPlans.Add(reader["Plan Name"].ToString() + "," + (i+1).ToString() + "," + reader["Number"].ToString());
                 }
                 reader.Close();
                 con.Close();
@@ -485,12 +486,12 @@ namespace CSC430_Payroll
             string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString; //loading connection string from App.config
             SqlConnection con = new SqlConnection(connectionString); // making connection
             con.Open();
-            String sqlquery = "SELECT [Benefit Name] FROM Benefits";
+            String sqlquery = "SELECT [Benefit Name], Number FROM Benefits ORDER BY Number ASC";
             SqlCommand command = new SqlCommand(sqlquery, con);
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                Benefits.Add(reader["Benefit Name"].ToString());
+                Benefits.Add(reader["Benefit Name"].ToString() + "," + reader["Number"].ToString());
             }
             reader.Close();
             con.Close();
