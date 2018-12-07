@@ -157,32 +157,31 @@ namespace CSC430_Payroll
         {
             string sqlquery = "";
             string insertion = "";
-            for (int i = 0; i < AppliedBenefits.Count(); i++)
+            for (int i = 0; i < Benefits.Count(); i++)
             {
-                insertion += AppliedBenefits[i];
-                sqlquery = "UPDATE Employee SET Benefits = " + "'"+insertion+"'"+ " WHERE ID = " + id;
-                SqlCommand command = new SqlCommand(sqlquery, con);
-                command.ExecuteNonQuery();
-                insertion += ", ";
+                string tempString = Benefits[i].ToString();
+                char benefitNum = tempString[tempString.Length - 1];
+                for(int j = 0; j < AppliedBenefits.Count(); j++)
+                {
+                    char[] appliedBenefitNum = AppliedBenefits[j].ToString().ToCharArray();
+                    if (benefitNum == appliedBenefitNum[0])
+                    {
+                        string temp = Benefits[i].ToString();
+                        insertion += temp;
+                        insertion = insertion.Substring(0, insertion.Length - 2);
+                        sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
+                        SqlCommand command = new SqlCommand(sqlquery, con);
+                        command.ExecuteNonQuery();
+                        insertion += ", ";
+                    }
+                }
             }
         }
 
         private void addPlans(SqlConnection con, int id)
         {
-            string sqlquery = "";
+            /*string sqlquery = "";
             string insertion = "";
-            /*for(int i = 0; i < AppliedBenefits.Count(); i++)
-            {
-                for (int j = 0; j < AppliedPlans.Count(); j++)
-                {
-                    insertion += AppliedBenefits[i].ToString() + "-" + AppliedPlans[j].ToString();
-                    insertion = insertion.Substring(0, insertion.Length - 2);
-                    sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
-                    SqlCommand command = new SqlCommand(sqlquery, con);
-                    command.ExecuteNonQuery();
-                    insertion += ", ";
-                }
-            }*/
             string temp;
             string temp2;
             char last;
@@ -203,12 +202,12 @@ namespace CSC430_Payroll
                         insertion += ", ";
                     }
                 }
-            }
+            }*/
         }
 
         private void addCreditsDeductions(SqlConnection con, int id)
         {
-            string sqlquery = "";
+            /*string sqlquery = "";*/
         }
 
         private void refreshTaxesListBox()
@@ -421,31 +420,6 @@ namespace CSC430_Payroll
             }
         }
 
-        private void ifBenefitCheckedOrNot()
-        {
-            int[] checkedIndex = new int[999];
-            foreach (int index in checkedListBox2.CheckedIndices)
-            {
-                checkedIndex[index] = index;
-            }
-
-            if (checkedListBox2.CheckedItems.Count > 0)
-            {
-                if (checkedListBox2.GetItemCheckState(checkedIndex[checkedListBox2.SelectedIndex]) == CheckState.Checked
-                    && checkedListBox2.SelectedIndex == checkedIndex[checkedListBox2.SelectedIndex])
-                {
-                    checkedListBox3.Enabled = true;
-                }
-                else
-                    checkedListBox3.Enabled = false;
-            }
-            else
-            {
-                checkedListBox3.Enabled = false;
-                checkedListBox3.Items.Clear();
-            }
-        }
-
         private void updateModifiers()
         {
             checkedListBox4.Items.Clear();
@@ -482,7 +456,7 @@ namespace CSC430_Payroll
             {
                 for (int i = 0; i < checkedListBox4.Items.Count; i++)
                 {
-                    if (checkedListBox3.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
+                    if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
                     {
                         string temp = (checkedListBox2.SelectedIndex + 1).ToString() + 
                             "," + (checkedListBox3.SelectedIndex + 1).ToString() + "," + (i+1).ToString(); //bnum,plannum,creditnum
@@ -651,7 +625,7 @@ namespace CSC430_Payroll
                         AppliedCreditsDeductions.Add(temp);
                     }
 
-                    if (!checkedListBox3.CheckedItems.Contains(checkedListBox3.SelectedItem))
+                    if (!checkedListBox4.CheckedItems.Contains(checkedListBox4.SelectedItem))
                     {
                         if (AppliedCreditsDeductions.Contains(temp))
                         {
