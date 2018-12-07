@@ -159,20 +159,19 @@ namespace CSC430_Payroll
             string insertion = "";
             for (int i = 0; i < Benefits.Count(); i++)
             {
-                string tempString = Benefits[i].ToString();
-                char benefitNum = tempString[tempString.Length - 1];
+                string temp = Benefits[i].ToString();
+                char benefitNum = temp[temp.Length - 1];
                 for(int j = 0; j < AppliedBenefits.Count(); j++)
                 {
                     char[] appliedBenefitNum = AppliedBenefits[j].ToString().ToCharArray();
                     if (benefitNum == appliedBenefitNum[0])
                     {
-                        string temp = Benefits[i].ToString();
-                        insertion += temp;
-                        insertion = insertion.Substring(0, insertion.Length - 2);
+                        string temp2 = Benefits[i].ToString();
+                        insertion += temp2;
                         sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
                         SqlCommand command = new SqlCommand(sqlquery, con);
                         command.ExecuteNonQuery();
-                        insertion += ", ";
+                        insertion += "|";
                     }
                 }
             }
@@ -180,34 +179,68 @@ namespace CSC430_Payroll
 
         private void addPlans(SqlConnection con, int id)
         {
-            /*string sqlquery = "";
+            string sqlquery = "";
             string insertion = "";
-            string temp;
-            string temp2;
-            char last;
-            for (int i = 0; i < AppliedPlans.Count(); i++)
+            for (int i = 0; i < BenefitPlans.Count(); i++)
             {
-                temp = AppliedPlans[i].ToString();
-                last = temp[temp.Length - 1];
-                for(int j = 0; j <= AppliedBenefits.Count(); j++)
+                string temp = BenefitPlans[i].ToString();
+                char planNum = temp[temp.Length - 1];
+                char benefitNum = temp[temp.Length - 3];
+                for (int j = 0; j < AppliedPlans.Count(); j++)
                 {
-                    temp2 = AppliedBenefits[i].ToString();
-                    if (temp == j.ToString())
+                    string temp2 = AppliedPlans[j].ToString();
+                    string appliedPlanNumString = temp2.Substring(temp2.Length - 1);
+                    string appliedBenefitNumString = temp2.Substring(temp2.Length - 3);
+
+                    char[] appliedPlanNum = appliedPlanNumString.ToCharArray();
+                    char[] appliedBenefitNum = appliedBenefitNumString.ToCharArray();
+
+                    if (benefitNum == appliedBenefitNum[0] && planNum == appliedPlanNum[0])
                     {
-                        insertion += temp2 + "-" + temp;
-                        insertion = insertion.Substring(0, insertion.Length - 2);
-                        sqlquery = "UPDATE Employee SET Benefits = " + "'" + insertion + "'" + " WHERE ID = " + id;
+                        string temp3 = BenefitPlans[i].ToString();
+                        insertion += temp3;
+                        sqlquery = "UPDATE Employee SET Plans = " + "'" + insertion + "'" + " WHERE ID = " + id;
                         SqlCommand command = new SqlCommand(sqlquery, con);
                         command.ExecuteNonQuery();
-                        insertion += ", ";
+                        insertion += "|";
                     }
                 }
-            }*/
+            }
         }
 
         private void addCreditsDeductions(SqlConnection con, int id)
         {
-            /*string sqlquery = "";*/
+            string sqlquery = "";
+            string insertion = "";
+            for (int i = 0; i < CreditsDeductions.Count(); i++)
+            {
+                string temp = CreditsDeductions[i].ToString();
+                char creditNum = temp[temp.Length - 1];
+                char planNum = temp[temp.Length - 3];
+                char benefitNum = temp[temp.Length - 5];
+                
+                for (int j = 0; j < AppliedCreditsDeductions.Count(); j++)
+                {
+                    string temp2 = AppliedCreditsDeductions[j].ToString();
+                    string appliedCreditNumString = temp2.Substring(temp2.Length - 1);
+                    string appliedPlanNumString = temp2.Substring(temp2.Length - 3);
+                    string appliedBenefitNumString = temp2.Substring(temp2.Length - 5);
+
+                    char[] appliedCreditNum = appliedCreditNumString.ToCharArray();
+                    char[] appliedPlanNum = appliedPlanNumString.ToCharArray();
+                    char[] appliedBenefitNum = appliedBenefitNumString.ToCharArray();
+
+                    if (benefitNum == appliedBenefitNum[0] && planNum == appliedPlanNum[0] && creditNum == appliedCreditNum[0])
+                    {
+                        string temp3 = CreditsDeductions[i].ToString();
+                        insertion += temp3;
+                        sqlquery = "UPDATE Employee SET [Credits/Deductions] = " + "'" + insertion + "'" + " WHERE ID = " + id;
+                        SqlCommand command = new SqlCommand(sqlquery, con);
+                        command.ExecuteNonQuery();
+                        insertion += "|";
+                    }
+                }
+            }
         }
 
         private void refreshTaxesListBox()
