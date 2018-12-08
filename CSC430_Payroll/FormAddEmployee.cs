@@ -689,26 +689,30 @@ namespace CSC430_Payroll
                 updateModifiers();
             }
 
-            if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
+            if(checkedListBox3.CheckedItems.Count > 0)
             {
-                checkedListBox4.Enabled = true;
+                if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
+                {
+                    checkedListBox4.Enabled = true;
+                }
+                else
+                    checkedListBox4.Enabled = false;
             }
-            else
-                checkedListBox4.Enabled = false;
         }
         private void checkedListBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
+            if(checkedListBox2.CheckedItems.Count > 0)
             {
-                checkedListBox3.Enabled = true;
+                if (checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
+                {
+                    checkedListBox3.Enabled = true;
+                }
+                else
+                    checkedListBox3.Enabled = false;
             }
-            else
-                checkedListBox3.Enabled = false;
 
             checkedListBox4.Items.Clear();
             updatePlans();
         }
-
-
     }
 }
