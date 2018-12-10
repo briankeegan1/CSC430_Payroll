@@ -446,8 +446,11 @@ namespace CSC430_Payroll
                 string temp = BenefitPlans[i].ToString();
                 char last = temp[temp.Length - 1]; //plannum
                 char first = temp[temp.Length - 3]; //benefitnum
+                int firstInt = Convert.ToInt32(new string(first, 1)); //benefitnumint
+                string benefitName = Benefits[firstInt-1].ToString();
+                benefitName = benefitName.Substring(0, benefitName.Length - 2);
                 temp = temp.Substring(0, temp.Length - 4);
-                String sqlquery = "SELECT [Name], Number FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp + "'";
+                String sqlquery = "SELECT [Name], Number FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp + "' AND [Benefit Name] = '" + benefitName + "'";
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())

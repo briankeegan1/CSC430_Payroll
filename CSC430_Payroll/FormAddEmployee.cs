@@ -37,13 +37,18 @@ namespace CSC430_Payroll
             InitializeComponent();
             form1 = form;
             txtZipcode.MaxLength = 10;
-            refreshTaxesListBox();
-            refreshBenefitsListBox();
+            refreshBenefts();
             refreshBenefitPlans();
             refreshCreditsDeductions();
+            refreshTaxesListBox();
+            refreshBenefitsListBox();
             this.AcceptButton = btnCreateEmployee;
         }
 
+        private void refreshBenefts()
+        {
+            Benefits = form1.getBenefits();
+        }
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -254,7 +259,7 @@ namespace CSC430_Payroll
 
         private void refreshBenefitsListBox()
         {
-            Benefits = form1.getBenefits();
+            
             for (int i = 0; i < Benefits.Count(); i++)
             {
                 checkedListBox2.Items.Add(Benefits[i].Substring(0, Benefits[i].Length - 2));
@@ -428,31 +433,6 @@ namespace CSC430_Payroll
             con.Close();
         }
 
-        private void ifPlanCheckedOrNot()
-        {
-            int[] checkedIndex = new int[999];
-            foreach (int index in checkedListBox3.CheckedIndices)
-            {
-                checkedIndex[index] = index;
-            }
-
-            if (checkedListBox3.CheckedItems.Count > 0)
-            {
-                if (checkedListBox3.GetItemCheckState(checkedIndex[checkedListBox3.SelectedIndex]) == CheckState.Checked
-                    && checkedListBox3.SelectedIndex == checkedIndex[checkedListBox3.SelectedIndex])
-                {
-                    checkedListBox4.Enabled = true;
-                }
-                else
-                    checkedListBox4.Enabled = false;
-            }
-            else
-            {
-                checkedListBox4.Enabled = false;
-                checkedListBox4.Items.Clear();
-            }
-        }
-
         private void updateModifiers()
         {
             checkedListBox4.Items.Clear();
@@ -513,15 +493,7 @@ namespace CSC430_Payroll
                     }
                 }
             }
-        }
-
-        
-        public void checkedListBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
+        }        
 
         private void removeAllPlans()
         {
@@ -581,7 +553,6 @@ namespace CSC430_Payroll
                         AppliedBenefits.Remove((checkedListBox2.SelectedIndex + 1).ToString());
                     }
                 }
-                //unsure
                 if (checkedListBox2.GetItemCheckState(checkedListBox2.SelectedIndex) == CheckState.Checked)
                 {
                     checkedListBox3.Enabled = true;
@@ -592,7 +563,6 @@ namespace CSC430_Payroll
                     removeAllPlans();
                     removeAllCreditsDeductions();
                 }
-                //^^^
             }));
             
 
@@ -619,7 +589,6 @@ namespace CSC430_Payroll
                     }
 
                 }
-                //unsure
                 if (checkedListBox3.SelectedIndex != -1)
                 {
                     if (checkedListBox3.GetItemCheckState(checkedListBox3.SelectedIndex) == CheckState.Checked)
@@ -633,8 +602,6 @@ namespace CSC430_Payroll
                     }
                         
                 }
-                
-                //^^^
                 if (noInvoke != 0)
                 {
                     noInvoke--;
@@ -642,8 +609,6 @@ namespace CSC430_Payroll
             }));
             
         }
-
-        
 
         private void checkedListBox4_ItemCheck(object sender, ItemCheckEventArgs e)
         {
@@ -673,9 +638,6 @@ namespace CSC430_Payroll
 
             }));
         }
-
-
-
 
         private void checkedListBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
