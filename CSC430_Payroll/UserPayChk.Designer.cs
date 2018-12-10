@@ -1,6 +1,6 @@
 ﻿namespace CSC430_Payroll
 {
-    partial class FormCheck
+    partial class UserPayChk
     {
         /// <summary>
         /// Required designer variable.
@@ -232,7 +232,7 @@
             // 
             this.displayDate.AutoSize = true;
             this.displayDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.displayDate.Location = new System.Drawing.Point(845, 130);
+            this.displayDate.Location = new System.Drawing.Point(842, 132);
             this.displayDate.Name = "displayDate";
             this.displayDate.Size = new System.Drawing.Size(109, 26);
             this.displayDate.TabIndex = 22;
@@ -268,7 +268,7 @@
             this.displayCheckN.TabIndex = 25;
             this.displayCheckN.Text = "showCheck#";
             // 
-            // FormCheck
+            // UserPayChk
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -296,7 +296,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "FormCheck";
+            this.Name = "UserPayChk";
             this.Text = "FormCheck";
             this.ResumeLayout(false);
             this.PerformLayout();

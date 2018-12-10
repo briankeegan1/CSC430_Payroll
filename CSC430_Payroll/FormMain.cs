@@ -760,8 +760,8 @@ namespace CSC430_Payroll
             gridRefresh();
         }
 
-    
-        private void btnPrintCheck_Click(object sender, EventArgs e)
+
+        private void btnPrintPayStub_Click(object sender, EventArgs e)
         {
             if (txtOvertimeWorked.Text == "")
             {
@@ -793,21 +793,10 @@ namespace CSC430_Payroll
                         String sqlquery5 = "SELECT Rate FROM Taxes WHERE [Tax Name] = '" + listBox1.Items[i].ToString() + "'";
                         SqlCommand command5 = new SqlCommand(sqlquery5, con);
                         taxRate = taxRate + Convert.ToDecimal(command5.ExecuteScalar());
-                        BenefitRates.Add(Convert.ToString(command5.ExecuteScalar()));
+                        TaxRates.Add(Convert.ToString(command5.ExecuteScalar()));
                     }
                 }
-
-                if (listBox2.Items.Count > 0)
-                {
-                    for (int i = 0; i < listBox2.Items.Count; i++)
-                    {
-                        String sqlquery6 = "SELECT Rate FROM Benefits WHERE [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
-                        SqlCommand command6 = new SqlCommand(sqlquery6, con);
-                        benefitRate = benefitRate + Convert.ToDecimal(command6.ExecuteScalar());
-                        TaxRates.Add(Convert.ToString(command6.ExecuteScalar()));
-                    }
-                }
-
+                
                 if (benefitRate > 0 || taxRate > 0)
                 {
                     netPay = grossPay - ((benefitRate + taxRate) * grossPay);
@@ -835,21 +824,21 @@ namespace CSC430_Payroll
 
                 con.Close();
 
-                FormCheck formCheck = new FormCheck(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text,
+                FormPayStub formpayStub = new FormPayStub(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text,
                 txtDateOfBirth.Text, taxRate, benefitRate, TaxRates, BenefitRates);
-                formCheck.ShowDialog();
+                formpayStub.ShowDialog();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 MessageBox.Show(exc.Message);
             }
 
         }
 
-        private void btnDetailedInfo_Click(object sender, EventArgs e)
+        private void btnPrintCheck_Click(object sender, EventArgs e)
         {
-            DetailedInfo detailedinfo = new DetailedInfo(txtEmployeeID.Text);
-            detailedinfo.ShowDialog();
+            FormCheck formcheck = new FormCheck(txtFirstName.Text, txtLastName.Text);
+            formcheck.ShowDialog();
         }
     }
 }

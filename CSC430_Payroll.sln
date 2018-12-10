@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSC430_Payroll", "CSC430_Payroll\CSC430_Payroll.csproj", "{DC8F12DD-72C7-4310-97E6-26BEBAF383FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSC430_Payroll", "CSC430_Payroll\CSC430_Payroll.csproj", "{7C4C5837-2AE5-44F6-AF40-D2C6D068B3EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DC8F12DD-72C7-4310-97E6-26BEBAF383FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC8F12DD-72C7-4310-97E6-26BEBAF383FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC8F12DD-72C7-4310-97E6-26BEBAF383FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC8F12DD-72C7-4310-97E6-26BEBAF383FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4C5837-2AE5-44F6-AF40-D2C6D068B3EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4C5837-2AE5-44F6-AF40-D2C6D068B3EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4C5837-2AE5-44F6-AF40-D2C6D068B3EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4C5837-2AE5-44F6-AF40-D2C6D068B3EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {97189FDB-3AD3-4783-B405-885B7C6579D2}
+		SolutionGuid = {39FC0E87-797F-4278-9B82-C2EC3F1A7FBC}
 	EndGlobalSection
 EndGlobal

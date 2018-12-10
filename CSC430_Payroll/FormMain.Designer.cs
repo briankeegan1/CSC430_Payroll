@@ -41,7 +41,6 @@ namespace CSC430_Payroll
             this.label8 = new System.Windows.Forms.Label();
             this.txtHoursWorked = new System.Windows.Forms.TextBox();
             this.txtHourlyPay = new System.Windows.Forms.TextBox();
-            this.printBtn = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -70,6 +69,8 @@ namespace CSC430_Payroll
             this.label1 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnPrintCheck = new System.Windows.Forms.Button();
+            this.btnPrintPayStub = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -128,13 +129,14 @@ namespace CSC430_Payroll
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnPrintPayStub);
+            this.groupBox1.Controls.Add(this.btnPrintCheck);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.txtOvertimeWorked);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.txtHoursWorked);
             this.groupBox1.Controls.Add(this.txtHourlyPay);
-            this.groupBox1.Controls.Add(this.printBtn);
             this.groupBox1.Controls.Add(this.listBox2);
             this.groupBox1.Controls.Add(this.listBox1);
             this.groupBox1.Controls.Add(this.label15);
@@ -205,17 +207,6 @@ namespace CSC430_Payroll
             this.txtHourlyPay.Name = "txtHourlyPay";
             this.txtHourlyPay.Size = new System.Drawing.Size(40, 20);
             this.txtHourlyPay.TabIndex = 48;
-            // 
-            // printBtn
-            // 
-            this.printBtn.Location = new System.Drawing.Point(472, 438);
-            this.printBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.printBtn.Name = "printBtn";
-            this.printBtn.Size = new System.Drawing.Size(111, 23);
-            this.printBtn.TabIndex = 44;
-            this.printBtn.Text = "Generate Check";
-            this.printBtn.UseVisualStyleBackColor = true;
-            this.printBtn.Click += new System.EventHandler(this.btnPrintCheck_Click);
             // 
             // listBox2
             // 
@@ -483,6 +474,26 @@ namespace CSC430_Payroll
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // btnPrintCheck
+            // 
+            this.btnPrintCheck.Location = new System.Drawing.Point(488, 443);
+            this.btnPrintCheck.Name = "btnPrintCheck";
+            this.btnPrintCheck.Size = new System.Drawing.Size(94, 23);
+            this.btnPrintCheck.TabIndex = 54;
+            this.btnPrintCheck.Text = "Print Check";
+            this.btnPrintCheck.UseVisualStyleBackColor = true;
+            this.btnPrintCheck.Click += new System.EventHandler(this.btnPrintCheck_Click);
+            // 
+            // btnPrintPayStub
+            // 
+            this.btnPrintPayStub.Location = new System.Drawing.Point(393, 443);
+            this.btnPrintPayStub.Name = "btnPrintPayStub";
+            this.btnPrintPayStub.Size = new System.Drawing.Size(89, 23);
+            this.btnPrintPayStub.TabIndex = 55;
+            this.btnPrintPayStub.Text = "Print Paystub";
+            this.btnPrintPayStub.UseVisualStyleBackColor = true;
+            this.btnPrintPayStub.Click += new System.EventHandler(this.btnPrintPayStub_Click);
+            // 
             // formMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -541,12 +552,13 @@ namespace CSC430_Payroll
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button printBtn;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtHoursWorked;
         private System.Windows.Forms.TextBox txtHourlyPay;
         private System.Windows.Forms.TextBox txtOvertimeWorked;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnPrintPayStub;
+        private System.Windows.Forms.Button btnPrintCheck;
     }
 }

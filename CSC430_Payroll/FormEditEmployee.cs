@@ -708,9 +708,11 @@ namespace CSC430_Payroll
                     }
                     else
                     {
-                        checkedListBox3.Enabled = false;
                         removeAllPlans();
                         removeAllCreditsDeductions();
+                        checkedListBox3.Enabled = false;
+                        checkedListBox4.Enabled = false;
+                        checkedListBox4.Items.Clear();
                     }
                 }
                 if(noInvoke != 0)

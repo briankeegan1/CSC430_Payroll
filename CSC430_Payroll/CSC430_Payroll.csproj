@@ -109,6 +109,12 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPayStub.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPayStub.Designer.cs">
+      <DependentUpon>FormPayStub.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormRegister.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,42 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserBenefitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserBenefitForm.Designer.cs">
+      <DependentUpon>UserBenefitForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserEditForm.Designer.cs">
+      <DependentUpon>UserEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserMain.Designer.cs">
+      <DependentUpon>UserMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserPayChk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserPayChk.Designer.cs">
+      <DependentUpon>UserPayChk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserPayStub.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserPayStub.Designer.cs">
+      <DependentUpon>UserPayStub.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserTaxForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserTaxForm.Designer.cs">
+      <DependentUpon>UserTaxForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormCreateModifier.resx">
       <DependentUpon>FormCreateModifier.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,6 +195,9 @@
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPayStub.resx">
+      <DependentUpon>FormPayStub.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormRegister.resx">
       <DependentUpon>FormRegister.cs</DependentUpon>
     </EmbeddedResource>
@@ -169,6 +214,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UserEditForm.resx">
+      <DependentUpon>UserEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserMain.resx">
+      <DependentUpon>UserMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserPayChk.resx">
+      <DependentUpon>UserPayChk.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
