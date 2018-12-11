@@ -106,3 +106,7 @@ C:\Users\bkbur\source\repos\TONY\CSC430_Payroll\bin\Debug\CSC430_Payroll.pdb
 C:\Users\bkbur\source\repos\TONY\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserEditForm.resources
 C:\Users\bkbur\source\repos\TONY\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserMain.resources
 C:\Users\bkbur\source\repos\TONY\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserPayChk.resources
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.FormPayStub.resources
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserEditForm.resources
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserMain.resources
+C:\Users\bkbur\source\repos\CSC430_Payroll\CSC430_Payroll\obj\Debug\CSC430_Payroll.UserPayChk.resources

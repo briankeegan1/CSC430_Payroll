@@ -773,17 +773,21 @@ namespace CSC430_Payroll
                 SqlConnection con = new SqlConnection(connectionString); // making connection
                 con.Open();
 
-                List<string> TaxRates = new List<string>();
-                List<string> BenefitRates = new List<string>();
+                List<string> EmployeeTaxRates = new List<string>();
+                List<string> EmployeeBenefitPlanRates = new List<string>();
+                List<string> EmployeeCreditsDeductionsAmounts = new List<string>();
+                List<string> AppliedCreditsDeductions = new List<string>();
+                
 
-                decimal taxRate = 0;
-                decimal benefitRate = 0;
-                decimal netPay = 0;
+                decimal employeeTaxRate = 0;
+                decimal employeeBenefitRate = 0;
+                decimal employeeCreditsDeductions = 0;
+                decimal employeeNetPay = 0;
 
-                decimal hoursWorked = Int32.Parse(txtHoursWorked.Text);
-                decimal overtimeWorked = Int32.Parse(txtOvertimeWorked.Text);
-                decimal hourlyPay = Int32.Parse(txtHourlyPay.Text);
-                decimal grossPay = (hoursWorked * hourlyPay) + (overtimeWorked * hourlyPay);
+                decimal employeeHoursWorked = Int32.Parse(txtHoursWorked.Text);
+                decimal employeeOvertimeWorked = Int32.Parse(txtOvertimeWorked.Text);
+                decimal employeeHourlyPay = Int32.Parse(txtHourlyPay.Text);
+                decimal employeeGrossPay = (employeeHoursWorked * employeeHourlyPay) + (employeeOvertimeWorked * employeeHourlyPay);
 
 
                 if (listBox1.Items.Count > 0)
@@ -792,23 +796,80 @@ namespace CSC430_Payroll
                     {
                         String sqlquery5 = "SELECT Rate FROM Taxes WHERE [Tax Name] = '" + listBox1.Items[i].ToString() + "'";
                         SqlCommand command5 = new SqlCommand(sqlquery5, con);
-                        taxRate = taxRate + Convert.ToDecimal(command5.ExecuteScalar());
-                        TaxRates.Add(Convert.ToString(command5.ExecuteScalar()));
+                        employeeTaxRate = employeeTaxRate + Convert.ToDecimal(command5.ExecuteScalar());
+                        EmployeeTaxRates.Add(Convert.ToString(command5.ExecuteScalar()));
                     }
                 }
                 
-                if (benefitRate > 0 || taxRate > 0)
+                if (listBox2.Items.Count > 0)
                 {
-                    netPay = grossPay - ((benefitRate + taxRate) * grossPay);
+                    for (int i = 0; i < listBox2.Items.Count; i++)
+                    {
+                        String sqlquery6 = "SELECT Rate FROM BenefitPlans WHERE [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
+                        SqlCommand command6 = new SqlCommand(sqlquery6, con);
+                        employeeBenefitRate = employeeBenefitRate + Convert.ToDecimal(command6.ExecuteScalar());
+                        EmployeeBenefitPlanRates.Add(Convert.ToString(command6.ExecuteScalar()));
+                        for (int j = 0; j < BenefitPlans.Count; j++)
+                        {
+                            for (int k = 0; k < CreditsDeductions.Count; k++)
+                            {
+                                SqlDataReader reader = null;
+                                string employeeTableCreditsDeductions = "";
+                                string temp = BenefitPlans[j].Substring(0, BenefitPlans[j].Length - 4); //planname
+                                char last = BenefitPlans[j][BenefitPlans[j].Length - 1]; //plannum
+                                char first = BenefitPlans[j][BenefitPlans[j].Length - 3]; //benefitnum
+
+                                String sqlquery8 = "SELECT Name, Number, Amount FROM [Credits/Deductions] WHERE [Plan Name] = '" + temp +
+                                    "' AND [Benefit Name] = '" + listBox2.Items[i].ToString() + "'";
+                                String sqlquery9 = "SELECT [Credits/Deductions] FROM Employee WHERE ID = '" + txtEmployeeID.Text.ToString() + "'";
+
+                                SqlCommand command8 = new SqlCommand(sqlquery8, con);
+                                SqlCommand command9 = new SqlCommand(sqlquery9, con);
+
+                                reader = command9.ExecuteReader();
+                                while (reader.Read())
+                                {
+                                    employeeTableCreditsDeductions = reader["Credits/Deductions"].ToString();
+                                }
+
+                                reader = command8.ExecuteReader();
+                                List<string> tempCreditNames = new List<string>();
+                                List<string> tempCreditNumbers = new List<string>();
+                                List<string> tempAddedAmts = new List<string>();
+                                while (reader.Read())
+                                {
+                                    tempCreditNames.Add(reader["Name"].ToString());
+                                    tempCreditNumbers.Add(reader["Number"].ToString());
+                                    EmployeeCreditsDeductionsAmounts.Add(reader["Amount"].ToString());
+                                    tempAddedAmts.Add(reader["Amount"].ToString());
+                                }
+
+                                for(int z = 0; z < tempCreditNumbers.Count; z++)
+                                {
+                                    string tempCreditFullString = tempCreditNames[z] + "," + first + "," + last + "," + tempCreditNumbers[z];
+                                    if (employeeTableCreditsDeductions.Contains(tempCreditFullString) && tempCreditNames.Count > 0 && !AppliedCreditsDeductions.Contains(tempCreditFullString))
+                                    {
+                                        employeeCreditsDeductions = employeeCreditsDeductions + Convert.ToDecimal(tempAddedAmts[z]);
+                                        AppliedCreditsDeductions.Add(tempCreditFullString);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (employeeBenefitRate > 0 || employeeTaxRate > 0)
+                {
+                    employeeNetPay = employeeGrossPay - ((employeeBenefitRate + employeeTaxRate) * (employeeGrossPay + employeeCreditsDeductions));
                 }
                 else
-                    netPay = grossPay;
+                    employeeNetPay = employeeGrossPay;
 
                 String sqlquery = "UPDATE Employee SET HoursWorked = " + txtHoursWorked.Text + " WHERE ID = " + getSelectionID();
                 String sqlquery1 = "UPDATE Employee SET OvertimeWorked = " + txtOvertimeWorked.Text + " WHERE ID = " + getSelectionID();
                 String sqlquery2 = "UPDATE Employee SET Hourly = " + txtHourlyPay.Text + " WHERE ID = " + getSelectionID();
-                String sqlquery3 = "UPDATE Employee SET GrossPay = " + grossPay.ToString() + " WHERE ID = " + getSelectionID();
-                String sqlquery4 = "UPDATE Employee SET NetPay =  " + netPay.ToString();
+                String sqlquery3 = "UPDATE Employee SET GrossPay = " + employeeGrossPay.ToString() + " WHERE ID = " + getSelectionID();
+                String sqlquery4 = "UPDATE Employee SET NetPay =  " + employeeNetPay.ToString();
 
                 SqlCommand command = new SqlCommand(sqlquery, con);
                 SqlCommand command1 = new SqlCommand(sqlquery1, con);
@@ -825,7 +886,7 @@ namespace CSC430_Payroll
                 con.Close();
 
                 FormPayStub formpayStub = new FormPayStub(txtEmployeeID.Text, txtFirstName.Text, txtLastName.Text, txtAddress.Text, txtZipcode.Text,
-                txtDateOfBirth.Text, taxRate, benefitRate, TaxRates, BenefitRates);
+                txtDateOfBirth.Text, employeeTaxRate, employeeBenefitRate, EmployeeTaxRates, EmployeeBenefitPlanRates);
                 formpayStub.ShowDialog();
             }
             catch (Exception exc)
